@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYNTHETIX AI | Arquitetura Digital Autônoma</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#030014',
+                            primary: '#6d28d9',
+                            accent: '#d8b4fe',
+                            surface: '#0f0720'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #030014; color: #ffffff; }
+        
+        /* LOGO CUSTOMIZADA */
+        .logo-hexagon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6d28d9, #4c1d95);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .logo-core {
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #d8b4fe;
+            animation: pulse-core 2s infinite;
+        }
+        @keyframes pulse-core {
+            0% { box-shadow: 0 0 0 0 rgba(216, 180, 254, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(216, 180, 254, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(216, 180, 254, 0); }
+        }
+
+        /* EFEITOS VISUAIS */
+        .text-gradient {
+            background: linear-gradient(to right, #e9d5ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-panel {
+            background: rgba(15, 7, 32, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(109, 40, 217, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-glow {
+            background: #6d28d9;
+            box-shadow: 0 0 20px rgba(109, 40, 217, 0.5);
+            transition: all 0.3s ease;
+        }
+        .btn-glow:hover {
+            background: #7c3aed;
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .toggle-checkbox:checked { right: 0; border-color: #a855f7; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #a855f7; }
+
+        .fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden selection:bg-brand-primary selection:text-white font-sans">
+
+    <nav class="border-b border-white/5 bg-[#030014]/80 backdrop-blur-xl z-50 h-20 flex-none">
+        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+            
+            <div class="flex items-center gap-4 cursor-pointer group" onclick="navigateTo('home')">
+                <div class="logo-hexagon transition group-hover:scale-110 duration-300">
+                    <div class="logo-core"></div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-display font-bold text-xl tracking-[0.1em] text-white leading-none">SYNTHETIX</span>
+                    <span class="text-[0.65rem] text-brand-accent tracking-[0.3em] font-semibold uppercase opacity-80">Intelligence</span>
+                </div>
+            </div>
+
+            <div class="hidden md:flex gap-12 text-sm font-medium text-gray-400">
+                <button onclick="navigateTo('home')" class="hover:text-brand-accent transition duration-300">Início</button>
+                <button onclick="navigateTo('pricing')" class="hover:text-brand-accent transition duration-300">Planos</button>
+            </div>
+
+            <div class="flex gap-4 items-center">
+                <button onclick="navigateTo('login')" class="text-gray-300 hover:text-white text-sm font-semibold px-2 transition">Login</button>
+                <button onclick="navigateTo('signup')" class="bg-white text-black hover:bg-gray-200 px-6 py-2.5 rounded-none skew-x-[-10deg] text-sm font-bold transition group">
+                    <span class="block skew-x-[10deg]">JOIN BETA</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 overflow-y-auto relative bg-brand-dark scroll-smooth" id="main-container">
+
+        <section id="view-home" class="fade-in-up min-h-full flex flex-col items-center justify-center text-center px-4 relative overflow-hidden">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-brand-primary/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+            <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+
+            <div class="z-10 max-w-5xl">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brand-primary/30 bg-brand-surface/50 text-brand-accent text-xs font-bold tracking-widest uppercase mb-10 backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                    Sistema Operacional v2.4 Online
+                </div>
+                
+                <h1 class="font-display text-5xl md:text-8xl font-bold mb-8 tracking-tight leading-[1.05]">
+                    CODIFICAÇÃO <br>
+                    <span class="text-gradient">SINTÉTICA</span>
+                </h1>
+                
+                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+                    A SYNTHETIX não ajuda você a programar. Ela programa por você. 
+                    Descreva sua visão e nossa rede neural compila a realidade digital em milissegundos.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-6">
+                    <button onclick="navigateTo('signup')" class="btn-glow px-10 py-4 rounded-lg font-bold text-white tracking-wide">
+                        INICIAR SÍNTESE
+                    </button>
+                    <button onclick="navigateTo('pricing')" class="px-10 py-4 border border-white/10 hover:border-brand-primary/50 text-white rounded-lg font-bold transition bg-white/5 backdrop-blur-sm">
+                        VER ARQUITETURA
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-pricing" class="hidden fade-in-up min-h-full py-24 px-4 relative">
+             <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none"></div>
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="text-center mb-20">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Acesso ao Núcleo</h2>
+                    
+                    <div class="flex items-center justify-center gap-4 mt-10">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" id="label-monthly">Mensal</span>
+                        <div class="relative inline-block w-14 align-middle select-none">
+                            <input type="checkbox" id="billing-toggle" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer border-brand-surface left-0 transition-all duration-300 top-[-2px]" onclick="togglePricing()"/>
+                            <label for="billing-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-brand-surface border border-gray-700 cursor-pointer"></label>
+                        </div>
+                        <span class="text-xs font-bold text-white uppercase tracking-wider" id="label-annual">Anual <span class="text-brand-accent">(OFF 20%)</span></span>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto items-center">
+                    <div class="glass-panel p-10 rounded-2xl transition duration-300 hover:border-brand-primary/40 group">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2">INITIATE</h3>
+                        <div class="flex items-baseline mb-8">
+                            <span class="text-2xl text-brand-primary font-bold mr-1">R$</span>
+                            <span class="text-6xl font-display font-bold text-white tracking-tighter" id="price-standard">39,90</span>
+                            <span class="text-gray-500 ml-2 font-mono text-sm" id="period-standard">/mês</span>
+                        </div>
+                        <button onclick="navigateTo('signup')" class="w-full py-4 border border-white/10 hover:bg-white/5 rounded-lg font-bold text-white transition text-sm uppercase tracking-widest">
+                            Selecionar
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-10 rounded-2xl border-brand-primary relative shadow-[0_0_50px_rgba(109,40,217,0.15)]">
+                        <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-brand-primary text-white text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest shadow-lg border border-white/20">Recomendado</div>
+                        <h3 class="font-display text-2xl font-bold text-white mb-2">ARCHITECT <span class="text-brand-accent">PRO</span></h3>
+                        <div class="flex items-baseline mb-8">
+                            <span class="text-2xl text-brand-primary font-bold mr-1">R$</span>
+                            <span class="text-6xl font-display font-bold text-white tracking-tighter" id="price-pro">69,90</span>
+                            <span class="text-gray-500 ml-2 font-mono text-sm" id="period-pro">/mês</span>
+                        </div>
+                        <button onclick="navigateTo('signup')" class="btn-glow w-full py-4 rounded-lg font-bold text-white transition text-sm uppercase tracking-widest">
+                            Ativar Protocolo Pro
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-login" class="hidden fade-in-up min-h-full flex items-center justify-center p-4">
+            <div class="glass-panel w-full max-w-md p-10 rounded-2xl relative">
+                <button onclick="navigateTo('home')" class="absolute top-6 right-6 text-gray-500 hover:text-white transition"><i class="fas fa-times"></i></button>
+                <h2 class="text-2xl font-display font-bold text-center mb-8">Autenticação</h2>
+                <form onsubmit="handleAuth(event, 'Login')" class="space-y-5">
+                    <input type="email" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm font-mono" placeholder="ID do Usuário" required>
+                    <input type="password" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm font-mono" placeholder="Chave de Acesso" required>
+                    <button type="submit" class="w-full btn-glow py-4 rounded-lg font-bold text-white text-sm uppercase tracking-widest mt-4">Conectar</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="view-signup" class="hidden fade-in-up min-h-full flex items-center justify-center p-4">
+            <div class="glass-panel w-full max-w-md p-10 rounded-2xl relative border-brand-primary/30">
+                <button onclick="navigateTo('home')" class="absolute top-6 right-6 text-gray-500 hover:text-white transition"><i class="fas fa-times"></i></button>
+                <h2 class="text-2xl font-display font-bold text-center mb-8">Novo Operador</h2>
+                <form onsubmit="handleAuth(event, 'Cadastro')" class="space-y-5">
+                    <input type="text" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm" placeholder="Nome do Agente" required>
+                    <input type="email" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm" placeholder="Email Corporativo" required>
+                    <input type="password" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm" placeholder="Definir Senha" required>
+                    <button type="submit" class="w-full bg-white text-black hover:bg-gray-200 py-4 rounded-lg font-bold text-sm uppercase tracking-widest transition">Iniciar Registro</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="view-app" class="hidden h-full flex flex-col md:flex-row bg-[#050505]">
+            <aside class="w-full md:w-80 bg-brand-surface border-r border-white/5 flex flex-col p-6 z-20 shadow-2xl">
+                <div class="flex items-center gap-3 mb-8 opacity-80">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-xs font-mono text-gray-400">SERVER: ONLINE</span>
+                    <button onclick="logout()" class="ml-auto text-xs text-red-400 hover:text-white uppercase">Disconnect</button>
+                </div>
+                
+                <div class="flex-1 flex flex-col">
+                    <label class="text-xs font-bold text-brand-primary uppercase tracking-widest mb-3">Parâmetros de Entrada</label>
+                    <textarea id="userPrompt" class="w-full h-64 bg-black/50 border border-white/10 rounded-lg p-4 text-sm text-gray-300 focus:border-brand-primary focus:ring-0 outline-none resize-none mb-6 font-mono leading-relaxed" placeholder="// Descreva a estrutura desejada..."></textarea>
+                    
+                    <div class="mt-auto">
+                        <button onclick="generateSite()" id="generateBtn" class="w-full btn-glow text-white py-4 rounded-lg font-bold shadow-lg transition flex items-center justify-center gap-3 group">
+                            <i class="fas fa-microchip group-hover:rotate-90 transition duration-500"></i> 
+                            <span id="btnText" class="uppercase tracking-widest text-xs">Compilar</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="flex-1 bg-black relative flex flex-col">
+                <div class="h-12 border-b border-white/5 flex items-center px-6 justify-between bg-brand-surface/50">
+                    <span class="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Preview Mode: Active</span>
+                </div>
+                
+                <div class="flex-1 relative overflow-hidden bg-[#0a0a0c]">
+                    <div id="loadingState" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-black/95 z-50">
+                        <div class="logo-hexagon mb-6 animate-spin"><div class="logo-core"></div></div>
+                        <div class="font-mono text-brand-primary text-xs animate-pulse">
+                            > CONECTANDO REDE NEURAL...<br>
+                            > GERANDO CÓDIGO...
+                        </div>
+                    </div>
+                    <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-gray-700 select-none">
+                        <i class="fas fa-terminal text-6xl mb-6 opacity-20"></i>
+                        <p class="text-xs font-mono uppercase tracking-widest opacity-40">Aguardando Input</p>
+                    </div>
+                    <iframe id="siteFrame" class="w-full h-full border-0 hidden"></iframe>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // CONFIGURAÇÕES
+        const prices = {
+            monthly: { standard: "39,90", pro: "69,90" },
+            annual: { standard: "49,90", pro: "97,90" }
+        };
+
+        // NAVEGAÇÃO
+        function navigateTo(viewId) {
+            ['home', 'login', 'signup', 'pricing', 'app'].forEach(id => {
+                const el = document.getElementById('view-' + id);
+                if (el) el.classList.add('hidden');
+            });
+            document.getElementById('view-' + viewId).classList.remove('hidden');
+            const main = document.getElementById('main-container');
+            viewId === 'app' ? main.classList.add('overflow-hidden') : main.classList.remove('overflow-hidden');
+        }
+
+        // PREÇOS
+        function togglePricing() {
+            const isAnnual = document.getElementById('billing-toggle').checked;
+            const type = isAnnual ? 'annual' : 'monthly';
+            document.getElementById('price-standard').innerText = prices[type].standard;
+            document.getElementById('price-pro').innerText = prices[type].pro;
+            const lblM = document.getElementById('label-monthly');
+            const lblA = document.getElementById('label-annual');
+            if(isAnnual) {
+                lblA.classList.add('text-white'); lblA.classList.remove('text-gray-400');
+                lblM.classList.add('text-gray-400'); lblM.classList.remove('text-white');
+            } else {
+                lblM.classList.add('text-white'); lblM.classList.remove('text-gray-400');
+                lblA.classList.add('text-gray-400'); lblA.classList.remove('text-white');
+            }
+        }
+
+        // AUTH FAKE
+        function handleAuth(e, type) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const original = btn.innerText;
+            btn.innerText = "AUTENTICANDO...";
+            btn.classList.add('opacity-50');
+            setTimeout(() => { navigateTo('app'); btn.innerText = original; btn.classList.remove('opacity-50'); }, 1500);
+        }
+
+        function logout() { navigateTo('home'); }
+
+        // --- AQUI ESTÁ A ATUALIZAÇÃO QUE VOCÊ PEDIU ---
+        // ESTA FUNÇÃO AGORA CHAMA O ARQUIVO 'api/generate.js' DE VERDADE
+        async function generateSite() {
+            const promptInput = document.getElementById('userPrompt');
+            const prompt = promptInput.value;
+            
+            if (!prompt) {
+                alert("ERRO: Input vazio. Descreva o sistema.");
+                return;
+            }
+
+            // Elementos visuais
+            const loading = document.getElementById('loadingState');
+            const frame = document.getElementById('siteFrame');
+            const empty = document.getElementById('emptyState');
+            const btn = document.getElementById('generateBtn');
+            const btnText = document.getElementById('btnText');
+
+            // UI Update - Começa o Loading
+            loading.classList.remove('hidden');
+            empty.classList.add('hidden');
+            frame.classList.add('hidden');
+            btn.disabled = true;
+            btnText.innerText = "PROCESSANDO...";
+            
+            try {
+                // CHAMA O SEU BACKEND NA VERCEL
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro na conexão neural');
+                }
+
+                const data = await response.json();
+                
+                // INJETA O HTML REAL DA IA NO IFRAME
+                const doc = frame.contentWindow.document;
+                doc.open();
+                doc.write(data.html); // Escreve o código que veio da OpenAI
+                doc.close();
+
+                // Sucesso
+                loading.classList.add('hidden');
+                frame.classList.remove('hidden');
+
+            } catch (error) {
+                console.error(error);
+                alert("Erro ao gerar o site. Verifique: 1. Se o arquivo api/generate.js existe. 2. Se a API Key está configurada na Vercel.");
+                loading.classList.add('hidden');
+                empty.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btnText.innerText = "COMPILAR";
+            }
+        }
+    </script>
+</body>
+</html>
