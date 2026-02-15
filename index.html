@@ -87,6 +87,13 @@
         .fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* DROPDOWN MENU */
+        .nav-item:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
         /* CUSTOM SCROLLBAR */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f0720; }
@@ -109,7 +116,7 @@
 </head>
 <body class="flex flex-col h-screen overflow-hidden selection:bg-brand-primary selection:text-white font-sans">
 
-    <nav class="border-b border-white/5 bg-[#030014]/80 backdrop-blur-xl z-50 h-20 flex-none">
+    <nav class="border-b border-white/5 bg-[#030014]/90 backdrop-blur-xl z-50 h-20 flex-none">
         <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
             
             <div class="flex items-center gap-4 cursor-pointer group" onclick="navigateTo('home')">
@@ -122,9 +129,59 @@
                 </div>
             </div>
 
-            <div class="hidden md:flex gap-12 text-sm font-medium text-gray-400">
-                <button onclick="navigateTo('home')" class="hover:text-brand-accent transition duration-300">Início</button>
-                <button onclick="navigateTo('pricing')" class="hover:text-brand-accent transition duration-300">Planos</button>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400 h-full">
+                
+                <button onclick="navigateTo('home')" class="hover:text-white transition h-full border-b-2 border-transparent hover:border-brand-primary">Início</button>
+
+                <div class="nav-item relative h-full flex items-center">
+                    <button class="hover:text-white transition flex items-center gap-1 group">
+                        Funcionalidades <i class="fas fa-chevron-down text-[10px] group-hover:rotate-180 transition"></i>
+                    </button>
+                    <div class="dropdown-menu hidden absolute top-16 left-0 w-64 bg-[#0f0720] border border-white/10 rounded-xl shadow-2xl p-2 z-50">
+                        <div class="grid gap-1">
+                            <a href="#" onclick="navigateTo('app')" class="flex items-start gap-3 p-3 hover:bg-white/5 rounded-lg transition group">
+                                <div class="w-8 h-8 rounded bg-brand-primary/20 flex items-center justify-center text-brand-accent"><i class="fas fa-magic"></i></div>
+                                <div>
+                                    <div class="text-white font-bold text-xs group-hover:text-brand-accent">Editor IA</div>
+                                    <div class="text-[10px] text-gray-500">Crie sites com prompts.</div>
+                                </div>
+                            </a>
+                            <a href="#" class="flex items-start gap-3 p-3 hover:bg-white/5 rounded-lg transition group">
+                                <div class="w-8 h-8 rounded bg-blue-500/20 flex items-center justify-center text-blue-400"><i class="fas fa-server"></i></div>
+                                <div>
+                                    <div class="text-white font-bold text-xs group-hover:text-blue-400">Hospedagem</div>
+                                    <div class="text-[10px] text-gray-500">Deploy em 1 clique.</div>
+                                </div>
+                            </a>
+                            <a href="#" class="flex items-start gap-3 p-3 hover:bg-white/5 rounded-lg transition group">
+                                <div class="w-8 h-8 rounded bg-green-500/20 flex items-center justify-center text-green-400"><i class="fas fa-code"></i></div>
+                                <div>
+                                    <div class="text-white font-bold text-xs group-hover:text-green-400">Exportar Código</div>
+                                    <div class="text-[10px] text-gray-500">HTML, React e Tailwind.</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-item relative h-full flex items-center">
+                    <button class="hover:text-white transition flex items-center gap-1 group">
+                        Recursos <i class="fas fa-chevron-down text-[10px] group-hover:rotate-180 transition"></i>
+                    </button>
+                    <div class="dropdown-menu hidden absolute top-16 left-0 w-48 bg-[#0f0720] border border-white/10 rounded-xl shadow-2xl p-2 z-50">
+                        <a href="#" class="block px-4 py-2 text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Documentação</a>
+                        <a href="#" class="block px-4 py-2 text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Blog & Novidades</a>
+                        <a href="#" class="block px-4 py-2 text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Comunidade Discord</a>
+                        <div class="h-px bg-white/10 my-1"></div>
+                        <a href="#" class="block px-4 py-2 text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Central de Ajuda</a>
+                    </div>
+                </div>
+
+                <button onclick="navigateTo('pricing')" class="hover:text-white transition h-full border-b-2 border-transparent hover:border-brand-primary">Planos</button>
+                
+                <button class="hover:text-brand-accent transition flex items-center gap-2">
+                    Showcase <span class="bg-white/10 text-[10px] px-1.5 py-0.5 rounded text-gray-400">Novo</span>
+                </button>
             </div>
 
             <div class="flex gap-4 items-center">
@@ -248,7 +305,6 @@
                     <div id="field-name" class="hidden">
                         <input type="text" id="signup-name" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm" placeholder="Seu Nome Completo">
                     </div>
-                    
                     <input type="email" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm font-mono" placeholder="email@exemplo.com" required>
                     <input type="password" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm font-mono" placeholder="••••••••" required>
                     <button type="submit" class="w-full btn-glow py-4 rounded-lg font-bold text-white text-sm uppercase tracking-widest mt-2" id="auth-btn">Entrar na Plataforma</button>
@@ -283,7 +339,6 @@
                     </div>
 
                     <div class="col-span-3">
-                        
                         <div id="tab-projects" class="fade-in-up">
                             <h3 class="text-xl font-bold mb-6">Projetos Recentes</h3>
                             <div class="grid md:grid-cols-2 gap-6">
@@ -298,13 +353,8 @@
                         <div id="tab-subscription" class="hidden fade-in-up">
                             <h3 class="text-xl font-bold mb-6">Sua Assinatura</h3>
                             <div class="glass-panel p-6 rounded-xl">
-                                <div class="flex justify-between items-center mb-4">
-                                    <span class="text-gray-400">Plano Atual</span>
-                                    <span class="text-brand-accent font-bold">Gratuito</span>
-                                </div>
-                                <div class="h-2 bg-gray-800 rounded-full mb-2">
-                                    <div class="h-full w-20 bg-brand-primary rounded-full"></div>
-                                </div>
+                                <div class="flex justify-between items-center mb-4"><span class="text-gray-400">Plano Atual</span><span class="text-brand-accent font-bold">Gratuito</span></div>
+                                <div class="h-2 bg-gray-800 rounded-full mb-2"><div class="h-full w-20 bg-brand-primary rounded-full"></div></div>
                                 <p class="text-xs text-gray-500 mb-6">Você usou 1 de 5 gerações gratuitas.</p>
                                 <button onclick="navigateTo('pricing')" class="w-full py-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 text-sm">Gerenciar Assinatura</button>
                             </div>
@@ -313,23 +363,10 @@
                         <div id="tab-settings" class="hidden fade-in-up">
                             <h3 class="text-xl font-bold mb-6">Configurações da Conta</h3>
                             <div class="space-y-4">
-                                <div class="glass-panel p-6 rounded-xl flex justify-between items-center">
-                                    <div>
-                                        <h4 class="font-bold text-sm">Email</h4>
-                                        <p class="text-gray-500 text-xs">O email usado para login.</p>
-                                    </div>
-                                    <button class="text-brand-accent text-sm hover:underline">Alterar</button>
-                                </div>
-                                <div class="glass-panel p-6 rounded-xl flex justify-between items-center">
-                                    <div>
-                                        <h4 class="font-bold text-sm">Senha</h4>
-                                        <p class="text-gray-500 text-xs">Última alteração há 3 dias.</p>
-                                    </div>
-                                    <button class="text-brand-accent text-sm hover:underline">Redefinir</button>
-                                </div>
+                                <div class="glass-panel p-6 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-sm">Email</h4><p class="text-gray-500 text-xs">O email usado para login.</p></div><button class="text-brand-accent text-sm hover:underline">Alterar</button></div>
+                                <div class="glass-panel p-6 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-sm">Senha</h4><p class="text-gray-500 text-xs">Última alteração há 3 dias.</p></div><button class="text-brand-accent text-sm hover:underline">Redefinir</button></div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -337,55 +374,29 @@
 
         <section id="view-app" class="hidden h-full flex flex-col md:flex-row bg-[#050505]">
             <aside class="w-full md:w-[400px] bg-brand-surface border-r border-white/5 flex flex-col z-20 shadow-2xl relative h-full">
-                
                 <div class="p-6 border-b border-white/5 flex items-center justify-between flex-none">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span class="text-xs font-mono text-gray-400">ONLINE</span>
-                    </div>
+                    <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span><span class="text-xs font-mono text-gray-400">ONLINE</span></div>
                     <button onclick="navigateTo('profile')" class="text-xs text-gray-500 hover:text-white"><i class="fas fa-arrow-left mr-1"></i> Voltar</button>
                 </div>
-                
                 <div class="flex-1 overflow-y-auto p-6 space-y-4" id="chat-history">
-                    <div class="flex gap-3">
-                        <div class="w-8 h-8 rounded-full bg-brand-primary flex-shrink-0 flex items-center justify-center"><i class="fas fa-robot text-xs"></i></div>
-                        <div class="bg-white/5 p-3 rounded-r-xl rounded-bl-xl text-sm text-gray-300 leading-relaxed">
-                            Olá! Sou a Synthetix v2.4. O que vamos construir hoje?
-                        </div>
-                    </div>
+                    <div class="flex gap-3"><div class="w-8 h-8 rounded-full bg-brand-primary flex-shrink-0 flex items-center justify-center"><i class="fas fa-robot text-xs"></i></div><div class="bg-white/5 p-3 rounded-r-xl rounded-bl-xl text-sm text-gray-300 leading-relaxed">Olá! Sou a Synthetix v2.4. O que vamos construir hoje?</div></div>
                 </div>
-
                 <div class="p-4 bg-brand-surface border-t border-white/10 flex-none">
                     <div class="relative w-full">
                         <textarea id="userPrompt" class="w-full h-24 bg-black/50 border border-white/10 rounded-xl p-4 pr-14 text-sm text-gray-200 focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-none scrollbar-hide" placeholder="Descreva seu site aqui..."></textarea>
-                        
-                        <button onclick="generateSite()" id="generateBtn" class="absolute bottom-3 right-3 w-10 h-10 bg-brand-primary hover:bg-brand-primary/80 text-white rounded-lg flex items-center justify-center transition shadow-lg group z-10">
-                            <i class="fas fa-paper-plane group-hover:transform group-hover:-translate-y-1 group-hover:translate-x-1 transition"></i>
-                        </button>
+                        <button onclick="generateSite()" id="generateBtn" class="absolute bottom-3 right-3 w-10 h-10 bg-brand-primary hover:bg-brand-primary/80 text-white rounded-lg flex items-center justify-center transition shadow-lg group z-10"><i class="fas fa-paper-plane group-hover:transform group-hover:-translate-y-1 group-hover:translate-x-1 transition"></i></button>
                     </div>
-                    <div class="text-center mt-2">
-                        <span id="btnText" class="text-[10px] text-gray-600 font-mono uppercase tracking-widest">Pronto para compilar</span>
-                    </div>
+                    <div class="text-center mt-2"><span id="btnText" class="text-[10px] text-gray-600 font-mono uppercase tracking-widest">Pronto para compilar</span></div>
                 </div>
             </aside>
-
             <div class="flex-1 bg-black relative flex flex-col">
-                <div class="h-12 border-b border-white/5 flex items-center px-6 justify-between bg-brand-surface/50">
-                    <span class="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Live Preview</span>
-                </div>
-                
+                <div class="h-12 border-b border-white/5 flex items-center px-6 justify-between bg-brand-surface/50"><span class="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Live Preview</span></div>
                 <div class="flex-1 relative overflow-hidden bg-[#0a0a0c]">
                     <div id="loadingState" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-black/95 z-50">
                         <div class="logo-hexagon mb-6 animate-spin"><div class="logo-core"></div></div>
-                        <div class="font-mono text-brand-primary text-xs animate-pulse">
-                            > CONECTANDO REDE NEURAL...<br>
-                            > ESCREVENDO CÓDIGO...
-                        </div>
+                        <div class="font-mono text-brand-primary text-xs animate-pulse">> CONECTANDO REDE NEURAL...<br>> ESCREVENDO CÓDIGO...</div>
                     </div>
-                    <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-gray-700 select-none">
-                        <i class="fas fa-code text-6xl mb-6 opacity-20"></i>
-                        <p class="text-xs font-mono uppercase tracking-widest opacity-40">Aguardando Comando</p>
-                    </div>
+                    <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-gray-700 select-none"><i class="fas fa-code text-6xl mb-6 opacity-20"></i><p class="text-xs font-mono uppercase tracking-widest opacity-40">Aguardando Comando</p></div>
                     <iframe id="siteFrame" class="w-full h-full border-0 hidden"></iframe>
                 </div>
             </div>
@@ -400,13 +411,10 @@
         };
 
         let isLoggedIn = false;
-        let userName = "Usuário"; // Variável para guardar o nome
+        let userName = "Usuário";
 
-        // NAVEGAÇÃO
         function navigateTo(viewId, mode = 'login') {
-            ['home', 'auth', 'pricing', 'app', 'profile'].forEach(id => {
-                document.getElementById('view-' + id)?.classList.add('hidden');
-            });
+            ['home', 'auth', 'pricing', 'app', 'profile'].forEach(id => document.getElementById('view-' + id)?.classList.add('hidden'));
             document.getElementById('view-' + viewId).classList.remove('hidden');
 
             if(viewId === 'auth') {
@@ -420,7 +428,6 @@
             updateNav();
         }
 
-        // ATUALIZA O NOME NO HEADER
         function updateNav() {
             const guestNav = document.getElementById('nav-guest');
             const userNav = document.getElementById('nav-user');
@@ -429,7 +436,6 @@
                 guestNav.classList.add('hidden');
                 userNav.classList.remove('hidden');
                 userNav.classList.add('flex');
-                // Pega as iniciais do nome
                 const initials = userName.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
                 document.getElementById('nav-avatar').innerText = initials;
                 document.getElementById('profile-avatar-big').innerText = initials;
@@ -440,25 +446,15 @@
             }
         }
 
-        // LÓGICA DE ABAS DO PERFIL
         function switchProfileTab(tabName) {
-            // Esconde todos os conteúdos
             ['projects', 'subscription', 'settings'].forEach(tab => {
                 document.getElementById('tab-' + tab).classList.add('hidden');
-                
-                // Reseta estilo dos botões
                 const btn = document.getElementById('btn-tab-' + tab);
-                btn.classList.remove('active-tab');
-                btn.classList.add('inactive-tab');
+                btn.classList.remove('active-tab'); btn.classList.add('inactive-tab');
             });
-
-            // Mostra o conteúdo selecionado
             document.getElementById('tab-' + tabName).classList.remove('hidden');
-            
-            // Ativa o botão selecionado
             const activeBtn = document.getElementById('btn-tab-' + tabName);
-            activeBtn.classList.remove('inactive-tab');
-            activeBtn.classList.add('active-tab');
+            activeBtn.classList.remove('inactive-tab'); activeBtn.classList.add('active-tab');
         }
 
         function togglePricing() {
@@ -489,99 +485,63 @@
             const toggleText = document.getElementById('toggle-text');
 
             if (isSignup) {
-                title.innerText = "Criar Credencial";
-                btn.innerText = "CRIAR CONTA";
-                toggleText.innerText = "Já tem conta?";
-                toggleBtn.innerText = "Fazer Login";
-                nameField.classList.remove('hidden');
+                title.innerText = "Criar Credencial"; btn.innerText = "CRIAR CONTA"; toggleText.innerText = "Já tem conta?"; toggleBtn.innerText = "Fazer Login"; nameField.classList.remove('hidden');
             } else {
-                title.innerText = "Bem-vindo";
-                btn.innerText = "ENTRAR NA PLATAFORMA";
-                toggleText.innerText = "Não tem conta?";
-                toggleBtn.innerText = "Criar agora";
-                nameField.classList.add('hidden');
+                title.innerText = "Bem-vindo"; btn.innerText = "ENTRAR NA PLATAFORMA"; toggleText.innerText = "Não tem conta?"; toggleBtn.innerText = "Criar agora"; nameField.classList.add('hidden');
             }
         }
 
-        // LOGIN / CADASTRO COM NOME REAL
         function handleAuth(e) {
             e.preventDefault();
             const btn = document.getElementById('auth-btn');
             const original = btn.innerText;
             const nameInput = document.getElementById('signup-name');
             
-            // Se for cadastro, pega o nome digitado. Se for login, usa um genérico ou mantem.
-            if(isSignup && nameInput.value) {
-                userName = nameInput.value;
-            } else if (!isSignup) {
-                // Em um sistema real, o nome viria do banco de dados ao logar
-                userName = "Usuário Registrado"; 
-            }
+            if(isSignup && nameInput.value) { userName = nameInput.value; } 
+            else if (!isSignup) { userName = "Usuário Registrado"; }
 
             btn.innerText = "PROCESSANDO...";
             btn.classList.add('opacity-50');
             
             setTimeout(() => { 
                 isLoggedIn = true;
-                // Atualiza o nome na tela de perfil
                 document.getElementById('profile-name').innerText = userName;
-                
                 navigateTo('profile'); 
-                btn.innerText = original; 
-                btn.classList.remove('opacity-50'); 
+                btn.innerText = original; btn.classList.remove('opacity-50'); 
             }, 1500);
         }
 
         function googleLogin() {
              isLoggedIn = true;
-             userName = "Google User"; // Simulação
+             userName = "Google User";
              document.getElementById('profile-name').innerText = userName;
              setTimeout(() => navigateTo('profile'), 1000);
         }
 
-        function logout() {
-            isLoggedIn = false;
-            userName = "Usuário";
-            navigateTo('home');
-        }
+        function logout() { isLoggedIn = false; userName = "Usuário"; navigateTo('home'); }
 
         async function generateSite() {
             const promptInput = document.getElementById('userPrompt');
             const prompt = promptInput.value;
-            
             if (!prompt) { alert("ERRO: Descreva o site primeiro."); return; }
-
             const loading = document.getElementById('loadingState');
             const frame = document.getElementById('siteFrame');
             const empty = document.getElementById('emptyState');
             const btnText = document.getElementById('btnText');
-
-            loading.classList.remove('hidden');
-            empty.classList.add('hidden');
-            frame.classList.add('hidden');
-            btnText.innerText = "COMPILANDO...";
-            
+            loading.classList.remove('hidden'); empty.classList.add('hidden'); frame.classList.add('hidden'); btnText.innerText = "COMPILANDO...";
             try {
                 const response = await fetch('/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt: prompt })
                 });
-
                 if (!response.ok) throw new Error('Erro API');
-
                 const data = await response.json();
                 const doc = frame.contentWindow.document;
                 doc.open(); doc.write(data.html); doc.close();
-
-                loading.classList.add('hidden');
-                frame.classList.remove('hidden');
-
+                loading.classList.add('hidden'); frame.classList.remove('hidden');
             } catch (error) {
-                console.error(error);
-                alert("Erro de conexão. Verifique API Key.");
-                loading.classList.add('hidden');
-                empty.classList.remove('hidden');
+                console.error(error); alert("Erro de conexão. Verifique API Key."); loading.classList.add('hidden'); empty.classList.remove('hidden');
             } finally {
                 btnText.innerText = "PRONTO PARA COMPILAR";
             }
