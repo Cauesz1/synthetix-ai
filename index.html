@@ -17,7 +17,8 @@
                             dark: '#030014',
                             primary: '#6d28d9',
                             accent: '#d8b4fe',
-                            surface: '#0f0720'
+                            surface: '#0f0720',
+                            surfaceLight: '#1a1033'
                         }
                     },
                     fontFamily: {
@@ -44,7 +45,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
         .logo-core {
             width: 12px;
@@ -60,18 +60,11 @@
             100% { box-shadow: 0 0 0 0 rgba(216, 180, 254, 0); }
         }
 
-        /* EFEITOS */
-        .text-gradient {
-            background: linear-gradient(to right, #e9d5ff, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
+        /* UI ELEMENTS */
         .glass-panel {
             background: rgba(15, 7, 32, 0.7);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(109, 40, 217, 0.2);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
         .btn-glow {
@@ -85,13 +78,20 @@
             transform: translateY(-2px);
         }
 
-        /* TOGGLE ANIMADO */
-        .toggle-checkbox { transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), border-color 0.3s; }
+        /* TOGGLE ANIMATION */
+        .toggle-checkbox { transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); }
         .toggle-checkbox:checked { transform: translateX(100%); border-color: #a855f7; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #a855f7; transition: background-color 0.3s; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #a855f7; }
 
+        /* FADE IN */
         .fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* CUSTOM SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f0720; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6d28d9; }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden selection:bg-brand-primary selection:text-white font-sans">
@@ -115,10 +115,21 @@
             </div>
 
             <div class="flex gap-4 items-center">
-                <button onclick="navigateTo('auth')" class="text-gray-300 hover:text-white text-sm font-semibold px-2 transition">Login</button>
-                <button onclick="navigateTo('app')" class="bg-white text-black hover:bg-gray-200 px-6 py-2.5 rounded-none skew-x-[-10deg] text-sm font-bold transition group">
-                    <span class="block skew-x-[10deg]">JOIN BETA</span>
-                </button>
+                <div id="nav-guest" class="flex gap-4 items-center">
+                    <button onclick="navigateTo('auth')" class="text-gray-300 hover:text-white text-sm font-semibold px-2 transition">Login</button>
+                    <button onclick="navigateTo('app')" class="bg-white text-black hover:bg-gray-200 px-6 py-2.5 rounded-none skew-x-[-10deg] text-sm font-bold transition group">
+                        <span class="block skew-x-[10deg]">JOIN BETA</span>
+                    </button>
+                </div>
+                
+                <div id="nav-user" class="hidden flex items-center gap-4">
+                    <button onclick="navigateTo('app')" class="hidden md:block text-xs font-bold text-brand-accent border border-brand-accent/30 px-3 py-1 rounded-full hover:bg-brand-accent/10">
+                        <i class="fas fa-plus mr-1"></i> Novo Projeto
+                    </button>
+                    <button onclick="navigateTo('profile')" class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-blue-600 flex items-center justify-center border-2 border-transparent hover:border-white transition shadow-lg shadow-brand-primary/20">
+                        <span class="font-bold text-sm">US</span>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
@@ -172,27 +183,65 @@
                     </div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto items-center">
-                    <div class="glass-panel p-10 rounded-2xl transition duration-300 hover:border-brand-primary/40 group">
+                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div class="glass-panel p-10 rounded-2xl transition duration-300 hover:border-brand-primary/40 group flex flex-col">
                         <h3 class="font-display text-2xl font-bold text-white mb-2">INITIATE</h3>
+                        <p class="text-gray-400 text-sm mb-6">Para hobistas e estudantes.</p>
                         <div class="flex items-baseline mb-8">
                             <span class="text-2xl text-brand-primary font-bold mr-1">R$</span>
                             <span class="text-6xl font-display font-bold text-white tracking-tighter" id="price-standard">39,90</span>
                             <span class="text-gray-500 ml-2 font-mono text-sm" id="period-standard">/mês</span>
                         </div>
+                        
+                        <ul class="space-y-4 mb-10 border-t border-white/5 pt-8 flex-1">
+                            <li class="flex items-start gap-3 text-gray-300 text-sm">
+                                <i class="fas fa-check text-brand-primary mt-1"></i>
+                                <span><strong>5 Projetos Ativos</strong><br><span class="text-xs text-gray-500">Armazenamento básico na nuvem.</span></span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-300 text-sm">
+                                <i class="fas fa-check text-brand-primary mt-1"></i>
+                                <span><strong>IA Standard (v3.5)</strong><br><span class="text-xs text-gray-500">Geração de código em até 30s.</span></span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-300 text-sm">
+                                <i class="fas fa-check text-brand-primary mt-1"></i>
+                                <span><strong>Exportação HTML/CSS</strong><br><span class="text-xs text-gray-500">Baixe o código para uso pessoal.</span></span>
+                            </li>
+                        </ul>
+                        
                         <a id="btn-buy-standard" href="https://mpago.la/1V3fYRm" target="_blank" class="block w-full text-center py-4 border border-white/10 hover:bg-white/5 rounded-lg font-bold text-white transition text-sm uppercase tracking-widest">
                             Selecionar
                         </a>
                     </div>
 
-                    <div class="glass-panel p-10 rounded-2xl border-brand-primary relative shadow-[0_0_50px_rgba(109,40,217,0.15)]">
+                    <div class="glass-panel p-10 rounded-2xl border-brand-primary relative shadow-[0_0_50px_rgba(109,40,217,0.15)] flex flex-col transform scale-105 z-10 bg-[#0f0720]">
                         <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-brand-primary text-white text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest shadow-lg border border-white/20">Recomendado</div>
                         <h3 class="font-display text-2xl font-bold text-white mb-2">ARCHITECT <span class="text-brand-accent">PRO</span></h3>
+                        <p class="text-gray-400 text-sm mb-6">Para freelancers e agências.</p>
                         <div class="flex items-baseline mb-8">
                             <span class="text-2xl text-brand-primary font-bold mr-1">R$</span>
                             <span class="text-6xl font-display font-bold text-white tracking-tighter" id="price-pro">69,90</span>
                             <span class="text-gray-500 ml-2 font-mono text-sm" id="period-pro">/mês</span>
                         </div>
+                        
+                        <ul class="space-y-4 mb-10 border-t border-white/5 pt-8 flex-1">
+                            <li class="flex items-start gap-3 text-white text-sm">
+                                <div class="bg-brand-primary/20 p-1 rounded-full"><i class="fas fa-bolt text-brand-accent text-xs"></i></div>
+                                <span><strong>Gerações Ilimitadas</strong><br><span class="text-xs text-gray-400">Crie quantos sites quiser, sem travas.</span></span>
+                            </li>
+                            <li class="flex items-start gap-3 text-white text-sm">
+                                <div class="bg-brand-primary/20 p-1 rounded-full"><i class="fas fa-brain text-brand-accent text-xs"></i></div>
+                                <span><strong>IA Architect (GPT-4 Turbo)</strong><br><span class="text-xs text-gray-400">Código mais limpo, moderno e complexo.</span></span>
+                            </li>
+                            <li class="flex items-start gap-3 text-white text-sm">
+                                <div class="bg-brand-primary/20 p-1 rounded-full"><i class="fas fa-file-contract text-brand-accent text-xs"></i></div>
+                                <span><strong>Licença Comercial</strong><br><span class="text-xs text-gray-400">Venda os sites gerados para seus clientes.</span></span>
+                            </li>
+                             <li class="flex items-start gap-3 text-white text-sm">
+                                <div class="bg-brand-primary/20 p-1 rounded-full"><i class="fas fa-globe text-brand-accent text-xs"></i></div>
+                                <span><strong>Hospedagem Premium</strong><br><span class="text-xs text-gray-400">Seu site no ar com 1 clique (SSL incluso).</span></span>
+                            </li>
+                        </ul>
+                        
                         <a id="btn-buy-pro" href="https://mpago.la/1m8A4zt" target="_blank" class="block w-full text-center btn-glow py-4 rounded-lg font-bold text-white transition text-sm uppercase tracking-widest">
                             Ativar Protocolo Pro
                         </a>
@@ -204,7 +253,6 @@
         <section id="view-auth" class="hidden fade-in-up min-h-full flex items-center justify-center p-4">
             <div class="glass-panel w-full max-w-md p-10 rounded-2xl relative">
                 <button onclick="navigateTo('home')" class="absolute top-6 right-6 text-gray-500 hover:text-white transition"><i class="fas fa-times"></i></button>
-                
                 <h2 class="text-3xl font-display font-bold text-center mb-2" id="auth-title">Bem-vindo</h2>
                 <p class="text-gray-400 text-sm text-center mb-8" id="auth-subtitle">Acesse sua estação de trabalho</p>
 
@@ -213,58 +261,123 @@
                     <span>Continuar com Google</span>
                 </button>
 
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="h-px bg-white/10 flex-1"></div>
-                    <span class="text-xs text-gray-500 uppercase tracking-widest">ou use email</span>
-                    <div class="h-px bg-white/10 flex-1"></div>
-                </div>
+                <div class="flex items-center gap-4 mb-6"><div class="h-px bg-white/10 flex-1"></div><span class="text-xs text-gray-500 uppercase tracking-widest">ou</span><div class="h-px bg-white/10 flex-1"></div></div>
 
                 <form onsubmit="handleAuth(event)" class="space-y-4">
-                    <div id="field-name" class="hidden">
-                        <input type="text" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm" placeholder="Seu Nome">
-                    </div>
-
+                    <div id="field-name" class="hidden"><input type="text" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm" placeholder="Seu Nome"></div>
                     <input type="email" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm font-mono" placeholder="email@exemplo.com" required>
                     <input type="password" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm font-mono" placeholder="••••••••" required>
-                    
-                    <button type="submit" class="w-full btn-glow py-4 rounded-lg font-bold text-white text-sm uppercase tracking-widest mt-2" id="auth-btn">
-                        Entrar na Plataforma
-                    </button>
+                    <button type="submit" class="w-full btn-glow py-4 rounded-lg font-bold text-white text-sm uppercase tracking-widest mt-2" id="auth-btn">Entrar na Plataforma</button>
                 </form>
 
                 <div class="mt-8 text-center">
-                    <p class="text-sm text-gray-400">
-                        <span id="toggle-text">Não tem uma conta?</span>
-                        <button onclick="toggleAuthMode()" class="text-brand-accent font-bold hover:underline ml-1" id="toggle-btn">Criar agora</button>
-                    </p>
+                    <p class="text-sm text-gray-400"><span id="toggle-text">Não tem uma conta?</span> <button onclick="toggleAuthMode()" class="text-brand-accent font-bold hover:underline ml-1" id="toggle-btn">Criar agora</button></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-profile" class="hidden h-full flex flex-col bg-[#050014]">
+            <div class="max-w-7xl mx-auto w-full p-6 md:p-12">
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-6 mb-12 border-b border-white/5 pb-8">
+                    <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-primary to-blue-600 flex items-center justify-center text-3xl font-bold shadow-2xl">US</div>
+                    <div class="text-center md:text-left">
+                        <h2 class="text-3xl font-display font-bold">Usuário Synthetix</h2>
+                        <p class="text-gray-400 font-mono text-sm mb-4">ID: #882-991-SYN</p>
+                        <span class="px-3 py-1 bg-brand-primary/20 border border-brand-primary text-brand-accent rounded-full text-xs font-bold uppercase tracking-widest">Plano Free</span>
+                    </div>
+                    <div class="md:ml-auto flex gap-4">
+                        <button onclick="logout()" class="px-6 py-2 border border-white/10 rounded-lg hover:bg-white/5 text-sm transition">Sair</button>
+                        <button onclick="navigateTo('pricing')" class="btn-glow px-6 py-2 rounded-lg text-white text-sm font-bold">Fazer Upgrade</button>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="col-span-1 space-y-2">
+                        <button class="w-full text-left px-4 py-3 bg-brand-surfaceLight border border-brand-primary/30 rounded-lg text-white font-medium shadow-lg"><i class="fas fa-layer-group mr-3 text-brand-primary"></i> Meus Projetos</button>
+                        <button class="w-full text-left px-4 py-3 hover:bg-white/5 rounded-lg text-gray-400 transition"><i class="fas fa-credit-card mr-3"></i> Assinatura</button>
+                        <button class="w-full text-left px-4 py-3 hover:bg-white/5 rounded-lg text-gray-400 transition"><i class="fas fa-cog mr-3"></i> Configurações</button>
+                    </div>
+
+                    <div class="col-span-3">
+                        <h3 class="text-xl font-bold mb-6">Projetos Recentes</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="glass-panel p-0 rounded-xl overflow-hidden group hover:border-brand-primary/50 transition cursor-pointer" onclick="navigateTo('app')">
+                                <div class="h-40 bg-gray-800 flex items-center justify-center relative">
+                                    <i class="fas fa-laptop-code text-4xl text-gray-600 group-hover:text-brand-accent transition"></i>
+                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                                        <span class="px-4 py-2 bg-brand-primary rounded-full text-xs font-bold">Editar</span>
+                                    </div>
+                                </div>
+                                <div class="p-5">
+                                    <h4 class="font-bold text-lg mb-1">Landing Page Advogado</h4>
+                                    <p class="text-xs text-gray-500 font-mono">Última edição: 2h atrás</p>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel p-0 rounded-xl overflow-hidden group hover:border-brand-primary/50 transition cursor-pointer" onclick="navigateTo('app')">
+                                <div class="h-40 bg-gray-800 flex items-center justify-center relative">
+                                    <i class="fas fa-shopping-bag text-4xl text-gray-600 group-hover:text-brand-accent transition"></i>
+                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                                        <span class="px-4 py-2 bg-brand-primary rounded-full text-xs font-bold">Editar</span>
+                                    </div>
+                                </div>
+                                <div class="p-5">
+                                    <h4 class="font-bold text-lg mb-1">E-commerce Tech</h4>
+                                    <p class="text-xs text-gray-500 font-mono">Última edição: 1d atrás</p>
+                                </div>
+                            </div>
+
+                            <div class="border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center h-full min-h-[250px] hover:border-brand-primary/50 hover:bg-white/5 transition cursor-pointer text-gray-500 hover:text-white" onclick="navigateTo('app')">
+                                <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-3"><i class="fas fa-plus"></i></div>
+                                <span class="font-bold">Criar Novo</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="view-app" class="hidden h-full flex flex-col md:flex-row bg-[#050505]">
-            <aside class="w-full md:w-80 bg-brand-surface border-r border-white/5 flex flex-col p-6 z-20 shadow-2xl">
-                <div class="flex items-center gap-3 mb-8 opacity-80">
-                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <span class="text-xs font-mono text-gray-400">SERVER: ONLINE</span>
-                    <button onclick="logout()" class="ml-auto text-xs text-red-400 hover:text-white uppercase">Disconnect</button>
+            <aside class="w-full md:w-[400px] bg-brand-surface border-r border-white/5 flex flex-col z-20 shadow-2xl relative">
+                
+                <div class="p-6 border-b border-white/5 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="text-xs font-mono text-gray-400">ONLINE</span>
+                    </div>
+                    <button onclick="navigateTo('profile')" class="text-xs text-gray-500 hover:text-white"><i class="fas fa-arrow-left mr-1"></i> Voltar</button>
                 </div>
                 
-                <div class="flex-1 flex flex-col">
-                    <label class="text-xs font-bold text-brand-primary uppercase tracking-widest mb-3">Parâmetros de Entrada</label>
-                    <textarea id="userPrompt" class="w-full h-64 bg-black/50 border border-white/10 rounded-lg p-4 text-sm text-gray-300 focus:border-brand-primary focus:ring-0 outline-none resize-none mb-6 font-mono leading-relaxed" placeholder="// Descreva a estrutura desejada..."></textarea>
-                    
-                    <div class="mt-auto">
-                        <button onclick="generateSite()" id="generateBtn" class="w-full btn-glow text-white py-4 rounded-lg font-bold shadow-lg transition flex items-center justify-center gap-3 group">
-                            <i class="fas fa-microchip group-hover:rotate-90 transition duration-500"></i> 
-                            <span id="btnText" class="uppercase tracking-widest text-xs">Compilar</span>
+                <div class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full bg-brand-primary flex-shrink-0 flex items-center justify-center"><i class="fas fa-robot text-xs"></i></div>
+                        <div class="bg-white/5 p-3 rounded-r-xl rounded-bl-xl text-sm text-gray-300">
+                            Olá! Sou a Synthetix v2.4. O que vamos construir hoje?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-brand-surface border-t border-white/10">
+                    <div class="relative">
+                        <textarea id="userPrompt" class="w-full h-32 bg-black/50 border border-white/10 rounded-xl p-4 pr-12 text-sm text-gray-200 focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-none scrollbar-hide" placeholder="Descreva seu site aqui... Ex: Landing page moderna para venda de fones de ouvido."></textarea>
+                        
+                        <button onclick="generateSite()" id="generateBtn" class="absolute bottom-3 right-3 w-10 h-10 bg-brand-primary hover:bg-brand-primary/80 text-white rounded-lg flex items-center justify-center transition shadow-lg group">
+                            <i class="fas fa-paper-plane group-hover:transform group-hover:-translate-y-1 group-hover:translate-x-1 transition"></i>
                         </button>
+                    </div>
+                    <div class="text-center mt-2">
+                        <span id="btnText" class="text-[10px] text-gray-600 font-mono uppercase tracking-widest">Pronto para compilar</span>
                     </div>
                 </div>
             </aside>
 
             <div class="flex-1 bg-black relative flex flex-col">
                 <div class="h-12 border-b border-white/5 flex items-center px-6 justify-between bg-brand-surface/50">
-                    <span class="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Preview Mode: Active</span>
+                    <span class="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Live Preview</span>
+                    <div class="flex gap-2">
+                        <button class="text-gray-500 hover:text-white"><i class="fas fa-desktop"></i></button>
+                        <button class="text-gray-500 hover:text-white"><i class="fas fa-mobile-alt"></i></button>
+                    </div>
                 </div>
                 
                 <div class="flex-1 relative overflow-hidden bg-[#0a0a0c]">
@@ -272,12 +385,12 @@
                         <div class="logo-hexagon mb-6 animate-spin"><div class="logo-core"></div></div>
                         <div class="font-mono text-brand-primary text-xs animate-pulse">
                             > CONECTANDO REDE NEURAL...<br>
-                            > GERANDO CÓDIGO...
+                            > ESCREVENDO CÓDIGO...
                         </div>
                     </div>
                     <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-gray-700 select-none">
-                        <i class="fas fa-terminal text-6xl mb-6 opacity-20"></i>
-                        <p class="text-xs font-mono uppercase tracking-widest opacity-40">Aguardando Input</p>
+                        <i class="fas fa-code text-6xl mb-6 opacity-20"></i>
+                        <p class="text-xs font-mono uppercase tracking-widest opacity-40">Aguardando Comando</p>
                     </div>
                     <iframe id="siteFrame" class="w-full h-full border-0 hidden"></iframe>
                 </div>
@@ -292,57 +405,52 @@
             annual: { standard: "49,90", pro: "97,90", linkStandard: "https://mpago.la/2tEyxN5", linkPro: "https://mpago.la/2PqbRfB" }
         };
 
-        // Estado do Auth (Login vs Signup)
-        let isSignup = false;
+        let isLoggedIn = false; // Controle de estado simples
 
+        // NAVEGAÇÃO
         function navigateTo(viewId, mode = 'login') {
-            ['home', 'auth', 'pricing', 'app'].forEach(id => {
-                const el = document.getElementById('view-' + id);
-                if (el) el.classList.add('hidden');
+            // Esconde todas as views
+            ['home', 'auth', 'pricing', 'app', 'profile'].forEach(id => {
+                document.getElementById('view-' + id)?.classList.add('hidden');
             });
-            document.getElementById('view-' + viewId).classList.remove('hidden');
             
-            // Se for Auth, configura o modo correto
+            // Mostra a view alvo
+            document.getElementById('view-' + viewId).classList.remove('hidden');
+
+            // Configuração Auth
             if(viewId === 'auth') {
                 isSignup = (mode === 'signup');
                 updateAuthUI();
             }
 
+            // Scroll Lock para App
             const main = document.getElementById('main-container');
-            viewId === 'app' ? main.classList.add('overflow-hidden') : main.classList.remove('overflow-hidden');
-        }
-
-        // Lógica de Troca Login/Cadastro
-        function toggleAuthMode() {
-            isSignup = !isSignup;
-            updateAuthUI();
-        }
-
-        function updateAuthUI() {
-            const title = document.getElementById('auth-title');
-            const sub = document.getElementById('auth-subtitle');
-            const btn = document.getElementById('auth-btn');
-            const toggleText = document.getElementById('toggle-text');
-            const toggleBtn = document.getElementById('toggle-btn');
-            const nameField = document.getElementById('field-name');
-
-            if (isSignup) {
-                title.innerText = "Criar Credencial";
-                sub.innerText = "Inicie sua jornada na Synthetix";
-                btn.innerText = "CRIAR CONTA";
-                toggleText.innerText = "Já tem uma conta?";
-                toggleBtn.innerText = "Fazer Login";
-                nameField.classList.remove('hidden');
+            if(viewId === 'app') {
+                main.classList.add('overflow-hidden');
             } else {
-                title.innerText = "Bem-vindo";
-                sub.innerText = "Acesse sua estação de trabalho";
-                btn.innerText = "ENTRAR NA PLATAFORMA";
-                toggleText.innerText = "Não tem uma conta?";
-                toggleBtn.innerText = "Criar agora";
-                nameField.classList.add('hidden');
+                main.classList.remove('overflow-hidden');
+            }
+
+            // Atualiza Header se logado
+            updateNav();
+        }
+
+        function updateNav() {
+            const guestNav = document.getElementById('nav-guest');
+            const userNav = document.getElementById('nav-user');
+            
+            if(isLoggedIn) {
+                guestNav.classList.add('hidden');
+                userNav.classList.remove('hidden');
+                userNav.classList.add('flex');
+            } else {
+                guestNav.classList.remove('hidden');
+                userNav.classList.add('hidden');
+                userNav.classList.remove('flex');
             }
         }
 
+        // --- SISTEMA DE PREÇOS ---
         function togglePricing() {
             const isAnnual = document.getElementById('billing-toggle').checked;
             const type = isAnnual ? 'annual' : 'monthly';
@@ -350,6 +458,7 @@
             document.getElementById('price-pro').innerText = prices[type].pro;
             document.getElementById('btn-buy-standard').href = prices[type].linkStandard;
             document.getElementById('btn-buy-pro').href = prices[type].linkPro;
+            
             const lblM = document.getElementById('label-monthly');
             const lblA = document.getElementById('label-annual');
             if(isAnnual) {
@@ -361,18 +470,29 @@
             }
         }
 
-        // Google Login (Simulado)
-        function googleLogin() {
-            const btn = document.querySelector('button[onclick="googleLogin()"]');
-            const original = btn.innerHTML;
-            
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Conectando...';
-            
-            // Nota: Para funcionar de verdade, você precisaria configurar o Firebase Auth aqui.
-            setTimeout(() => {
-                navigateTo('app');
-                btn.innerHTML = original;
-            }, 1500);
+        // --- AUTH ---
+        let isSignup = false;
+        function toggleAuthMode() { isSignup = !isSignup; updateAuthUI(); }
+        function updateAuthUI() {
+            const title = document.getElementById('auth-title');
+            const btn = document.getElementById('auth-btn');
+            const toggleBtn = document.getElementById('toggle-btn');
+            const nameField = document.getElementById('field-name');
+            const toggleText = document.getElementById('toggle-text');
+
+            if (isSignup) {
+                title.innerText = "Criar Credencial";
+                btn.innerText = "CRIAR CONTA";
+                toggleText.innerText = "Já tem conta?";
+                toggleBtn.innerText = "Fazer Login";
+                nameField.classList.remove('hidden');
+            } else {
+                title.innerText = "Bem-vindo";
+                btn.innerText = "ENTRAR NA PLATAFORMA";
+                toggleText.innerText = "Não tem conta?";
+                toggleBtn.innerText = "Criar agora";
+                nameField.classList.add('hidden');
+            }
         }
 
         function handleAuth(e) {
@@ -381,31 +501,41 @@
             const original = btn.innerText;
             btn.innerText = "PROCESSANDO...";
             btn.classList.add('opacity-50');
-            setTimeout(() => { navigateTo('app'); btn.innerText = original; btn.classList.remove('opacity-50'); }, 1500);
+            
+            setTimeout(() => { 
+                isLoggedIn = true; // Simula login
+                navigateTo('profile'); // Vai para o perfil primeiro
+                btn.innerText = original; 
+                btn.classList.remove('opacity-50'); 
+            }, 1500);
         }
 
-        function logout() { navigateTo('home'); }
+        function googleLogin() {
+             isLoggedIn = true;
+             setTimeout(() => navigateTo('profile'), 1000);
+        }
 
+        function logout() {
+            isLoggedIn = false;
+            navigateTo('home');
+        }
+
+        // --- GERADOR IA ---
         async function generateSite() {
             const promptInput = document.getElementById('userPrompt');
             const prompt = promptInput.value;
             
-            if (!prompt) {
-                alert("ERRO: Input vazio.");
-                return;
-            }
+            if (!prompt) { alert("ERRO: Descreva o site primeiro."); return; }
 
             const loading = document.getElementById('loadingState');
             const frame = document.getElementById('siteFrame');
             const empty = document.getElementById('emptyState');
-            const btn = document.getElementById('generateBtn');
             const btnText = document.getElementById('btnText');
 
             loading.classList.remove('hidden');
             empty.classList.add('hidden');
             frame.classList.add('hidden');
-            btn.disabled = true;
-            btnText.innerText = "PROCESSANDO...";
+            btnText.innerText = "COMPILANDO...";
             
             try {
                 const response = await fetch('/api/generate', {
@@ -414,28 +544,22 @@
                     body: JSON.stringify({ prompt: prompt })
                 });
 
-                if (!response.ok) {
-                    throw new Error('Erro API');
-                }
+                if (!response.ok) throw new Error('Erro API');
 
                 const data = await response.json();
-                
                 const doc = frame.contentWindow.document;
-                doc.open();
-                doc.write(data.html); 
-                doc.close();
+                doc.open(); doc.write(data.html); doc.close();
 
                 loading.classList.add('hidden');
                 frame.classList.remove('hidden');
 
             } catch (error) {
                 console.error(error);
-                alert("Erro ao conectar na API.");
+                alert("Erro de conexão. Verifique API Key.");
                 loading.classList.add('hidden');
                 empty.classList.remove('hidden');
             } finally {
-                btn.disabled = false;
-                btnText.innerText = "COMPILAR";
+                btnText.innerText = "PRONTO PARA COMPILAR";
             }
         }
     </script>
