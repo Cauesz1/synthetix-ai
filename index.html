@@ -35,7 +35,7 @@
     <style>
         body { background-color: #030014; color: #ffffff; }
         
-        /* LOGO CUSTOMIZADA */
+        /* LOGO */
         .logo-hexagon {
             width: 40px;
             height: 40px;
@@ -60,7 +60,7 @@
             100% { box-shadow: 0 0 0 0 rgba(216, 180, 254, 0); }
         }
 
-        /* EFEITOS VISUAIS */
+        /* EFEITOS */
         .text-gradient {
             background: linear-gradient(to right, #e9d5ff, #a855f7);
             -webkit-background-clip: text;
@@ -68,10 +68,10 @@
         }
 
         .glass-panel {
-            background: rgba(15, 7, 32, 0.6);
-            backdrop-filter: blur(16px);
+            background: rgba(15, 7, 32, 0.7);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(109, 40, 217, 0.2);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
         .btn-glow {
@@ -85,14 +85,13 @@
             transform: translateY(-2px);
         }
 
-        .toggle-checkbox:checked { right: 0; border-color: #a855f7; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #a855f7; }
+        /* TOGGLE ANIMADO */
+        .toggle-checkbox { transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), border-color 0.3s; }
+        .toggle-checkbox:checked { transform: translateX(100%); border-color: #a855f7; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #a855f7; transition: background-color 0.3s; }
 
         .fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        @keyframes fadeInUp { 
-            from { opacity: 0; transform: translateY(30px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden selection:bg-brand-primary selection:text-white font-sans">
@@ -116,8 +115,8 @@
             </div>
 
             <div class="flex gap-4 items-center">
-                <button onclick="navigateTo('login')" class="text-gray-300 hover:text-white text-sm font-semibold px-2 transition">Login</button>
-                <button onclick="navigateTo('signup')" class="bg-white text-black hover:bg-gray-200 px-6 py-2.5 rounded-none skew-x-[-10deg] text-sm font-bold transition group">
+                <button onclick="navigateTo('auth')" class="text-gray-300 hover:text-white text-sm font-semibold px-2 transition">Login</button>
+                <button onclick="navigateTo('app')" class="bg-white text-black hover:bg-gray-200 px-6 py-2.5 rounded-none skew-x-[-10deg] text-sm font-bold transition group">
                     <span class="block skew-x-[10deg]">JOIN BETA</span>
                 </button>
             </div>
@@ -147,11 +146,11 @@
                 </p>
                 
                 <div class="flex flex-col sm:flex-row justify-center gap-6">
-                    <button onclick="navigateTo('signup')" class="btn-glow px-10 py-4 rounded-lg font-bold text-white tracking-wide">
-                        INICIAR SÍNTESE
+                    <button onclick="navigateTo('auth', 'signup')" class="btn-glow px-10 py-4 rounded-lg font-bold text-white tracking-wide">
+                        INICIAR CRIAÇÃO
                     </button>
                     <button onclick="navigateTo('pricing')" class="px-10 py-4 border border-white/10 hover:border-brand-primary/50 text-white rounded-lg font-bold transition bg-white/5 backdrop-blur-sm">
-                        VER ARQUITETURA
+                        VER PLANOS
                     </button>
                 </div>
             </div>
@@ -165,16 +164,15 @@
                     
                     <div class="flex items-center justify-center gap-4 mt-10">
                         <span class="text-xs font-bold text-gray-400 uppercase tracking-wider" id="label-monthly">Mensal</span>
-                        <div class="relative inline-block w-14 align-middle select-none">
-                            <input type="checkbox" id="billing-toggle" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer border-brand-surface left-0 transition-all duration-300 top-[-2px]" onclick="togglePricing()"/>
-                            <label for="billing-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-brand-surface border border-gray-700 cursor-pointer"></label>
+                        <div class="relative inline-block w-14 align-middle select-none h-7">
+                            <input type="checkbox" id="billing-toggle" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer border-brand-surface left-0 top-0 z-10" onclick="togglePricing()"/>
+                            <label for="billing-toggle" class="toggle-label block overflow-hidden h-7 rounded-full bg-brand-surface border border-gray-700 cursor-pointer w-full"></label>
                         </div>
                         <span class="text-xs font-bold text-white uppercase tracking-wider" id="label-annual">Anual <span class="text-brand-accent">(OFF 20%)</span></span>
                     </div>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto items-center">
-                    
                     <div class="glass-panel p-10 rounded-2xl transition duration-300 hover:border-brand-primary/40 group">
                         <h3 class="font-display text-2xl font-bold text-white mb-2">INITIATE</h3>
                         <div class="flex items-baseline mb-8">
@@ -182,10 +180,6 @@
                             <span class="text-6xl font-display font-bold text-white tracking-tighter" id="price-standard">39,90</span>
                             <span class="text-gray-500 ml-2 font-mono text-sm" id="period-standard">/mês</span>
                         </div>
-                        <ul class="space-y-4 mb-10 border-t border-white/5 pt-8">
-                            <li class="flex items-center gap-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-primary"></i> 10 Gerações/mês</li>
-                            <li class="flex items-center gap-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-primary"></i> Exportação Padrão</li>
-                        </ul>
                         <a id="btn-buy-standard" href="https://mpago.la/1V3fYRm" target="_blank" class="block w-full text-center py-4 border border-white/10 hover:bg-white/5 rounded-lg font-bold text-white transition text-sm uppercase tracking-widest">
                             Selecionar
                         </a>
@@ -199,42 +193,51 @@
                             <span class="text-6xl font-display font-bold text-white tracking-tighter" id="price-pro">69,90</span>
                             <span class="text-gray-500 ml-2 font-mono text-sm" id="period-pro">/mês</span>
                         </div>
-                        <ul class="space-y-4 mb-10 border-t border-white/5 pt-8">
-                            <li class="flex items-center gap-3 text-white text-sm"><i class="fas fa-check-circle text-brand-accent"></i> Licença Comercial (Venda Livre)</li>
-                            <li class="flex items-center gap-3 text-white text-sm"><i class="fas fa-check-circle text-brand-accent"></i> Gerações Ilimitadas</li>
-                            <li class="flex items-center gap-3 text-white text-sm"><i class="fas fa-check-circle text-brand-accent"></i> Acesso GPT-4 Turbo</li>
-                        </ul>
                         <a id="btn-buy-pro" href="https://mpago.la/1m8A4zt" target="_blank" class="block w-full text-center btn-glow py-4 rounded-lg font-bold text-white transition text-sm uppercase tracking-widest">
                             Ativar Protocolo Pro
                         </a>
                     </div>
-
                 </div>
             </div>
         </section>
 
-        <section id="view-login" class="hidden fade-in-up min-h-full flex items-center justify-center p-4">
+        <section id="view-auth" class="hidden fade-in-up min-h-full flex items-center justify-center p-4">
             <div class="glass-panel w-full max-w-md p-10 rounded-2xl relative">
                 <button onclick="navigateTo('home')" class="absolute top-6 right-6 text-gray-500 hover:text-white transition"><i class="fas fa-times"></i></button>
-                <h2 class="text-2xl font-display font-bold text-center mb-8">Autenticação</h2>
-                <form onsubmit="handleAuth(event, 'Login')" class="space-y-5">
-                    <input type="email" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm font-mono" placeholder="ID do Usuário" required>
-                    <input type="password" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm font-mono" placeholder="Chave de Acesso" required>
-                    <button type="submit" class="w-full btn-glow py-4 rounded-lg font-bold text-white text-sm uppercase tracking-widest mt-4">Conectar</button>
-                </form>
-            </div>
-        </section>
+                
+                <h2 class="text-3xl font-display font-bold text-center mb-2" id="auth-title">Bem-vindo</h2>
+                <p class="text-gray-400 text-sm text-center mb-8" id="auth-subtitle">Acesse sua estação de trabalho</p>
 
-        <section id="view-signup" class="hidden fade-in-up min-h-full flex items-center justify-center p-4">
-            <div class="glass-panel w-full max-w-md p-10 rounded-2xl relative border-brand-primary/30">
-                <button onclick="navigateTo('home')" class="absolute top-6 right-6 text-gray-500 hover:text-white transition"><i class="fas fa-times"></i></button>
-                <h2 class="text-2xl font-display font-bold text-center mb-8">Novo Operador</h2>
-                <form onsubmit="handleAuth(event, 'Cadastro')" class="space-y-5">
-                    <input type="text" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm" placeholder="Nome do Agente" required>
-                    <input type="email" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm" placeholder="Email Corporativo" required>
-                    <input type="password" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm" placeholder="Definir Senha" required>
-                    <button type="submit" class="w-full bg-white text-black hover:bg-gray-200 py-4 rounded-lg font-bold text-sm uppercase tracking-widest transition">Iniciar Registro</button>
+                <button onclick="googleLogin()" class="w-full bg-white text-black hover:bg-gray-200 py-3 rounded-lg font-bold flex items-center justify-center gap-3 transition mb-6 shadow-lg shadow-white/5">
+                    <i class="fab fa-google text-red-500 text-lg"></i>
+                    <span>Continuar com Google</span>
+                </button>
+
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="h-px bg-white/10 flex-1"></div>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest">ou use email</span>
+                    <div class="h-px bg-white/10 flex-1"></div>
+                </div>
+
+                <form onsubmit="handleAuth(event)" class="space-y-4">
+                    <div id="field-name" class="hidden">
+                        <input type="text" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm" placeholder="Seu Nome">
+                    </div>
+
+                    <input type="email" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm font-mono" placeholder="email@exemplo.com" required>
+                    <input type="password" class="w-full bg-brand-surface border border-white/10 rounded-lg px-5 py-4 text-white focus:border-brand-primary outline-none transition text-sm font-mono" placeholder="••••••••" required>
+                    
+                    <button type="submit" class="w-full btn-glow py-4 rounded-lg font-bold text-white text-sm uppercase tracking-widest mt-2" id="auth-btn">
+                        Entrar na Plataforma
+                    </button>
                 </form>
+
+                <div class="mt-8 text-center">
+                    <p class="text-sm text-gray-400">
+                        <span id="toggle-text">Não tem uma conta?</span>
+                        <button onclick="toggleAuthMode()" class="text-brand-accent font-bold hover:underline ml-1" id="toggle-btn">Criar agora</button>
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -284,47 +287,69 @@
     </main>
 
     <script>
-        // --- LINKS DE PAGAMENTO CONFIGURADOS ---
         const prices = {
-            monthly: { 
-                standard: "39,90", 
-                pro: "69,90",
-                linkStandard: "https://mpago.la/1V3fYRm",
-                linkPro: "https://mpago.la/1m8A4zt"
-            },
-            annual: { 
-                standard: "49,90", 
-                pro: "97,90",
-                linkStandard: "https://mpago.la/2tEyxN5",
-                linkPro: "https://mpago.la/2PqbRfB"
-            }
+            monthly: { standard: "39,90", pro: "69,90", linkStandard: "https://mpago.la/1V3fYRm", linkPro: "https://mpago.la/1m8A4zt" },
+            annual: { standard: "49,90", pro: "97,90", linkStandard: "https://mpago.la/2tEyxN5", linkPro: "https://mpago.la/2PqbRfB" }
         };
 
-        // NAVEGAÇÃO
-        function navigateTo(viewId) {
-            ['home', 'login', 'signup', 'pricing', 'app'].forEach(id => {
+        // Estado do Auth (Login vs Signup)
+        let isSignup = false;
+
+        function navigateTo(viewId, mode = 'login') {
+            ['home', 'auth', 'pricing', 'app'].forEach(id => {
                 const el = document.getElementById('view-' + id);
                 if (el) el.classList.add('hidden');
             });
             document.getElementById('view-' + viewId).classList.remove('hidden');
+            
+            // Se for Auth, configura o modo correto
+            if(viewId === 'auth') {
+                isSignup = (mode === 'signup');
+                updateAuthUI();
+            }
+
             const main = document.getElementById('main-container');
             viewId === 'app' ? main.classList.add('overflow-hidden') : main.classList.remove('overflow-hidden');
         }
 
-        // PREÇOS E LINKS (LÓGICA ATUALIZADA)
+        // Lógica de Troca Login/Cadastro
+        function toggleAuthMode() {
+            isSignup = !isSignup;
+            updateAuthUI();
+        }
+
+        function updateAuthUI() {
+            const title = document.getElementById('auth-title');
+            const sub = document.getElementById('auth-subtitle');
+            const btn = document.getElementById('auth-btn');
+            const toggleText = document.getElementById('toggle-text');
+            const toggleBtn = document.getElementById('toggle-btn');
+            const nameField = document.getElementById('field-name');
+
+            if (isSignup) {
+                title.innerText = "Criar Credencial";
+                sub.innerText = "Inicie sua jornada na Synthetix";
+                btn.innerText = "CRIAR CONTA";
+                toggleText.innerText = "Já tem uma conta?";
+                toggleBtn.innerText = "Fazer Login";
+                nameField.classList.remove('hidden');
+            } else {
+                title.innerText = "Bem-vindo";
+                sub.innerText = "Acesse sua estação de trabalho";
+                btn.innerText = "ENTRAR NA PLATAFORMA";
+                toggleText.innerText = "Não tem uma conta?";
+                toggleBtn.innerText = "Criar agora";
+                nameField.classList.add('hidden');
+            }
+        }
+
         function togglePricing() {
             const isAnnual = document.getElementById('billing-toggle').checked;
             const type = isAnnual ? 'annual' : 'monthly';
-            
-            // Atualiza Texto
             document.getElementById('price-standard').innerText = prices[type].standard;
             document.getElementById('price-pro').innerText = prices[type].pro;
-            
-            // Atualiza Links dos Botões
             document.getElementById('btn-buy-standard').href = prices[type].linkStandard;
             document.getElementById('btn-buy-pro').href = prices[type].linkPro;
-
-            // Atualiza Estilo Toggle
             const lblM = document.getElementById('label-monthly');
             const lblA = document.getElementById('label-annual');
             if(isAnnual) {
@@ -336,12 +361,25 @@
             }
         }
 
-        // AUTH FAKE
-        function handleAuth(e, type) {
+        // Google Login (Simulado)
+        function googleLogin() {
+            const btn = document.querySelector('button[onclick="googleLogin()"]');
+            const original = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Conectando...';
+            
+            // Nota: Para funcionar de verdade, você precisaria configurar o Firebase Auth aqui.
+            setTimeout(() => {
+                navigateTo('app');
+                btn.innerHTML = original;
+            }, 1500);
+        }
+
+        function handleAuth(e) {
             e.preventDefault();
-            const btn = e.target.querySelector('button');
+            const btn = document.getElementById('auth-btn');
             const original = btn.innerText;
-            btn.innerText = "AUTENTICANDO...";
+            btn.innerText = "PROCESSANDO...";
             btn.classList.add('opacity-50');
             setTimeout(() => { navigateTo('app'); btn.innerText = original; btn.classList.remove('opacity-50'); }, 1500);
         }
@@ -353,18 +391,16 @@
             const prompt = promptInput.value;
             
             if (!prompt) {
-                alert("ERRO: Input vazio. Descreva o sistema.");
+                alert("ERRO: Input vazio.");
                 return;
             }
 
-            // Elementos visuais
             const loading = document.getElementById('loadingState');
             const frame = document.getElementById('siteFrame');
             const empty = document.getElementById('emptyState');
             const btn = document.getElementById('generateBtn');
             const btnText = document.getElementById('btnText');
 
-            // UI Update - Começa o Loading
             loading.classList.remove('hidden');
             empty.classList.add('hidden');
             frame.classList.add('hidden');
@@ -372,7 +408,6 @@
             btnText.innerText = "PROCESSANDO...";
             
             try {
-                // CHAMA O SEU BACKEND NA VERCEL
                 const response = await fetch('/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -380,24 +415,22 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Erro na conexão neural');
+                    throw new Error('Erro API');
                 }
 
                 const data = await response.json();
                 
-                // INJETA O HTML REAL DA IA NO IFRAME
                 const doc = frame.contentWindow.document;
                 doc.open();
                 doc.write(data.html); 
                 doc.close();
 
-                // Sucesso
                 loading.classList.add('hidden');
                 frame.classList.remove('hidden');
 
             } catch (error) {
                 console.error(error);
-                alert("Erro ao gerar. Verifique se a API está online.");
+                alert("Erro ao conectar na API.");
                 loading.classList.add('hidden');
                 empty.classList.remove('hidden');
             } finally {
