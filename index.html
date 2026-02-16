@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SYNTHETIX AI | Ultra-Pro Editor</title>
+    <title>SYNTHETIX AI | Zenith Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -14,11 +14,12 @@
                 extend: {
                     colors: {
                         brand: {
-                            dark: '#0a0a0a',
-                            surface: '#121212',
-                            primary: '#ffffff', // Estilo Mocha/Base44 usa muito P&B com acentos
-                            accent: '#7c3aed',
-                            border: 'rgba(255,255,255,0.06)'
+                            dark: '#050505', /* Fundo Base44 */
+                            primary: '#7c3aed',
+                            hover: '#6d28d9',
+                            accent: '#d8b4fe',
+                            surface: '#111111',
+                            border: 'rgba(255,255,255,0.08)'
                         }
                     },
                     fontFamily: {
@@ -31,120 +32,221 @@
     </script>
 
     <style>
-        body { background-color: #0a0a0a; color: #ededed; -webkit-font-smoothing: antialiased; }
+        body { background-color: #050505; color: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         
-        /* SIDEBAR CHAT STYLE (BASE44) */
-        .chat-bubble-ai { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px 12px 12px 2px; }
-        .chat-bubble-user { background: #7c3aed; color: white; border-radius: 12px 12px 2px 12px; }
+        /* ESTILO BASE44 / MOCHA */
+        .glass { background: rgba(17, 17, 17, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .editor-sidebar { background: #0a0a0a; border-right: 1px solid rgba(255,255,255,0.06); }
+        .chat-msg-user { background: #7c3aed; color: white; border-radius: 12px 12px 2px 12px; }
+        .chat-msg-ai { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px 12px 12px 2px; }
 
-        /* SCROLLBAR MINIMALISTA */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+        /* TOGGLE SWITCH */
+        .switch-checkbox { display: none; }
+        .switch-label {
+            display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 52px; height: 28px;
+            background: #1f2937; border-radius: 100px; position: relative; transition: background-color 0.3s ease;
+        }
+        .switch-button {
+            content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%;
+            transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15); background: #fff;
+        }
+        .switch-checkbox:checked + .switch-label { background: #7c3aed; }
+        .switch-checkbox:checked + .switch-label .switch-button { left: calc(100% - 3px); transform: translateX(-100%); }
 
         /* ANIMATIONS */
-        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in-up { animation: fadeInUp 0.4s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* IFRAME CONTAINER */
-        .preview-container { background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        
-        /* PULSE LOADING */
-        .shimmer { background: linear-gradient(90deg, #121212 25%, #1a1a1a 50%, #121212 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        /* TABS */
+        .active-tab { background: rgba(124, 58, 237, 0.1); color: #d8b4fe; border-color: rgba(124, 58, 237, 0.3); }
+        .inactive-tab { color: #9ca3af; border-color: transparent; }
     </style>
 </head>
-<body class="flex flex-col h-screen overflow-hidden font-sans">
+<body class="flex flex-col h-screen overflow-hidden">
 
-    <header class="h-14 border-b border-brand-border flex items-center justify-between px-6 bg-brand-dark z-50">
-        <div class="flex items-center gap-4">
-            <div class="w-6 h-6 bg-white rounded flex items-center justify-center" onclick="navigateTo('home')">
-                <div class="w-2 h-2 bg-black rotate-45"></div>
+    <nav class="fixed top-0 w-full z-50 border-b border-brand-border bg-brand-dark/90 backdrop-blur-xl h-16">
+        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('home')">
+                <div class="w-8 h-8 bg-gradient-to-br from-brand-primary to-purple-900 clip-hexagon flex items-center justify-center">
+                    <i class="fas fa-cube text-white text-xs"></i>
+                </div>
+                <span class="font-display font-bold text-lg tracking-widest text-white">SYNTHETIX</span>
             </div>
-            <span class="text-xs font-bold tracking-widest uppercase opacity-50">Synthetix <span class="text-brand-accent">Engine v2</span></span>
-        </div>
-        
-        <div class="flex items-center gap-6">
-            <nav class="hidden md:flex items-center gap-6 text-[10px] font-bold uppercase tracking-widest opacity-60">
-                <button onclick="navigateTo('home')" class="hover:text-white transition">Home</button>
+
+            <div class="hidden md:flex items-center gap-8 text-xs font-medium uppercase tracking-widest text-gray-400">
+                <button onclick="navigateTo('home')" class="hover:text-white transition">Início</button>
+                <button onclick="navigateTo('app')" class="hover:text-white transition text-brand-primary">Editor IA</button>
+                <button onclick="navigateTo('pricing')" class="hover:text-white transition">Planos</button>
                 <button onclick="navigateTo('showcase')" class="hover:text-white transition">Showcase</button>
-                <button onclick="navigateTo('pricing')" class="hover:text-white transition">Pricing</button>
-            </nav>
-            <div class="h-4 w-px bg-brand-border"></div>
-            <div id="auth-section">
-                </div>
-            <button onclick="toggleMobileMenu()" class="md:hidden text-white"><i class="fas fa-bars"></i></button>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div id="auth-buttons">
+                    </div>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main id="main-content" class="flex-1 flex overflow-hidden relative">
-
-        <section id="view-app" class="flex-1 flex flex-col md:flex-row h-full">
-            <aside class="w-full md:w-[380px] flex flex-col border-r border-brand-border bg-brand-dark relative">
-                <div class="p-4 border-b border-brand-border flex justify-between items-center">
-                    <span class="text-[10px] font-bold opacity-40 uppercase tracking-widest">Assistant context</span>
-                    <button onclick="clearEditor()" class="text-[9px] hover:text-red-500 transition">RESET</button>
+    <main id="main-content" class="flex-1 pt-16 flex flex-col h-full relative">
+        
+        <section id="view-home" class="flex-1 flex flex-col items-center justify-center text-center px-4 fade-in-up overflow-y-auto">
+            <div class="max-w-4xl mx-auto py-20">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Zenith Engine Online</span>
                 </div>
-                
-                <div id="chat-history" class="flex-1 overflow-y-auto p-4 space-y-6 pb-24">
-                    <div class="chat-bubble-ai p-4 text-xs leading-relaxed text-gray-400 fade-in">
-                        Estação pronta. Qual componente ou interface vamos arquitetar agora?
+                <h1 class="font-display text-5xl md:text-8xl font-bold mb-6 tracking-tighter leading-none">CRIE O <span class="text-brand-primary">IMPOSSÍVEL</span></h1>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-10 font-light">A primeira IA generativa que constrói interfaces de nível Silicon Valley através de conversação natural.</p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="navigateTo('app')" class="bg-brand-primary px-8 py-4 rounded-xl text-sm font-bold hover:bg-brand-hover transition shadow-2xl shadow-brand-primary/20 uppercase tracking-widest">Iniciar Editor</button>
+                    <button onclick="navigateTo('showcase')" class="bg-white/5 border border-white/10 px-8 py-4 rounded-xl text-sm font-bold hover:bg-white/10 transition uppercase tracking-widest">Ver Exemplos</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-pricing" class="hidden flex-1 overflow-y-auto py-20 px-6 fade-in-up bg-brand-dark">
+            <div class="max-w-5xl mx-auto text-center">
+                <h2 class="text-4xl font-display font-bold mb-10">Planos de Acesso</h2>
+                <div class="flex items-center justify-center gap-6 mb-16">
+                    <span class="text-sm font-bold text-gray-400" id="lbl-monthly">Mensal</span>
+                    <input type="checkbox" id="billing-toggle" class="switch-checkbox" onclick="togglePricing()">
+                    <label for="billing-toggle" class="switch-label"><span class="switch-button"></span></label>
+                    <span class="text-sm font-bold text-white" id="lbl-annual">Anual <span class="text-brand-accent text-xs">-20%</span></span>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="glass p-8 rounded-2xl flex flex-col text-left">
+                        <h3 class="text-xl font-bold mb-2">Initiate</h3>
+                        <p class="text-4xl font-bold mb-6">R$ <span id="price-standard">29,90</span></p>
+                        <ul class="space-y-3 mb-8 text-sm text-gray-400 flex-1">
+                            <li><i class="fas fa-check text-brand-primary mr-2"></i> 5 Projetos</li>
+                            <li><i class="fas fa-check text-brand-primary mr-2"></i> Edição IA Básica</li>
+                        </ul>
+                        <a href="https://mpago.la/1V3fYRm" id="link-standard" target="_blank" class="w-full py-3 bg-white/5 border border-white/10 rounded-lg text-center text-xs font-bold uppercase hover:bg-white/10 transition">Assinar</a>
+                    </div>
+                    <div class="glass p-8 rounded-2xl border-brand-primary flex flex-col text-left relative bg-brand-primary/5">
+                        <div class="absolute -top-3 right-8 bg-brand-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Recomendado</div>
+                        <h3 class="text-xl font-bold mb-2">Architect PRO</h3>
+                        <p class="text-4xl font-bold mb-6 text-brand-primary">R$ <span id="price-pro">49,90</span></p>
+                        <ul class="space-y-3 mb-8 text-sm text-white flex-1">
+                            <li><i class="fas fa-bolt text-brand-accent mr-2"></i> Projetos Ilimitados</li>
+                            <li><i class="fas fa-bolt text-brand-accent mr-2"></i> <strong>Base44 AI Model</strong></li>
+                            <li><i class="fas fa-bolt text-brand-accent mr-2"></i> Publicação Instantânea</li>
+                        </ul>
+                        <a href="https://mpago.la/1m8A4zt" id="link-pro" target="_blank" class="w-full py-3 bg-brand-primary rounded-lg text-center text-xs font-bold uppercase hover:bg-brand-hover transition shadow-lg">Assinar Pro</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-app" class="hidden h-full flex flex-col md:flex-row bg-[#000]">
+            
+            <aside class="w-full md:w-[400px] editor-sidebar flex flex-col h-[40vh] md:h-full relative z-20">
+                <div class="p-4 border-b border-brand-border flex justify-between items-center bg-brand-dark">
+                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">AI Context: Active</span>
+                    <button onclick="clearEditor()" class="text-[10px] font-bold text-gray-600 hover:text-red-400 transition uppercase tracking-widest">Reset</button>
+                </div>
+
+                <div id="chat-history" class="flex-1 overflow-y-auto p-4 space-y-6 pb-28">
+                    <div class="flex gap-4 fade-in-up">
+                        <div class="w-6 h-6 rounded bg-white/10 flex items-center justify-center text-[10px] text-gray-400">AI</div>
+                        <div class="chat-msg-ai p-3 text-xs text-gray-300 leading-relaxed max-w-[85%]">
+                            Estação Zenith online. Descreva a interface que deseja criar (ex: "Landing page dark mode para SaaS").
+                        </div>
                     </div>
                 </div>
 
-                <div class="p-4 bg-brand-dark/80 backdrop-blur-md absolute bottom-0 w-full">
+                <div class="absolute bottom-0 w-full p-4 bg-brand-dark border-t border-brand-border">
                     <div class="relative group">
-                        <textarea id="userPrompt" rows="1" class="w-full bg-brand-surface border border-brand-border rounded-xl py-4 pl-4 pr-12 text-sm text-white focus:border-brand-accent outline-none transition-all resize-none shadow-2xl" placeholder="Ex: Crie um Hero Section bento grid..."></textarea>
-                        <button onclick="generateSite()" class="absolute right-3 bottom-3.5 w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center hover:bg-brand-accent hover:text-white transition-all shadow-lg">
-                            <i class="fas fa-arrow-up text-xs"></i>
+                        <textarea id="userPrompt" class="w-full h-14 bg-brand-surface border border-brand-border rounded-xl py-3 px-4 pr-12 text-xs text-white focus:border-brand-primary outline-none resize-none transition-all placeholder-gray-600" placeholder="Digite sua instrução..."></textarea>
+                        <button onclick="generateSite()" class="absolute right-2 bottom-2 w-10 h-10 bg-brand-primary hover:bg-brand-hover text-white rounded-lg flex items-center justify-center transition shadow-lg">
+                            <i class="fas fa-arrow-up"></i>
                         </button>
                     </div>
                 </div>
             </aside>
 
-            <div class="flex-1 bg-[#050505] p-4 md:p-8 flex flex-col">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex gap-1.5">
+            <div class="flex-1 bg-black relative flex flex-col h-[60vh] md:h-full">
+                <div class="h-10 bg-brand-surface border-b border-brand-border flex items-center justify-between px-4 flex-none">
+                    <div class="flex gap-2">
                         <div class="w-2.5 h-2.5 rounded-full bg-red-500/20"></div>
                         <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/20"></div>
                         <div class="w-2.5 h-2.5 rounded-full bg-green-500/20"></div>
                     </div>
-                    <button onclick="postSite()" class="bg-white text-black text-[10px] font-bold px-4 py-1.5 rounded-full hover:bg-brand-accent hover:text-white transition-all uppercase tracking-widest shadow-xl">Deploy Site</button>
+                    <button onclick="postSite()" class="text-[9px] font-bold bg-white text-black px-3 py-1 rounded hover:bg-brand-accent hover:text-white transition uppercase tracking-widest">Deploy Site</button>
                 </div>
-
-                <div class="flex-1 preview-container relative">
-                    <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-brand-dark/95">
-                        <div class="w-12 h-12 border-2 border-white/10 border-t-white rounded-full animate-spin mb-4"></div>
-                        <span class="text-[10px] font-mono tracking-[0.4em] uppercase opacity-40">Compiling Components</span>
+                
+                <div class="flex-1 relative overflow-hidden">
+                    <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-brand-dark/95 backdrop-blur-sm">
+                        <div class="w-8 h-8 border-2 border-brand-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+                        <div class="text-brand-primary font-mono text-[10px] animate-pulse tracking-widest uppercase">Compilando...</div>
                     </div>
-                    <div id="emptyState" class="absolute inset-0 flex items-center justify-center text-[10px] font-mono uppercase tracking-[0.5em] opacity-10">Awaiting Input</div>
+                    
+                    <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center opacity-20 pointer-events-none">
+                        <i class="fas fa-code text-4xl mb-4 text-gray-500"></i>
+                        <span class="text-[10px] uppercase tracking-[0.5em] text-gray-500">Awaiting Input</span>
+                    </div>
+                    
                     <iframe id="siteFrame" class="w-full h-full border-0 hidden bg-white"></iframe>
                 </div>
             </div>
         </section>
 
-        <section id="view-home" class="hidden flex-1 flex flex-col items-center justify-center text-center px-6">
-            <h1 class="font-display text-6xl md:text-9xl font-bold tracking-tighter mb-6">SYNTHETIX<br><span class="text-brand-accent">AI</span></h1>
-            <p class="text-gray-500 max-w-lg mb-12 text-sm md:text-base leading-relaxed">A ferramenta definitiva para criar sites profissionais via chat. Tecnologia Base44 para a marca Zenith.</p>
-            <div class="flex gap-4">
-                <button onclick="navigateTo('app')" class="bg-white text-black px-8 py-4 rounded-full font-bold text-sm hover:scale-105 transition-all">Começar Agora</button>
-                <button onclick="navigateTo('pricing')" class="border border-white/10 px-8 py-4 rounded-full font-bold text-sm hover:bg-white/5 transition-all">Ver Planos</button>
+        <section id="view-profile" class="hidden flex-1 overflow-y-auto py-10 px-6 bg-brand-dark fade-in-up">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-6 mb-10 border-b border-brand-border pb-8">
+                    <div class="w-16 h-16 rounded-full bg-brand-primary flex items-center justify-center text-xl font-bold text-white shadow-xl" id="profile-avatar-big">U</div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white" id="profile-name-display">Usuário</h2>
+                        <span class="text-[10px] bg-brand-primary/10 text-brand-primary border border-brand-primary/20 px-2 py-1 rounded uppercase font-bold tracking-widest">Pro Member</span>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div class="space-y-2">
+                        <button onclick="switchTab('projects')" id="tab-btn-projects" class="active-tab w-full text-left px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-widest border transition">Projetos</button>
+                        <button onclick="switchTab('subscription')" id="tab-btn-subscription" class="inactive-tab w-full text-left px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-widest border transition">Assinatura</button>
+                        <button onclick="switchTab('settings')" id="tab-btn-settings" class="inactive-tab w-full text-left px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-widest border transition">Config</button>
+                    </div>
+
+                    <div class="md:col-span-3">
+                        <div id="tab-projects">
+                            <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                        </div>
+                        <div id="tab-subscription" class="hidden">
+                            <div class="glass p-6 rounded-xl">
+                                <h3 class="text-lg font-bold mb-4">Plano Atual</h3>
+                                <p class="text-sm text-gray-400 mb-6">Você está no plano <span class="text-brand-accent font-bold">Architect PRO</span>.</p>
+                                <button onclick="navigateTo('pricing')" class="text-xs font-bold text-brand-primary hover:underline uppercase">Gerenciar</button>
+                            </div>
+                        </div>
+                        <div id="tab-settings" class="hidden">
+                            <div class="glass p-6 rounded-xl space-y-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold uppercase text-gray-500 mb-2">Nome</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" id="settings-name" class="bg-black/50 border border-white/10 rounded px-3 py-2 text-sm text-white w-full outline-none">
+                                        <button onclick="saveSettingsName()" class="bg-brand-primary px-4 rounded text-xs font-bold uppercase">Salvar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section id="view-pricing" class="hidden flex-1 overflow-y-auto py-20 px-6">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl font-display font-bold mb-12">Assinaturas</h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="glass p-10 rounded-3xl text-left border-brand-border">
-                        <h3 class="text-xl font-bold mb-4">Initiate</h3>
-                        <p class="text-4xl font-bold mb-8">R$ 29,90<span class="text-xs opacity-40">/mês</span></p>
-                        <a href="https://mpago.la/1V3fYRm" target="_blank" class="block w-full py-4 bg-white/5 border border-white/10 rounded-xl text-center font-bold hover:bg-white/10 transition">Assinar</a>
-                    </div>
-                    <div class="glass p-10 rounded-3xl text-left border-brand-accent bg-brand-accent/5">
-                        <h3 class="text-xl font-bold mb-4">Architect PRO</h3>
-                        <p class="text-4xl font-bold mb-8">R$ 49,90<span class="text-xs opacity-40">/mês</span></p>
-                        <a href="https://mpago.la/1m8A4zt" target="_blank" class="block w-full py-4 bg-brand-accent text-white rounded-xl text-center font-bold hover:bg-brand-hover transition">Assinar Pro</a>
-                    </div>
+        <section id="view-auth" class="hidden absolute inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+            <div class="glass p-8 rounded-2xl w-full max-w-sm relative">
+                <button onclick="navigateTo('home')" class="absolute top-4 right-4 text-gray-500 hover:text-white"><i class="fas fa-times"></i></button>
+                <h2 class="text-2xl font-display font-bold text-center mb-6" id="auth-title">Acesso</h2>
+                <form onsubmit="handleAuth(event)" class="space-y-3">
+                    <input type="text" id="input-name" class="hidden w-full bg-brand-dark border border-white/10 rounded-lg p-3 text-sm text-white outline-none" placeholder="Seu Nome">
+                    <input type="email" class="w-full bg-brand-dark border border-white/10 rounded-lg p-3 text-sm text-white outline-none" placeholder="Email" required>
+                    <input type="password" class="w-full bg-brand-dark border border-white/10 rounded-lg p-3 text-sm text-white outline-none" placeholder="Senha" required>
+                    <button type="submit" class="w-full py-3 bg-brand-primary rounded-lg font-bold text-xs uppercase tracking-widest mt-2">Entrar</button>
+                </form>
+                <div class="mt-4 text-center">
+                    <button onclick="toggleAuthMode()" class="text-[10px] text-gray-500 hover:text-white uppercase font-bold tracking-widest" id="auth-toggle-btn">Criar Conta</button>
                 </div>
             </div>
         </section>
@@ -152,39 +254,79 @@
     </main>
 
     <script>
-        // CONFIGURAÇÕES E ESTADO
-        let currentCode = ""; 
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        let userName = localStorage.getItem('userName') || "Usuário";
-        let projects = JSON.parse(localStorage.getItem('projects')) || [];
-
-        window.onload = () => {
-            updateNav();
-            navigateTo('home');
+        // --- DADOS E ESTADO ---
+        const pricingData = {
+            monthly: { standard: "29,90", pro: "49,90", linkS: "https://mpago.la/1V3fYRm", linkP: "https://mpago.la/1m8A4zt" },
+            annual: { standard: "19,90", pro: "39,90", linkS: "https://mpago.la/2tEyxN5", linkP: "https://mpago.la/2PqbRfB" }
         };
 
-        // NAVEGAÇÃO
+        let currentCode = ""; 
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        let userName = localStorage.getItem('userName') || "Visitante";
+        let projects = JSON.parse(localStorage.getItem('projects')) || [];
+        let isSignup = false;
+
+        window.onload = () => { updateUI(); };
+
+        // --- NAVEGAÇÃO ---
         function navigateTo(viewId) {
             document.querySelectorAll('section[id^="view-"]').forEach(el => el.classList.add('hidden'));
             document.getElementById('view-' + viewId).classList.remove('hidden');
+            if (viewId === 'profile') { renderProjects(); switchTab('projects'); document.getElementById('settings-name').value = userName; }
+            if (viewId === 'app' && !isLoggedIn) { navigateTo('auth'); return; }
         }
 
-        // EDITOR IA (A MÁGICA LADO A LADO)
+        // --- AUTH ---
+        function handleAuth(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('input-name');
+            if (isSignup && nameInput.value) userName = nameInput.value;
+            
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userName', userName);
+            
+            updateUI();
+            navigateTo('app'); // Vai direto para o editor após login
+        }
+
+        function toggleAuthMode() {
+            isSignup = !isSignup;
+            document.getElementById('auth-title').innerText = isSignup ? "Criar Conta" : "Login";
+            document.getElementById('input-name').classList.toggle('hidden', !isSignup);
+            document.getElementById('auth-toggle-btn').innerText = isSignup ? "Já tenho conta" : "Criar nova conta";
+        }
+
+        function updateUI() {
+            const authDiv = document.getElementById('auth-buttons');
+            if (isLoggedIn) {
+                authDiv.innerHTML = `
+                    <button onclick="navigateTo('profile')" class="text-xs font-bold text-white hover:text-brand-primary uppercase tracking-widest mr-4">${userName}</button>
+                    <div onclick="navigateTo('profile')" class="w-8 h-8 rounded bg-brand-primary flex items-center justify-center font-bold text-xs cursor-pointer text-white">${userName.charAt(0)}</div>
+                `;
+            } else {
+                authDiv.innerHTML = `
+                    <button onclick="navigateTo('auth')" class="text-xs font-bold text-white hover:text-brand-primary uppercase tracking-widest mr-4">Login</button>
+                    <button onclick="navigateTo('auth')" class="bg-brand-primary px-4 py-2 rounded text-xs font-bold text-white hover:bg-brand-hover uppercase tracking-widest">Start</button>
+                `;
+            }
+        }
+
+        // --- EDITOR BASE44 LOGIC ---
         async function generateSite() {
             const input = document.getElementById('userPrompt');
             const history = document.getElementById('chat-history');
             const prompt = input.value.trim();
-            if(!prompt) return;
+            if (!prompt) return;
 
-            // 1. UI: Mensagem do Usuário
-            const uMsg = document.createElement('div');
-            uMsg.className = "chat-bubble-user p-4 text-xs ml-8 fade-in shadow-xl";
-            uMsg.innerText = prompt;
-            history.appendChild(uMsg);
-            input.value = "";
-            history.scrollTop = history.scrollHeight;
+            // 1. User Bubble
+            const uDiv = document.createElement('div');
+            uDiv.className = "flex justify-end fade-in-up";
+            uDiv.innerHTML = `<div class="chat-msg-user p-3 text-xs max-w-[85%] shadow-lg">${prompt}</div>`;
+            history.appendChild(uDiv);
+            input.value = ""; history.scrollTop = history.scrollHeight;
 
-            // 2. UI: Loading
+            // 2. Loading
             const loading = document.getElementById('loadingState');
             const frame = document.getElementById('siteFrame');
             loading.classList.remove('hidden');
@@ -205,63 +347,91 @@
                     document.getElementById('emptyState').classList.add('hidden');
                     frame.classList.remove('hidden');
 
-                    // 3. UI: Confirmação da IA com Dica Interativa
-                    const aiMsg = document.createElement('div');
-                    aiMsg.className = "chat-bubble-ai p-4 text-xs mr-8 fade-in";
-                    aiMsg.innerHTML = `<strong>Synthetix:</strong> Projeto atualizado. <br><br> <span class="opacity-50">💡 Dica: Este layout bento grid melhora a legibilidade mobile.</span>`;
-                    history.appendChild(aiMsg);
+                    // 3. AI Bubble
+                    const aiDiv = document.createElement('div');
+                    aiDiv.className = "flex gap-3 fade-in-up";
+                    aiDiv.innerHTML = `<div class="w-6 h-6 rounded bg-brand-primary/20 flex items-center justify-center text-[8px] text-brand-primary font-bold">AI</div><div class="chat-msg-ai p-3 text-xs text-gray-300 max-w-[85%]">Código atualizado. <span class="text-brand-accent">Dica:</span> Use 'bg-glass' para efeito de vidro.</div>`;
+                    history.appendChild(aiDiv);
+                    
+                    saveProject(currentCode, prompt);
                 }
             } catch (e) {
-                showToast("Erro na compilação");
+                console.error(e);
             } finally {
                 loading.classList.add('hidden');
                 history.scrollTop = history.scrollHeight;
             }
         }
 
-        // DEPLOY (PUBLICAÇÃO)
+        // --- DEPLOY & UTILS ---
         function postSite() {
-            if(!currentCode) { showToast("Crie algo primeiro"); return; }
-            showToast("Iniciando Deploy...");
-            const loading = document.getElementById('loadingState');
-            loading.classList.remove('hidden');
-
-            setTimeout(() => {
-                loading.classList.add('hidden');
-                const url = "https://synthetix.ai/live/" + Math.random().toString(36).substring(7);
-                const history = document.getElementById('chat-history');
-                const deployMsg = document.createElement('div');
-                deployMsg.className = "bg-green-500/10 border border-green-500/20 p-4 rounded-xl text-[10px] text-green-400 font-mono fade-in";
-                deployMsg.innerHTML = `STATUS: DEPLOYED<br>URL: <a href="#" class="underline">${url}</a>`;
-                history.appendChild(deployMsg);
-                history.scrollTop = history.scrollHeight;
-                showToast("Site Publicado!");
-            }, 2500);
+            if(!currentCode) return;
+            const history = document.getElementById('chat-history');
+            const url = "https://synthetix.ai/" + Math.random().toString(36).substring(7);
+            
+            const postDiv = document.createElement('div');
+            postDiv.className = "bg-green-500/10 border border-green-500/20 p-3 rounded-lg text-[10px] font-mono text-green-400 mb-4 fade-in-up";
+            postDiv.innerHTML = `DEPLOY SUCCESSFUL<br><a href="#" class="underline">${url}</a>`;
+            history.appendChild(postDiv);
+            history.scrollTop = history.scrollHeight;
         }
 
         function clearEditor() {
             currentCode = "";
             document.getElementById('siteFrame').classList.add('hidden');
             document.getElementById('emptyState').classList.remove('hidden');
-            document.getElementById('chat-history').innerHTML = `<div class="chat-bubble-ai p-4 text-xs opacity-50 italic">Estação resetada.</div>`;
-            showToast("Editor Limpo");
+            document.getElementById('chat-history').innerHTML = `<div class="text-center text-[10px] text-gray-600 italic py-4">Memória limpa</div>`;
         }
 
-        function updateNav() {
-            const auth = document.getElementById('auth-section');
-            if(isLoggedIn) {
-                auth.innerHTML = `<button onclick="navigateTo('profile')" class="text-[10px] font-bold uppercase tracking-widest">${userName}</button>`;
-            } else {
-                auth.innerHTML = `<button onclick="navigateTo('auth')" class="text-[10px] font-bold uppercase tracking-widest">Login</button>`;
-            }
+        function togglePricing() {
+            const isAnnual = document.getElementById('billing-toggle').checked;
+            const type = isAnnual ? 'annual' : 'monthly';
+            document.getElementById('price-standard').innerText = pricingData[type].standard;
+            document.getElementById('price-pro').innerText = pricingData[type].pro;
+            document.getElementById('link-standard').href = pricingData[type].linkS;
+            document.getElementById('link-pro').href = pricingData[type].linkP;
         }
 
-        function showToast(m) {
-            const t = document.createElement('div');
-            t.className = "fixed bottom-6 right-6 bg-white text-black px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-2xl z-[300] fade-in";
-            t.innerText = m;
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), 3000);
+        // --- PERFIL TABS ---
+        function switchTab(id) {
+            ['projects', 'subscription', 'settings'].forEach(t => {
+                document.getElementById('tab-' + t).classList.add('hidden');
+                document.getElementById('tab-btn-' + t).className = "inactive-tab w-full text-left px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-widest border transition";
+            });
+            document.getElementById('tab-' + id).classList.remove('hidden');
+            document.getElementById('tab-btn-' + id).className = "active-tab w-full text-left px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-widest border transition";
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            grid.innerHTML = projects.map((p, i) => `
+                <div class="glass p-4 rounded-xl cursor-pointer hover:border-brand-primary transition" onclick="loadProject(${i})">
+                    <h4 class="font-bold text-white text-sm truncate">${p.name}</h4>
+                    <p class="text-[9px] text-gray-500 uppercase mt-1">${p.date}</p>
+                </div>
+            `).join('') || '<p class="text-gray-500 text-xs">Nenhum projeto.</p>';
+        }
+
+        function saveProject(code, prompt) {
+            const n = prompt.substring(0, 20);
+            projects.unshift({ name: n, code, date: new Date().toLocaleDateString('pt-BR') });
+            localStorage.setItem('projects', JSON.stringify(projects.slice(0, 10)));
+        }
+
+        function loadProject(i) {
+            currentCode = projects[i].code;
+            navigateTo('app');
+            const f = document.getElementById('siteFrame');
+            f.contentWindow.document.open();
+            f.contentWindow.document.write(currentCode);
+            f.contentWindow.document.close();
+            f.classList.remove('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+        }
+
+        function saveSettingsName() {
+            const n = document.getElementById('settings-name').value;
+            if (n) { userName = n; localStorage.setItem('userName', userName); updateUI(); }
         }
 
         function logout() { localStorage.clear(); location.reload(); }
