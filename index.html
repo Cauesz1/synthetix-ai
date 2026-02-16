@@ -33,7 +33,7 @@
 
     <style>
         body { background-color: #030014; color: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-        .glass { background: rgba(15, 7, 32, 0.9); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass { background: rgba(15, 7, 32, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .logo-hexagon { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); background: linear-gradient(135deg, #7c3aed, #4c1d95); }
 
         /* TOGGLE SWITCH PROFISSIONAL */
@@ -52,20 +52,17 @@
         .switch-checkbox:checked + .switch-label { background: #7c3aed; }
         .switch-checkbox:checked + .switch-label .switch-button { left: calc(100% - 3px); transform: translateX(-100%); }
 
-        /* MENU MOBILE */
+        /* MENU MOBILE SÓLIDO */
         #mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); background: #030014; z-index: 100; }
         #mobile-menu.open { transform: translateX(0); }
 
         .fade-in-up { animation: fadeInUp 0.4s ease-out; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TABS */
+        /* TABS & PROJECTS */
         .active-tab { background: rgba(124, 58, 237, 0.1); color: #d8b4fe; border-color: rgba(124, 58, 237, 0.3); }
         .inactive-tab { color: #9ca3af; border-color: transparent; }
-        
-        /* SHOWCASE CARDS */
-        .showcase-card { transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.05); }
-        .showcase-card:hover { transform: translateY(-8px); border-color: #7c3aed; box-shadow: 0 15px 30px rgba(124, 58, 237, 0.2); }
+        .showcase-card:hover { transform: translateY(-8px); border-color: #7c3aed; }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
@@ -89,8 +86,8 @@
 
             <div class="hidden md:flex items-center gap-4">
                 <div id="desktop-guest" class="flex gap-4">
-                    <button onclick="navigateTo('auth')" class="text-sm font-medium text-white hover:text-brand-accent">Login</button>
-                    <button onclick="navigateTo('app')" class="bg-brand-primary hover:bg-brand-hover px-5 py-2 rounded-lg text-sm font-bold transition">Join Beta</button>
+                    <button onclick="navigateTo('auth')" class="text-sm font-medium text-white hover:text-brand-primary">Login</button>
+                    <button onclick="navigateTo('app')" class="bg-brand-primary hover:bg-brand-hover px-5 py-2 rounded-lg text-sm font-bold transition shadow-lg shadow-brand-primary/20">Join Station</button>
                 </div>
                 <div id="desktop-user" class="hidden items-center gap-4">
                     <div onclick="navigateTo('profile')" class="w-9 h-9 rounded-full bg-brand-primary flex items-center justify-center font-bold text-xs cursor-pointer border-2 border-transparent hover:border-white transition" id="nav-avatar">US</div>
@@ -110,14 +107,14 @@
             <button onclick="navigateTo('pricing'); toggleMobileMenu()" class="text-3xl font-display font-bold text-white">Planos</button>
             <button onclick="navigateTo('showcase'); toggleMobileMenu()" class="text-3xl font-display font-bold text-white">Showcase</button>
         </div>
-        <div class="mt-auto mb-12" id="mobile-auth-container">
+        <div class="mt-auto mb-12">
             <div id="mobile-guest" class="w-full">
-                <button onclick="navigateTo('auth'); toggleMobileMenu()" class="w-full py-4 border border-white/10 rounded-xl font-bold mb-4">Entrar</button>
-                <button onclick="navigateTo('app'); toggleMobileMenu()" class="w-full py-4 bg-brand-primary rounded-xl font-bold">Criar Conta</button>
+                <button onclick="navigateTo('auth'); toggleMobileMenu()" class="w-full py-4 border border-white/10 rounded-xl font-bold mb-4 text-white">Login</button>
+                <button onclick="navigateTo('app'); toggleMobileMenu()" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-white">Começar Agora</button>
             </div>
             <div id="mobile-user" class="hidden w-full">
-                <button onclick="navigateTo('profile'); toggleMobileMenu()" class="w-full py-4 bg-brand-primary rounded-xl font-bold">Meu Perfil</button>
-                <button onclick="logout(); toggleMobileMenu()" class="w-full py-2 text-red-400 text-sm mt-2">Sair da Conta</button>
+                <button onclick="navigateTo('profile'); toggleMobileMenu()" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-white">Meu Perfil</button>
+                <button onclick="logout(); toggleMobileMenu()" class="w-full py-2 text-red-400 text-sm mt-4">Sair da Estação</button>
             </div>
         </div>
     </div>
@@ -128,17 +125,17 @@
         
         <section id="view-home" class="min-h-full flex flex-col items-center justify-center text-center px-4 pb-20 fade-in-up">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
-            <h1 class="font-display text-5xl md:text-8xl font-bold mb-6 tracking-tighter leading-none">CÓDIGO<br><span class="text-brand-primary">SINTÉTICO</span></h1>
+            <h1 class="font-display text-5xl md:text-8xl font-bold mb-6 tracking-tighter leading-none uppercase">Código<br><span class="text-brand-primary">Sintético</span></h1>
             <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-10 font-light leading-relaxed">Desenvolva e altere interfaces complexas em segundos através de processamento neural.</p>
             <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-6">
-                <button onclick="navigateTo('app')" class="bg-brand-primary px-10 py-4 rounded-xl text-lg font-bold hover:bg-brand-hover transition shadow-2xl shadow-brand-primary/20">Iniciar Criação</button>
+                <button onclick="navigateTo('app')" class="bg-brand-primary px-10 py-4 rounded-xl text-lg font-bold hover:bg-brand-hover transition shadow-2xl shadow-brand-primary/20">Iniciar Estação</button>
                 <button onclick="navigateTo('showcase')" class="bg-white/5 border border-white/10 px-10 py-4 rounded-xl text-lg font-bold hover:bg-white/10 transition">Explorar Showcase</button>
             </div>
         </section>
 
         <section id="view-pricing" class="hidden py-16 md:py-24 px-6 fade-in-up">
             <div class="max-w-5xl mx-auto text-center">
-                <h2 class="text-4xl font-display font-bold mb-10 text-white">Acesso ao Núcleo</h2>
+                <h2 class="text-4xl font-display font-bold mb-10 text-white uppercase tracking-widest">Protocolos de Acesso</h2>
                 <div class="flex items-center justify-center gap-6 mb-16">
                     <span class="text-sm font-bold text-gray-400 transition" id="lbl-monthly">Mensal</span>
                     <input type="checkbox" id="billing-toggle" class="switch-checkbox" onclick="togglePricing()">
@@ -156,10 +153,11 @@
                         <ul class="space-y-4 mb-10 flex-1 text-gray-300 text-sm">
                             <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> 5 Projetos Ativos</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> Edição Incremental IA</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> Publicação Básica</li>
                         </ul>
-                        <a href="https://mpago.la/1V3fYRm" id="link-standard" target="_blank" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-center">Assinar Agora</a>
+                        <a href="https://mpago.la/1V3fYRm" id="link-standard" target="_blank" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-center hover:bg-white/10 transition">Assinar</a>
                     </div>
-                    <div class="glass p-10 rounded-3xl border-brand-primary border-2 flex flex-col text-left bg-[#0a0518] relative shadow-[0_0_40px_rgba(124,58,237,0.1)]">
+                    <div class="glass p-10 rounded-3xl border-brand-primary border-2 flex flex-col text-left bg-[#0a0518] relative shadow-2xl">
                         <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-primary text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase">Recomendado</div>
                         <h3 class="text-2xl font-bold mb-2">Architect <span class="text-brand-primary">PRO</span></h3>
                         <div class="flex items-baseline mb-8">
@@ -167,34 +165,12 @@
                             <span class="text-6xl font-bold tracking-tighter text-brand-primary" id="price-pro">49,90</span>
                             <span class="text-gray-500 text-sm ml-2">/mês</span>
                         </div>
-                        <ul class="space-y-4 mb-10 flex-1 text-white text-sm">
-                            <li class="flex items-center gap-3 font-bold"><i class="fas fa-bolt text-brand-accent"></i> Projetos Ilimitados</li>
-                            <li class="flex items-center gap-3 font-bold"><i class="fas fa-bolt text-brand-accent"></i> Licença Comercial</li>
+                        <ul class="space-y-4 mb-10 flex-1 text-white text-sm font-bold">
+                            <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> Projetos Ilimitados</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> <strong>GPT-4o Master Engine</strong></li>
+                            <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> Publicação Instantânea</li>
                         </ul>
-                        <a href="https://mpago.la/1m8A4zt" id="link-pro" target="_blank" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-center">Assinar Agora</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="view-showcase" class="hidden py-20 px-6 fade-in-up">
-            <div class="max-w-6xl mx-auto text-center">
-                <h2 class="text-4xl font-display font-bold mb-16">Resultados Neuronais</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
-                    <div class="showcase-card glass p-6 rounded-2xl group">
-                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-rocket text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
-                        <h4 class="font-bold text-white mb-2 text-lg">Nexus Dashboard</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">Painel administrativo compilado para monitoramento de frotas supercarros.</p>
-                    </div>
-                    <div class="showcase-card glass p-6 rounded-2xl group">
-                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-gem text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
-                        <h4 class="font-bold text-white mb-2 text-lg">Luxury Concierge</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">Interface minimalista para serviços exclusivos de hospitalidade.</p>
-                    </div>
-                    <div class="showcase-card glass p-6 rounded-2xl group">
-                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-car text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
-                        <h4 class="font-bold text-white mb-2 text-lg">Zenith Configurator</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">Configurador de alta performance para marcas automotivas.</p>
+                        <a href="https://mpago.la/1m8A4zt" id="link-pro" target="_blank" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-center hover:bg-brand-hover transition shadow-xl shadow-brand-primary/20">Assinar</a>
                     </div>
                 </div>
             </div>
@@ -205,39 +181,71 @@
                 <div class="p-4 border-b border-white/5 flex justify-between items-center bg-[#0a0518] z-10">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Active Memory</span>
+                        <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Active Station</span>
                     </div>
-                    <button onclick="clearEditor()" class="text-[9px] font-bold text-gray-500 hover:text-red-400 transition uppercase tracking-widest">Limpar Memória</button>
+                    <button onclick="clearEditor()" class="text-[9px] font-bold text-gray-500 hover:text-red-400 transition uppercase tracking-widest">Reset Memória</button>
                 </div>
+
                 <div id="chat-history" class="flex-1 overflow-y-auto p-5 space-y-6 pb-28">
                     <div class="flex gap-4">
                         <div class="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-xs shadow-lg"><i class="fas fa-robot"></i></div>
                         <div class="bg-white/5 border border-white/10 p-4 rounded-2xl rounded-tl-none text-sm text-gray-300 leading-relaxed">
-                            Sistema pronto. Descreva sua visão e eu construirei agora mesmo.
+                            Aguardando diretrizes. Descreva o site que deseja criar ou as edições que deseja aplicar no projeto atual.
                         </div>
                     </div>
                 </div>
+
                 <div class="absolute bottom-0 w-full p-4 bg-[#0a0518] border-t border-white/5 z-20">
                     <div class="relative">
-                        <textarea id="userPrompt" class="w-full h-16 bg-[#030014] border border-white/10 rounded-xl py-3 px-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none transition-all" placeholder="Adicione um botão de contato..."></textarea>
+                        <textarea id="userPrompt" class="w-full h-16 bg-[#030014] border border-white/10 rounded-xl py-3 px-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none transition-all" placeholder="Adicione uma galeria de fotos..."></textarea>
                         <button onclick="generateSite()" class="absolute right-2 bottom-3 w-10 h-10 bg-brand-primary hover:bg-brand-hover text-white rounded-lg flex items-center justify-center transition shadow-lg">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                 </div>
             </aside>
+
             <div class="flex-1 bg-black relative flex flex-col h-[60vh] md:h-full">
-                <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-md">
-                    <div class="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-                    <div class="text-brand-primary font-mono text-xs animate-pulse tracking-widest uppercase">Compilando Código...</div>
+                <div class="h-10 bg-[#0a0518] border-b border-white/5 flex items-center justify-between px-4 flex-none">
+                    <span class="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Live Compiler | node-v22</span>
+                    <button onclick="postSite()" class="text-[10px] font-bold bg-green-500/10 text-green-400 px-4 py-1 rounded-md border border-green-500/30 hover:bg-green-500/20 transition uppercase tracking-widest">Postar Site</button>
                 </div>
-                <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-gray-800 uppercase tracking-[0.3em] text-[10px]">Preview Inativo</div>
-                <iframe id="siteFrame" class="w-full h-full border-0 hidden"></iframe>
+                <div class="flex-1 relative overflow-hidden">
+                    <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/95 backdrop-blur-md">
+                        <div class="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+                        <div class="text-brand-primary font-mono text-[10px] animate-pulse tracking-widest uppercase">Injetando Sincronia Neural...</div>
+                    </div>
+                    <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-gray-800 uppercase tracking-[0.3em] text-[10px]">Aguardando Comando</div>
+                    <iframe id="siteFrame" class="w-full h-full border-0 hidden"></iframe>
+                </div>
             </div>
         </section>
 
-        <section id="view-profile" class="hidden h-full flex flex-col bg-[#050014] fade-in-up">
-            <div class="max-w-7xl mx-auto w-full p-6 md:p-12 overflow-y-auto">
+        <section id="view-showcase" class="hidden py-16 md:py-24 px-6 fade-in-up">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-4xl font-display font-bold mb-16 uppercase tracking-widest">Showcase de Arquiteturas</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+                    <div class="glass p-6 rounded-2xl group border-white/5 showcase-card transition duration-500">
+                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-rocket text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
+                        <h4 class="font-bold text-white mb-2 text-lg">Nexus Dashboard</h4>
+                        <p class="text-xs text-gray-500">SaaS de alta performance compilado em 14 segundos.</p>
+                    </div>
+                    <div class="glass p-6 rounded-2xl group border-white/5 showcase-card transition duration-500">
+                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-gem text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
+                        <h4 class="font-bold text-white mb-2 text-lg">Luxury Showroom</h4>
+                        <p class="text-xs text-gray-500">Vitrine minimalista para marcas nível Zenith.</p>
+                    </div>
+                    <div class="glass p-6 rounded-2xl group border-white/5 showcase-card transition duration-500">
+                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-car-side text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
+                        <h4 class="font-bold text-white mb-2 text-lg">Hypercar Config</h4>
+                        <p class="text-xs text-gray-500">Configurador interativo para engenharia automotiva.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-profile" class="hidden min-h-full py-20 px-6 fade-in-up bg-[#050014]">
+            <div class="max-w-7xl mx-auto w-full">
                 <div class="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12 border-b border-white/5 pb-10">
                     <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-primary to-blue-600 flex items-center justify-center text-3xl font-bold shadow-2xl border-4 border-white/5" id="profile-avatar-big">US</div>
                     <div class="text-center md:text-left">
@@ -247,7 +255,7 @@
                     </div>
                     <div class="md:ml-auto flex gap-4 w-full md:w-auto">
                         <button onclick="logout()" class="flex-1 md:flex-none px-6 py-2.5 border border-white/10 rounded-xl text-sm font-medium hover:bg-red-500/10 hover:text-red-400 transition">Sair</button>
-                        <button onclick="navigateTo('app')" class="flex-1 md:flex-none bg-brand-primary px-8 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-hover transition">Abrir Editor</button>
+                        <button onclick="navigateTo('app')" class="flex-1 md:flex-none bg-brand-primary px-8 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-hover transition shadow-lg shadow-brand-primary/20">Abrir Editor</button>
                     </div>
                 </div>
 
@@ -260,17 +268,18 @@
 
                     <div class="col-span-3">
                         <div id="tab-projects" class="fade-in-up">
-                            <h3 class="text-xl font-bold mb-8 text-white">Repositório de Arquiteturas</h3>
+                            <h3 class="text-xl font-bold mb-8 text-white">Projetos Ativos</h3>
                             <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-                            <div id="empty-projects-state" class="hidden py-20 text-center border-2 border-dashed border-white/5 rounded-2xl text-gray-600">Nenhum projeto salvo.</div>
+                            <div id="empty-projects-state" class="hidden py-20 text-center border-2 border-dashed border-white/5 rounded-2xl text-gray-600">Nenhuma arquitetura salva na rede.</div>
                         </div>
 
                         <div id="tab-subscription" class="hidden fade-in-up">
-                            <h3 class="text-xl font-bold mb-8 text-white">Plano e Faturamento</h3>
+                            <h3 class="text-xl font-bold mb-8 text-white">Status de Assinatura</h3>
                             <div class="glass p-8 rounded-2xl border-brand-primary/20">
-                                <p class="text-sm text-gray-400 mb-6 font-bold uppercase tracking-widest">Plano Ativo: Anual Pro</p>
-                                <p class="text-xs text-gray-500 mb-8 leading-relaxed">Sua assinatura está ativa. Acesso ilimitado às ferramentas de edição incremental liberado.</p>
-                                <button onclick="navigateTo('pricing')" class="text-xs font-bold text-brand-primary hover:underline">GERENCIAR ASSINATURA</button>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2 font-bold">Plano Ativo</p>
+                                <h4 class="text-2xl font-bold text-brand-accent mb-6">ARCHITECT PRO <span class="text-xs text-white opacity-40 ml-2">(ANUAL)</span></h4>
+                                <p class="text-xs text-gray-400 mb-8 leading-relaxed">Sua conta tem autorização de nível 2. Publicação ilimitada e processamento prioritário estão habilitados.</p>
+                                <button onclick="navigateTo('pricing')" class="text-[10px] font-bold text-brand-primary hover:underline uppercase tracking-widest">Gerenciar na Station</button>
                             </div>
                         </div>
 
@@ -284,9 +293,9 @@
                                         <button onclick="saveSettingsName()" class="bg-brand-primary px-6 py-3 rounded-xl text-xs font-bold hover:bg-brand-hover transition">SALVAR</button>
                                     </div>
                                 </div>
-                                <div class="glass p-6 rounded-2xl border-white/5">
-                                    <label class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-4">Segurança</label>
-                                    <button onclick="showToast('Email de redefinição enviado!')" class="text-xs text-brand-accent font-bold">SOLICITAR ALTERAÇÃO DE SENHA</button>
+                                <div class="glass p-6 rounded-2xl border-white/5 flex justify-between items-center">
+                                    <div><label class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1">Acesso</label><span class="text-sm text-white font-medium">Trocar Senha de Segurança</span></div>
+                                    <button onclick="showToast('Protocolo enviado ao email')" class="text-xs font-bold text-brand-accent">REDEFINIR</button>
                                 </div>
                             </div>
                         </div>
@@ -295,35 +304,37 @@
             </div>
         </section>
 
-        <section id="view-auth" class="hidden h-full flex items-center justify-center px-4">
-            <div class="glass p-10 rounded-3xl w-full max-w-md">
-                <h2 class="text-3xl font-display font-bold text-center mb-8" id="auth-title">Acesso</h2>
+        <section id="view-auth" class="hidden min-h-full flex items-center justify-center px-4 fade-in-up">
+            <div class="glass p-10 rounded-3xl w-full max-w-md shadow-2xl">
+                <h2 class="text-3xl font-display font-bold text-center mb-8" id="auth-title">Identificação</h2>
                 <form onsubmit="handleAuth(event)" class="space-y-4">
-                    <div id="field-name" class="hidden"><input type="text" id="input-name" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none" placeholder="Nome"></div>
-                    <input type="email" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none" placeholder="Email" required>
-                    <input type="password" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none" placeholder="Senha" required>
-                    <button type="submit" class="w-full py-4 bg-brand-primary rounded-xl font-bold uppercase mt-4">Confirmar</button>
+                    <div id="field-name" class="hidden"><input type="text" id="input-name" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-brand-primary" placeholder="Nome"></div>
+                    <input type="email" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-brand-primary" placeholder="Email" required>
+                    <input type="password" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-brand-primary" placeholder="Senha" required>
+                    <button type="submit" class="w-full py-4 bg-brand-primary rounded-xl font-bold uppercase mt-4 tracking-widest shadow-lg shadow-brand-primary/20" id="auth-btn">Confirmar</button>
                 </form>
-                <button onclick="toggleAuthMode()" class="mt-8 text-center w-full text-xs text-brand-accent uppercase font-bold">Criar Nova Conta</button>
+                <button onclick="toggleAuthMode()" class="mt-8 text-center w-full text-[10px] text-brand-accent uppercase font-bold tracking-widest" id="auth-toggle-btn">Criar Nova Registro</button>
             </div>
         </section>
+
     </main>
 
     <script>
+        // CONFIGURAÇÕES MESTRAS
         const pricingData = {
             monthly: { standard: "29,90", pro: "49,90", linkS: "https://mpago.la/1V3fYRm", linkP: "https://mpago.la/1m8A4zt" },
             annual: { standard: "19,90", pro: "39,90", linkS: "https://mpago.la/2tEyxN5", linkP: "https://mpago.la/2PqbRfB" }
         };
 
         const aiTips = [
-            "💡 Dica: Que tal adicionar um 'Dark Mode' automático para dar um ar mais premium?",
-            "🎨 Sugestão: Fontes sem serifa (como Inter) trazem mais modernidade ao seu projeto.",
-            "🚀 Performance: Vi que o site está leve. Se quiser, posso adicionar animações de entrada nos textos.",
-            "🛠️ Ajuste: Posso criar um formulário de contato integrado para aumentar sua conversão.",
-            "📱 Mobile: O layout já é responsivo, mas se quiser, posso esconder elementos secundários no celular.",
-            "🌟 Design: Sua interface está ficando tão limpa que dá até dó de clicar. Quer testar um gradiente no fundo?"
+            "💡 Dica: Um fundo Dark com botões Roxo Neon traz autoridade imediata ao seu site.",
+            "🎨 Sugestão: Use fontes sem serifa (como Inter) para um visual mais técnico e limpo.",
+            "🚀 Performance: Evite imagens pesadas. O Tailwind já cuida da velocidade para você.",
+            "✨ Interatividade: Posso adicionar animações suaves de entrada em cada seção se desejar.",
+            "📱 Mobile: Lembre-se, 90% dos usuários Zenith verão seu site pelo smartphone."
         ];
 
+        // ESTADO GLOBAL
         let currentCode = ""; 
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         let userName = localStorage.getItem('userName') || "Usuário";
@@ -332,15 +343,13 @@
 
         window.onload = () => { updateNav(); };
 
+        // NAVEGAÇÃO
         function navigateTo(viewId, mode) {
             document.querySelectorAll('section[id^="view-"]').forEach(el => el.classList.add('hidden'));
             document.getElementById('view-' + viewId).classList.remove('hidden');
             if(viewId === 'auth') { isSignup = (mode === 'signup'); updateAuthUI(); }
-            if(viewId === 'profile') { 
-                renderProjects(); 
-                switchTab('projects');
-                document.getElementById('settings-name').value = userName;
-            }
+            if(viewId === 'profile') { renderProjects(); switchTab('projects'); document.getElementById('settings-name').value = userName; }
+            if(viewId === 'app') document.getElementById('main-content').scrollTop = 0;
             updateNav();
         }
 
@@ -351,6 +360,7 @@
             icon.classList.toggle('fa-bars'); icon.classList.toggle('fa-times');
         }
 
+        // PREÇOS
         function togglePricing() {
             const isA = document.getElementById('billing-toggle').checked;
             const type = isA ? 'annual' : 'monthly';
@@ -360,29 +370,27 @@
             document.getElementById('link-pro').href = pricingData[type].linkP;
         }
 
+        // EDITOR & IA (INCREMENTAL + LIMPEZA + DICAS)
         function clearEditor() {
             currentCode = "";
             document.getElementById('siteFrame').classList.add('hidden');
             document.getElementById('emptyState').classList.remove('hidden');
-            document.getElementById('chat-history').innerHTML = `<div class="bg-white/5 p-4 rounded-2xl text-xs text-gray-500 italic">Memória limpa. O que vamos criar agora?</div>`;
-            showToast("Editor Resetado");
+            document.getElementById('chat-history').innerHTML = `<div class="bg-white/5 p-4 rounded-2xl text-[10px] text-gray-500 italic">Memória resetada com sucesso.</div>`;
+            showToast("Estação Resetada");
         }
 
-        // GERAÇÃO IA INTERATIVA COM DICAS
         async function generateSite() {
             const input = document.getElementById('userPrompt');
             const history = document.getElementById('chat-history');
             const prompt = input.value.trim();
             if(!prompt) return;
-            if(!isLoggedIn) { navigateTo('auth'); return; }
+            if(!isLoggedIn) { showToast("🔒 Login Necessário"); navigateTo('auth'); return; }
 
-            // 1. Enviar mensagem do usuário e limpar input
             const uDiv = document.createElement('div');
-            uDiv.className = "flex justify-end mb-4 fade-in-up";
-            uDiv.innerHTML = `<div class="bg-brand-primary p-4 rounded-2xl rounded-br-none text-sm text-white max-w-[85%] shadow-lg shadow-brand-primary/10">${prompt}</div>`;
+            uDiv.className = "flex justify-end mb-6 fade-in-up";
+            uDiv.innerHTML = `<div class="bg-brand-primary p-4 rounded-2xl rounded-br-none text-sm text-white max-w-[85%] shadow-lg shadow-brand-primary/20">${prompt}</div>`;
             history.appendChild(uDiv);
-            input.value = ""; 
-            history.scrollTop = history.scrollHeight;
+            input.value = ""; history.scrollTop = history.scrollHeight;
 
             const loading = document.getElementById('loadingState');
             const frame = document.getElementById('siteFrame');
@@ -395,73 +403,96 @@
                     body: JSON.stringify({ prompt, existingCode: currentCode })
                 });
                 const data = await response.json();
-                currentCode = data.html;
                 
-                const doc = frame.contentWindow.document;
-                doc.open(); doc.write(currentCode); doc.close();
-                
-                document.getElementById('emptyState').classList.add('hidden');
-                frame.classList.remove('hidden');
+                if (data.html && data.html.includes('<html')) {
+                    currentCode = data.html;
+                    const doc = frame.contentWindow.document;
+                    doc.open(); doc.write(currentCode); doc.close();
+                    document.getElementById('emptyState').classList.add('hidden');
+                    frame.classList.remove('hidden');
 
-                // 2. Resposta de Confirmação da IA
-                const aiMsg = document.createElement('div');
-                aiMsg.className = "flex gap-4 mb-4 fade-in-up";
-                aiMsg.innerHTML = `<div class="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-xs shadow-lg"><i class="fas fa-robot"></i></div><div class="bg-white/5 border border-white/10 p-4 rounded-2xl rounded-tl-none text-sm text-brand-accent">✨ Alteração aplicada à arquitetura.</div>`;
-                history.appendChild(aiMsg);
+                    // IA Resposta
+                    const aiMsg = document.createElement('div');
+                    aiMsg.className = "flex gap-4 mb-4 fade-in-up";
+                    aiMsg.innerHTML = `<div class="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-xs shadow-lg"><i class="fas fa-robot"></i></div><div class="bg-white/5 border border-white/10 p-4 rounded-2xl rounded-tl-none text-sm text-brand-accent">Sincronia concluída. Código atualizado.</div>`;
+                    history.appendChild(aiMsg);
 
-                // 3. Dica Interativa Aleatória
-                setTimeout(() => {
-                    const tip = aiTips[Math.floor(Math.random() * aiTips.length)];
-                    const tipDiv = document.createElement('div');
-                    tipDiv.className = "flex gap-4 mb-4 fade-in-up";
-                    tipDiv.innerHTML = `<div class="w-8 h-8 rounded-full bg-brand-surface border border-brand-primary/30 flex items-center justify-center text-[10px] text-brand-primary shadow-lg"><i class="fas fa-lightbulb"></i></div><div class="bg-brand-primary/5 p-4 rounded-2xl rounded-tl-none text-xs text-gray-400 italic">${tip}</div>`;
-                    history.appendChild(tipDiv);
-                    history.scrollTop = history.scrollHeight;
-                }, 1000);
+                    // IA Dica
+                    setTimeout(() => {
+                        const tip = aiTips[Math.floor(Math.random() * aiTips.length)];
+                        const tipDiv = document.createElement('div');
+                        tipDiv.className = "flex gap-4 mb-4 fade-in-up";
+                        tipDiv.innerHTML = `<div class="w-8 h-8 rounded-full bg-brand-surface border border-brand-primary/20 flex items-center justify-center text-[10px] text-brand-primary"><i class="fas fa-lightbulb"></i></div><div class="bg-brand-primary/5 p-4 rounded-2xl rounded-tl-none text-xs text-gray-500 italic">${tip}</div>`;
+                        history.appendChild(tipDiv);
+                        history.scrollTop = history.scrollHeight;
+                    }, 1000);
 
-                saveProject(currentCode, prompt);
-            } catch (e) { showToast("Erro Conexão"); } finally { loading.classList.add('hidden'); }
+                    saveProject(currentCode, prompt);
+                }
+            } catch (e) { showToast("❌ Falha Neural"); } finally { loading.classList.add('hidden'); }
         }
 
-        // CONFIGURAÇÕES DE PERFIL
+        // PUBLICAÇÃO
+        function postSite() {
+            if(!currentCode) { showToast("⚠️ Site Vazio"); return; }
+            showToast("🚀 Publicando na Rede Zenith...");
+            const loading = document.getElementById('loadingState');
+            loading.classList.remove('hidden');
+
+            setTimeout(() => {
+                loading.classList.add('hidden');
+                const siteUrl = "https://synthetix.ai/live/" + Math.random().toString(36).substring(7);
+                showToast("✨ Site Postado com Sucesso!");
+                
+                const history = document.getElementById('chat-history');
+                const postDiv = document.createElement('div');
+                postDiv.className = "bg-green-500/10 border border-green-500/20 p-4 rounded-xl mb-4 fade-in-up";
+                postDiv.innerHTML = `<p class="text-[10px] text-green-400 font-bold mb-2">SITUAÇÃO: ONLINE</p><a href="#" class="text-[10px] text-brand-accent underline break-all">${siteUrl}</a>`;
+                history.appendChild(postDiv);
+                history.scrollTop = history.scrollHeight;
+            }, 2500);
+        }
+
+        // PERFIL & CONFIGS
         function saveSettingsName() {
             const n = document.getElementById('settings-name').value.trim();
-            if(n.length < 3) { showToast("Nome muito curto"); return; }
+            if(n.length < 3) { showToast("⚠️ Nome Inválido"); return; }
             userName = n;
             localStorage.setItem('userName', userName);
             updateNav();
-            showToast("✨ Perfil Atualizado!");
+            showToast("✨ Perfil Sincronizado");
         }
 
         function switchTab(id) {
             ['projects', 'subscription', 'settings'].forEach(t => {
                 document.getElementById('tab-' + t).classList.add('hidden');
-                document.getElementById('tab-btn-' + t).className = "inactive-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3";
+                document.getElementById('tab-btn-' + t).className = "inactive-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3 hover:bg-white/5";
             });
             document.getElementById('tab-' + id).classList.remove('hidden');
             document.getElementById('tab-btn-' + id).className = "active-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3 shadow-lg shadow-brand-primary/10";
         }
 
         function updateNav() {
-            const guestD = document.getElementById('desktop-guest');
-            const userD = document.getElementById('desktop-user');
-            const guestM = document.getElementById('mobile-guest');
-            const userM = document.getElementById('mobile-user');
+            const gD = document.getElementById('desktop-guest');
+            const uD = document.getElementById('desktop-user');
+            const gM = document.getElementById('mobile-guest');
+            const uM = document.getElementById('mobile-user');
             if(isLoggedIn) {
-                guestD.classList.add('hidden'); userD.classList.remove('hidden'); userD.classList.add('flex');
-                guestM.classList.add('hidden'); userM.classList.remove('hidden');
+                gD.classList.add('hidden'); uD.classList.remove('hidden'); uD.classList.add('flex');
+                gM.classList.add('hidden'); uM.classList.remove('hidden');
                 document.getElementById('nav-avatar').innerText = userName.charAt(0).toUpperCase();
                 document.getElementById('profile-avatar-big').innerText = userName.charAt(0).toUpperCase();
                 document.getElementById('profile-name-display').innerText = userName;
             } else {
-                guestD.classList.remove('hidden'); userD.classList.add('hidden');
-                guestM.classList.remove('hidden'); userM.classList.add('hidden');
+                gD.classList.remove('hidden'); uD.classList.add('hidden');
+                gM.classList.remove('hidden'); uM.classList.add('hidden');
             }
         }
 
         function handleAuth(e) {
             e.preventDefault();
-            userName = document.getElementById('input-name')?.value || "Membro";
+            const inputN = document.getElementById('input-name')?.value;
+            userName = isSignup ? inputN : (userName || "Membro");
             isLoggedIn = true;
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userName', userName);
@@ -470,7 +501,7 @@
 
         function toggleAuthMode() { isSignup = !isSignup; updateAuthUI(); }
         function updateAuthUI() {
-            document.getElementById('auth-title').innerText = isSignup ? "Criar Conta" : "Identificação";
+            document.getElementById('auth-title').innerText = isSignup ? "Registro" : "Identificação";
             document.getElementById('field-name').classList.toggle('hidden', !isSignup);
         }
 
@@ -484,7 +515,7 @@
                 const c = document.createElement('div');
                 c.className = "glass p-6 rounded-2xl flex flex-col justify-between hover:border-brand-primary/40 transition group cursor-pointer";
                 c.onclick = () => loadProject(i);
-                c.innerHTML = `<div><div class="w-10 h-10 bg-brand-primary/10 rounded-lg flex items-center justify-center text-brand-primary mb-4 group-hover:bg-brand-primary group-hover:text-white transition"><i class="fas fa-code"></i></div><h4 class="font-bold text-white mb-1">${p.name}</h4><p class="text-[9px] text-gray-500 uppercase">${p.date}</p></div>`;
+                c.innerHTML = `<div class="mb-6"><div class="w-10 h-10 bg-brand-primary/10 rounded-lg flex items-center justify-center text-brand-primary mb-4 group-hover:bg-brand-primary group-hover:text-white transition"><i class="fas fa-file-code"></i></div><h4 class="font-bold text-white mb-1 truncate">${p.name}</h4><p class="text-[9px] text-gray-500 uppercase">${p.date}</p></div><div class="flex justify-between items-center pt-4 border-t border-white/5"><span class="text-[8px] font-bold text-gray-600 uppercase">Architecture Node</span><i class="fas fa-chevron-right text-xs text-brand-primary"></i></div>`;
                 grid.appendChild(c);
             });
         }
@@ -507,10 +538,10 @@
 
         function showToast(m) {
             const t = document.createElement('div');
-            t.className = "bg-brand-primary text-white px-6 py-3 rounded-xl shadow-2xl mb-2 text-sm fade-in-up";
+            t.className = "bg-brand-surface border border-brand-primary/40 text-white px-6 py-3 rounded-xl shadow-2xl mb-2 text-[10px] font-bold fade-in-up uppercase tracking-widest";
             t.innerText = m;
             document.getElementById('toast-container').appendChild(t);
-            setTimeout(() => t.remove(), 3000);
+            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 3000);
         }
 
         function logout() { localStorage.clear(); location.reload(); }
