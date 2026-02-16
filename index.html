@@ -14,11 +14,11 @@
                 extend: {
                     colors: {
                         brand: {
-                            dark: '#030014',       // Fundo principal (quase preto)
-                            primary: '#7c3aed',    // Roxo vibrante
-                            hover: '#6d28d9',      // Roxo escuro
-                            accent: '#d8b4fe',     // Lilás claro (brilho)
-                            surface: '#0f0720',    // Paineis
+                            dark: '#030014',
+                            primary: '#7c3aed',
+                            hover: '#6d28d9',
+                            accent: '#d8b4fe',
+                            surface: '#0f0720',
                             border: 'rgba(255,255,255,0.1)'
                         }
                     },
@@ -28,13 +28,6 @@
                     },
                     animation: {
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        }
                     }
                 }
             }
@@ -42,90 +35,67 @@
     </script>
 
     <style>
-        /* BASE & RESET */
         body { background-color: #030014; color: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #030014; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-
         /* GLASSMORPHISM */
         .glass {
-            background: rgba(15, 7, 32, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(15, 7, 32, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         
-        /* LOGO ANIMATION */
+        /* LOGO */
         .logo-hexagon {
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             background: linear-gradient(135deg, #7c3aed, #4c1d95);
-            display: flex; align-items: center; justify-content: center;
         }
-        .logo-core {
-            background: #fff; border-radius: 50%;
-            box-shadow: 0 0 15px #d8b4fe;
-            animation: pulse-core 2s infinite;
-        }
-        @keyframes pulse-core { 0% { opacity: 0.5; box-shadow: 0 0 0px #d8b4fe; } 50% { opacity: 1; box-shadow: 0 0 20px #d8b4fe; } 100% { opacity: 0.5; box-shadow: 0 0 0px #d8b4fe; } }
 
-        /* TOGGLE SWITCH (BOLINHA PROFISSIONAL) */
+        /* TOGGLE SWITCH PROFISSIONAL (A BOLINHA) */
         .switch-checkbox { display: none; }
         .switch-label {
             display: flex; align-items: center; justify-content: space-between;
-            cursor: pointer; width: 52px; height: 28px;
+            cursor: pointer; width: 50px; height: 26px;
             background: #1f2937; border-radius: 100px; position: relative;
-            transition: background-color 0.3s ease-in-out;
+            transition: background-color 0.3s ease;
             border: 1px solid rgba(255,255,255,0.1);
         }
         .switch-button {
             content: ''; position: absolute; top: 2px; left: 2px;
-            width: 22px; height: 22px; border-radius: 45px;
-            transition: 0.3s; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            width: 20px; height: 20px; border-radius: 50%;
+            transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15); 
+            background: #fff;
         }
-        .switch-checkbox:checked + .switch-label { background: #7c3aed; border-color: #7c3aed; }
+        .switch-checkbox:checked + .switch-label { background: #7c3aed; }
         .switch-checkbox:checked + .switch-label .switch-button { left: calc(100% - 2px); transform: translateX(-100%); }
 
-        /* MOBILE MENU TRANSITIONS */
+        /* MENU MOBILE (NÃO TRANSPARENTE) */
         #mobile-menu {
             transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            background: rgba(3, 0, 20, 0.98); backdrop-filter: blur(20px);
+            background: #030014; /* Fundo sólido para não ser transparente */
+            z-index: 100;
         }
         #mobile-menu.open { transform: translateX(0); }
 
-        /* TOAST */
-        .toast {
-            transform: translateY(20px); opacity: 0; transition: all 0.4s ease;
-        }
-        .toast.show { transform: translateY(0); opacity: 1; }
+        /* FADE IN UP */
+        .fade-in-up { animation: fadeInUp 0.5s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* UTILS */
-        .btn-primary {
-            background: #7c3aed; color: white; font-weight: 600;
-            transition: all 0.2s; box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
-        }
-        .btn-primary:hover { background: #8b5cf6; transform: translateY(-1px); box-shadow: 0 0 30px rgba(124, 58, 237, 0.5); }
-        .btn-secondary {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: white; font-weight: 600; transition: all 0.2s;
-        }
-        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
 
-    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-[#030014]/80 backdrop-blur-xl h-16 md:h-20 transition-all duration-300">
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-[#030014]/90 backdrop-blur-xl h-16 md:h-20">
         <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
             
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('home')">
-                <div class="logo-hexagon w-8 h-8 md:w-10 md:h-10 transition-transform group-hover:scale-110">
-                    <div class="logo-core w-2.5 h-2.5 md:w-3 md:h-3"></div>
-                </div>
+                <div class="logo-hexagon w-8 h-8 md:w-10 md:h-10"></div>
                 <div class="flex flex-col">
-                    <span class="font-display font-bold text-lg md:text-xl tracking-widest text-white leading-none">SYNTHETIX</span>
+                    <span class="font-display font-bold text-lg md:text-xl tracking-tighter text-white">SYNTHETIX</span>
                     <span class="text-[0.6rem] text-brand-accent tracking-[0.3em] font-semibold uppercase opacity-70">Intelligence</span>
                 </div>
             </div>
@@ -134,621 +104,284 @@
                 <button onclick="navigateTo('home')" class="text-sm font-medium text-gray-400 hover:text-white transition">Início</button>
                 <button onclick="navigateTo('app')" class="text-sm font-medium text-gray-400 hover:text-white transition">Editor IA</button>
                 <button onclick="navigateTo('pricing')" class="text-sm font-medium text-gray-400 hover:text-white transition">Planos</button>
-                <button onclick="navigateTo('showcase')" class="text-sm font-medium text-brand-accent/80 hover:text-brand-accent transition">Showcase</button>
+                <button onclick="navigateTo('showcase')" class="text-sm font-medium text-brand-accent hover:text-white transition">Showcase</button>
             </div>
 
             <div class="hidden md:flex items-center gap-4">
-                <div id="desktop-guest" class="flex items-center gap-4">
-                    <button onclick="navigateTo('auth')" class="text-sm font-medium text-white hover:text-brand-accent transition">Entrar</button>
-                    <button onclick="navigateTo('app')" class="btn-primary px-5 py-2 rounded-lg text-sm">Criar Conta</button>
+                <div id="desktop-guest" class="flex gap-4">
+                    <button onclick="navigateTo('auth')" class="text-sm font-medium text-white">Login</button>
+                    <button onclick="navigateTo('app')" class="bg-brand-primary hover:bg-brand-hover px-5 py-2 rounded-lg text-sm font-bold transition">Get Started</button>
                 </div>
                 <div id="desktop-user" class="hidden items-center gap-4">
-                    <button onclick="navigateTo('app')" class="text-xs font-bold text-brand-accent border border-brand-accent/30 px-3 py-1.5 rounded-full hover:bg-brand-accent/10 transition">+ Novo Projeto</button>
-                    <div onclick="navigateTo('profile')" class="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-primary to-blue-600 cursor-pointer border-2 border-transparent hover:border-white transition shadow-lg flex items-center justify-center font-bold text-xs" id="nav-avatar">US</div>
+                    <div onclick="navigateTo('profile')" class="w-9 h-9 rounded-full bg-brand-primary cursor-pointer flex items-center justify-center font-bold text-xs" id="nav-avatar">US</div>
                 </div>
             </div>
 
-            <button onclick="toggleMobileMenu()" class="md:hidden text-white text-xl p-2 z-50 relative focus:outline-none">
+            <button onclick="toggleMobileMenu()" class="md:hidden text-white text-xl z-[110]">
                 <i class="fas fa-bars" id="menu-icon"></i>
             </button>
         </div>
     </nav>
 
-    <div id="mobile-menu" class="fixed inset-0 z-40 flex flex-col pt-24 px-8 md:hidden h-screen w-screen">
-        <div class="flex flex-col space-y-6 text-center">
-            <button onclick="navigateTo('home'); toggleMobileMenu()" class="text-2xl font-display font-medium text-white hover:text-brand-primary transition">Início</button>
-            <button onclick="navigateTo('app'); toggleMobileMenu()" class="text-2xl font-display font-medium text-white hover:text-brand-primary transition">Editor IA</button>
-            <button onclick="navigateTo('pricing'); toggleMobileMenu()" class="text-2xl font-display font-medium text-white hover:text-brand-primary transition">Planos</button>
-            <button onclick="navigateTo('showcase'); toggleMobileMenu()" class="text-2xl font-display font-medium text-brand-accent hover:text-white transition">Showcase</button>
+    <div id="mobile-menu" class="fixed inset-0 flex flex-col pt-24 px-8 md:hidden">
+        <div class="flex flex-col space-y-8 text-left">
+            <button onclick="navigateTo('home'); toggleMobileMenu()" class="text-3xl font-display font-bold">Início</button>
+            <button onclick="navigateTo('app'); toggleMobileMenu()" class="text-3xl font-display font-bold text-brand-primary">Editor IA</button>
+            <button onclick="navigateTo('pricing'); toggleMobileMenu()" class="text-3xl font-display font-bold">Planos</button>
+            <button onclick="navigateTo('showcase'); toggleMobileMenu()" class="text-3xl font-display font-bold">Showcase</button>
         </div>
-        
-        <div class="mt-auto mb-12 w-full space-y-4">
-            <div id="mobile-guest-buttons" class="w-full space-y-3">
-                <button onclick="navigateTo('auth'); toggleMobileMenu()" class="btn-secondary w-full py-4 rounded-xl text-lg">Fazer Login</button>
-                <button onclick="navigateTo('app'); toggleMobileMenu()" class="btn-primary w-full py-4 rounded-xl text-lg">Criar Conta Grátis</button>
-            </div>
-            <div id="mobile-user-buttons" class="hidden w-full space-y-3">
-                <button onclick="navigateTo('profile'); toggleMobileMenu()" class="btn-primary w-full py-4 rounded-xl text-lg">Meu Perfil</button>
-                <button onclick="logout(); toggleMobileMenu()" class="text-red-400 w-full py-2 text-sm font-medium">Sair da Conta</button>
-            </div>
+        <div class="mt-auto mb-12 space-y-4">
+            <button onclick="navigateTo('auth'); toggleMobileMenu()" class="w-full py-4 border border-white/10 rounded-xl text-lg font-bold">Entrar</button>
+            <button onclick="navigateTo('app'); toggleMobileMenu()" class="w-full py-4 bg-brand-primary rounded-xl text-lg font-bold">Começar Agora</button>
         </div>
     </div>
 
-    <div id="toast-container" class="fixed bottom-6 right-6 z-[60] flex flex-col gap-3 pointer-events-none"></div>
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[200]"></div>
 
-    <main id="main-content" class="flex-1 pt-16 md:pt-20 overflow-y-auto scroll-smooth relative bg-brand-dark">
-        
-        <div class="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none z-0"></div>
+    <main id="main-content" class="flex-1 pt-20 overflow-y-auto bg-brand-dark relative">
 
-        <section id="view-home" class="min-h-[90vh] flex flex-col items-center justify-center text-center px-4 relative z-10 pb-20">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-primary/20 rounded-full blur-[100px] pointer-events-none animate-pulse-slow"></div>
-
-            <div class="relative">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-primary/30 bg-brand-surface/80 backdrop-blur-md text-brand-accent text-[10px] md:text-xs font-bold tracking-widest uppercase mb-8 shadow-lg shadow-brand-primary/10">
-                    <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> v2.4 Stable Release
-                </div>
-                
-                <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight leading-[1.1]">
-                    CODIFICAÇÃO<br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-brand-accent to-brand-primary">SINTÉTICA</span>
-                </h1>
-                
-                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
-                    Transforme ideias em código de produção instantaneamente. <br class="hidden md:block">
-                    A primeira IA arquitetada para desenvolvedores e agências.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row justify-center gap-4 w-full sm:w-auto px-4">
-                    <button onclick="navigateTo('auth', 'signup')" class="btn-primary px-8 py-4 rounded-xl text-lg shadow-2xl shadow-brand-primary/20 w-full sm:w-auto">
-                        Iniciar Criação
-                    </button>
-                    <button onclick="navigateTo('pricing')" class="btn-secondary px-8 py-4 rounded-xl text-lg w-full sm:w-auto">
-                        Ver Planos
-                    </button>
-                </div>
+        <section id="view-home" class="min-h-full flex flex-col items-center justify-center text-center px-4 pb-20">
+            <h1 class="font-display text-5xl md:text-8xl font-bold mb-6 tracking-tighter leading-none">CODIFICAÇÃO<br><span class="text-brand-primary">SINTÉTICA</span></h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-10">Crie e edite sites profissionais em segundos apenas conversando com nossa inteligência artificial.</p>
+            <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                <button onclick="navigateTo('auth', 'signup')" class="bg-brand-primary px-10 py-4 rounded-xl text-lg font-bold hover:bg-brand-hover transition">Iniciar Criação</button>
+                <button onclick="navigateTo('pricing')" class="bg-white/5 border border-white/10 px-10 py-4 rounded-xl text-lg font-bold hover:bg-white/10 transition">Ver Planos</button>
             </div>
         </section>
 
-        <section id="view-pricing" class="hidden min-h-screen py-20 px-4 relative z-10">
-            <div class="max-w-6xl mx-auto">
+        <section id="view-pricing" class="hidden py-20 px-4">
+            <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-16">
-                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Escolha sua Arquitetura</h2>
-                    
+                    <h2 class="text-4xl font-display font-bold mb-6">Planos e Assinaturas</h2>
                     <div class="flex items-center justify-center gap-4">
-                        <span class="text-sm font-bold text-gray-400 transition-colors" id="label-monthly">Mensal</span>
-                        <div class="relative">
-                            <input type="checkbox" id="billing-toggle" class="switch-checkbox" onclick="togglePricing()">
-                            <label for="billing-toggle" class="switch-label">
-                                <span class="switch-button"></span>
-                            </label>
-                        </div>
-                        <span class="text-sm font-bold text-white transition-colors" id="label-annual">Anual <span class="text-brand-primary text-xs ml-1">-20%</span></span>
+                        <span class="text-sm font-bold text-gray-400">Mensal</span>
+                        <input type="checkbox" id="billing-toggle" class="switch-checkbox" onclick="togglePricing()">
+                        <label for="billing-toggle" class="switch-label"><span class="switch-button"></span></label>
+                        <span class="text-sm font-bold text-white">Anual <span class="text-brand-accent text-xs">-20%</span></span>
                     </div>
                 </div>
-
-                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    <div class="glass p-8 rounded-3xl flex flex-col hover:border-brand-primary/30 transition-colors duration-300">
-                        <div class="mb-4">
-                            <h3 class="font-display text-2xl font-bold text-white">Initiate</h3>
-                            <p class="text-gray-400 text-sm mt-1">Ideal para estudantes e protótipos.</p>
-                        </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass p-8 rounded-3xl flex flex-col">
+                        <h3 class="text-2xl font-bold mb-2">Initiate</h3>
                         <div class="flex items-baseline mb-6">
-                            <span class="text-2xl text-gray-400 font-bold mr-1">R$</span>
-                            <span class="text-5xl font-display font-bold text-white tracking-tighter" id="price-standard">39,90</span>
-                            <span class="text-gray-500 ml-2 text-sm">/mês</span>
+                            <span class="text-2xl font-bold mr-1">R$</span>
+                            <span class="text-5xl font-bold" id="price-standard">39,90</span>
                         </div>
-                        <ul class="space-y-4 mb-8 flex-1">
-                            <li class="flex items-start gap-3 text-sm text-gray-300"><i class="fas fa-check-circle text-brand-primary mt-0.5"></i> 5 Projetos Ativos</li>
-                            <li class="flex items-start gap-3 text-sm text-gray-300"><i class="fas fa-check-circle text-brand-primary mt-0.5"></i> Geração GPT-3.5 Rápida</li>
-                            <li class="flex items-start gap-3 text-sm text-gray-300"><i class="fas fa-check-circle text-brand-primary mt-0.5"></i> Exportação HTML/CSS</li>
-                            <li class="flex items-start gap-3 text-sm text-gray-500"><i class="fas fa-times-circle mt-0.5"></i> Sem Licença Comercial</li>
+                        <ul class="space-y-4 mb-8 flex-1 text-gray-300">
+                            <li><i class="fas fa-check text-brand-primary mr-2"></i> 5 Projetos Ativos</li>
+                            <li><i class="fas fa-check text-brand-primary mr-2"></i> Edição em Tempo Real</li>
+                            <li><i class="fas fa-check text-brand-primary mr-2"></i> Exportação HTML</li>
                         </ul>
-                        <a href="https://mpago.la/1V3fYRm" target="_blank" id="btn-buy-standard" class="btn-secondary w-full py-4 rounded-xl text-center block">Começar Agora</a>
+                        <button class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold">Selecionar</button>
                     </div>
-
-                    <div class="glass p-8 rounded-3xl flex flex-col relative border-brand-primary/50 shadow-[0_0_40px_rgba(124,58,237,0.15)] transform md:-translate-y-4 bg-[#0a0518]">
-                        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-primary text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">Mais Popular</div>
-                        <div class="mb-4">
-                            <h3 class="font-display text-2xl font-bold text-white">Architect <span class="text-brand-primary">PRO</span></h3>
-                            <p class="text-gray-400 text-sm mt-1">Para freelancers e agências.</p>
-                        </div>
+                    <div class="glass p-8 rounded-3xl border-brand-primary border-2 flex flex-col bg-[#0a0518]">
+                        <h3 class="text-2xl font-bold mb-2">Architect PRO</h3>
                         <div class="flex items-baseline mb-6">
-                            <span class="text-2xl text-brand-primary font-bold mr-1">R$</span>
-                            <span class="text-5xl font-display font-bold text-white tracking-tighter" id="price-pro">69,90</span>
-                            <span class="text-gray-500 ml-2 text-sm">/mês</span>
+                            <span class="text-2xl font-bold text-brand-primary mr-1">R$</span>
+                            <span class="text-5xl font-bold text-brand-primary" id="price-pro">69,90</span>
                         </div>
                         <ul class="space-y-4 mb-8 flex-1">
-                            <li class="flex items-start gap-3 text-sm text-white"><i class="fas fa-check-circle text-brand-accent mt-0.5"></i> <strong>Projetos Ilimitados</strong></li>
-                            <li class="flex items-start gap-3 text-sm text-white"><i class="fas fa-check-circle text-brand-accent mt-0.5"></i> <strong>GPT-4 Turbo (Smart Code)</strong></li>
-                            <li class="flex items-start gap-3 text-sm text-white"><i class="fas fa-check-circle text-brand-accent mt-0.5"></i> Licença Comercial (Venda Livre)</li>
-                            <li class="flex items-start gap-3 text-sm text-white"><i class="fas fa-check-circle text-brand-accent mt-0.5"></i> Suporte Prioritário</li>
+                            <li><i class="fas fa-bolt text-brand-accent mr-2"></i> Projetos Ilimitados</li>
+                            <li><i class="fas fa-bolt text-brand-accent mr-2"></i> IA Architect (GPT-4)</li>
+                            <li><i class="fas fa-bolt text-brand-accent mr-2"></i> Licença Comercial</li>
                         </ul>
-                        <a href="https://mpago.la/1m8A4zt" target="_blank" id="btn-buy-pro" class="btn-primary w-full py-4 rounded-xl text-center block">Assinar Pro</a>
+                        <button class="w-full py-4 bg-brand-primary rounded-xl font-bold">Assinar Agora</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="view-app" class="hidden h-full flex flex-col md:flex-row bg-[#050014] relative z-20">
-            <aside class="w-full md:w-[400px] bg-[#0a0518] border-r border-white/5 flex flex-col h-[40vh] md:h-full relative z-30">
-                <div class="p-4 border-b border-white/5 flex items-center justify-between bg-[#0a0518]">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span class="text-xs font-mono text-gray-400 uppercase tracking-widest">System Online</span>
-                    </div>
-                    <button onclick="navigateTo('profile')" class="text-xs text-gray-500 hover:text-white transition"><i class="fas fa-user-circle mr-1"></i> Perfil</button>
-                </div>
-
-                <div class="flex-1 overflow-y-auto p-5 space-y-6 pb-20" id="chat-history">
-                    <div class="flex gap-4">
-                        <div class="w-8 h-8 rounded-full bg-brand-primary flex-shrink-0 flex items-center justify-center text-white text-xs shadow-lg shadow-brand-primary/30"><i class="fas fa-robot"></i></div>
-                        <div class="bg-white/5 border border-white/10 p-4 rounded-2xl rounded-tl-none text-sm text-gray-200 leading-relaxed shadow-sm">
-                            Olá! Sou a Synthetix. Descreva o site que você quer criar hoje. Ex: "Landing page para advogado com formulário de contato".
-                        </div>
+        <section id="view-app" class="hidden h-full flex flex-col md:flex-row bg-[#050014]">
+            <aside class="w-full md:w-[400px] border-r border-white/5 flex flex-col h-[45vh] md:h-full relative">
+                <div id="chat-history" class="flex-1 overflow-y-auto p-5 space-y-4 pb-24">
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-xs"><i class="fas fa-robot"></i></div>
+                        <div class="bg-white/5 p-3 rounded-2xl rounded-tl-none text-sm text-gray-300">Olá! O que vamos construir ou alterar hoje?</div>
                     </div>
                 </div>
-
-                <div class="absolute bottom-0 left-0 w-full p-4 bg-[#0a0518] border-t border-white/5">
+                <div class="absolute bottom-0 w-full p-4 bg-[#050014] border-t border-white/5">
                     <div class="relative">
-                        <textarea id="userPrompt" class="w-full h-14 md:h-20 bg-[#030014] border border-white/10 rounded-xl py-3 pl-4 pr-14 text-sm text-white placeholder-gray-600 focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-none transition-all" placeholder="Descreva seu projeto..."></textarea>
-                        <button onclick="generateSite()" id="generateBtn" class="absolute right-2 bottom-2 w-10 h-10 bg-brand-primary hover:bg-brand-hover text-white rounded-lg flex items-center justify-center transition-all shadow-lg">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
+                        <textarea id="userPrompt" class="w-full h-14 bg-[#030014] border border-white/10 rounded-xl py-3 pl-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none" placeholder="Ex: Adicione um menu roxo..."></textarea>
+                        <button onclick="generateSite()" class="absolute right-2 bottom-2 w-10 h-10 bg-brand-primary text-white rounded-lg flex items-center justify-center"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </aside>
-
-            <div class="flex-1 bg-black relative flex flex-col h-[60vh] md:h-full border-t md:border-t-0 border-white/10">
-                <div class="h-10 bg-[#0a0518] border-b border-white/5 flex items-center justify-between px-4">
-                    <span class="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Live Preview Host: localhost:3000</span>
-                    <div class="flex gap-2">
-                        <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
-                        <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
-                        <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
-                    </div>
+            <div class="flex-1 bg-black relative">
+                <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md text-brand-primary font-mono">
+                    <div class="logo-hexagon w-10 h-10 mb-4 animate-spin"></div>
+                    AGUARDE... COMPILANDO...
                 </div>
-                <div class="flex-1 relative w-full h-full bg-[#050014]">
-                    <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
-                        <div class="logo-hexagon w-12 h-12 mb-4 animate-spin"><div class="logo-core w-3 h-3"></div></div>
-                        <div class="text-brand-primary font-mono text-xs animate-pulse">COMPILANDO CÓDIGO...</div>
-                    </div>
-                    <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-gray-800 select-none">
-                        <i class="fas fa-code text-6xl mb-4 opacity-20"></i>
-                        <p class="text-xs font-mono uppercase tracking-widest opacity-30">Aguardando Input</p>
-                    </div>
-                    <iframe id="siteFrame" class="w-full h-full border-0 hidden"></iframe>
-                </div>
+                <div id="emptyState" class="absolute inset-0 flex items-center justify-center text-gray-800 font-mono text-xs uppercase tracking-widest">Preview Vazio</div>
+                <iframe id="siteFrame" class="w-full h-full border-0 hidden"></iframe>
             </div>
         </section>
 
-        <section id="view-profile" class="hidden min-h-screen py-24 px-4 z-10 relative">
-            <div class="max-w-6xl mx-auto glass rounded-3xl overflow-hidden min-h-[600px] flex flex-col md:flex-row">
-                <div class="w-full md:w-64 bg-[#0a0518] border-b md:border-b-0 md:border-r border-white/5 p-6 flex flex-col gap-2">
-                    <div class="text-center md:text-left mb-8">
-                        <div class="w-20 h-20 mx-auto md:mx-0 rounded-full bg-gradient-to-tr from-brand-primary to-blue-600 flex items-center justify-center text-2xl font-bold mb-4 shadow-xl" id="profile-avatar-big">US</div>
-                        <h2 class="text-xl font-bold text-white truncate" id="profile-name">Usuário</h2>
-                        <p class="text-xs text-brand-primary font-mono mt-1">PRO MEMBER</p>
-                    </div>
-                    <button onclick="switchTab('projects')" id="tab-btn-projects" class="text-left px-4 py-3 rounded-xl bg-brand-primary/10 text-brand-accent font-medium transition"><i class="fas fa-folder-open mr-3 w-5"></i> Projetos</button>
-                    <button onclick="switchTab('subscription')" id="tab-btn-subscription" class="text-left px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition"><i class="fas fa-credit-card mr-3 w-5"></i> Assinatura</button>
-                    <button onclick="logout()" class="mt-auto text-left px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition"><i class="fas fa-sign-out-alt mr-3 w-5"></i> Sair</button>
+        <section id="view-profile" class="hidden py-10 px-6 max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8">Meus Projetos</h2>
+            <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 </div>
-
-                <div class="flex-1 p-8 bg-[#030014]/50">
-                    <div id="tab-projects" class="fade-in-up">
-                        <h3 class="text-2xl font-bold mb-6 border-b border-white/5 pb-4">Meus Projetos</h3>
-                        <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            </div>
-                        <div onclick="navigateTo('app')" class="mt-4 border border-dashed border-white/10 rounded-xl h-32 flex flex-col items-center justify-center text-gray-500 hover:text-white hover:border-brand-primary/50 hover:bg-brand-primary/5 transition cursor-pointer">
-                            <i class="fas fa-plus text-xl mb-2"></i>
-                            <span class="text-sm font-medium">Criar Novo Projeto</span>
-                        </div>
-                    </div>
-
-                    <div id="tab-subscription" class="hidden fade-in-up">
-                        <h3 class="text-2xl font-bold mb-6 border-b border-white/5 pb-4">Detalhes do Plano</h3>
-                        <div class="glass p-6 rounded-xl max-w-md">
-                            <div class="flex justify-between items-center mb-6">
-                                <span class="text-gray-400">Plano Atual</span>
-                                <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-bold uppercase">Gratuito</span>
-                            </div>
-                            <div class="w-full bg-gray-800 h-2 rounded-full mb-2">
-                                <div class="w-[20%] h-full bg-brand-primary rounded-full"></div>
-                            </div>
-                            <p class="text-xs text-gray-500 mb-6">1 de 5 projetos gratuitos utilizados.</p>
-                            <button onclick="navigateTo('pricing')" class="btn-primary w-full py-3 rounded-lg text-sm">Fazer Upgrade</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
 
-        <section id="view-auth" class="hidden min-h-screen flex items-center justify-center px-4 z-50 relative">
-            <div class="glass p-8 md:p-10 rounded-3xl w-full max-w-md relative shadow-2xl shadow-brand-primary/10">
-                <button onclick="navigateTo('home')" class="absolute top-6 right-6 text-gray-500 hover:text-white"><i class="fas fa-times"></i></button>
-                
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-display font-bold mb-2" id="auth-title">Bem-vindo</h2>
-                    <p class="text-gray-400 text-sm">Acesse sua dashboard de criação.</p>
-                </div>
-
-                <button onclick="googleLogin()" class="w-full bg-white hover:bg-gray-100 text-black font-bold py-3.5 rounded-xl flex items-center justify-center gap-3 transition mb-6">
-                    <i class="fab fa-google text-red-500 text-lg"></i> Continuar com Google
-                </button>
-
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="h-px bg-white/10 flex-1"></div>
-                    <span class="text-xs text-gray-500 uppercase">ou email</span>
-                    <div class="h-px bg-white/10 flex-1"></div>
-                </div>
-
+        <section id="view-auth" class="hidden h-full flex items-center justify-center px-4">
+            <div class="glass p-8 rounded-3xl w-full max-w-md">
+                <h2 class="text-3xl font-bold text-center mb-8" id="auth-title">Entrar</h2>
                 <form onsubmit="handleAuth(event)" class="space-y-4">
-                    <div id="field-name" class="hidden">
-                        <input type="text" id="input-name" class="w-full bg-[#030014] border border-white/10 rounded-xl px-5 py-4 text-white focus:border-brand-primary outline-none text-sm transition" placeholder="Nome Completo">
-                    </div>
-                    <input type="email" class="w-full bg-[#030014] border border-white/10 rounded-xl px-5 py-4 text-white focus:border-brand-primary outline-none text-sm transition" placeholder="seu@email.com" required>
-                    <input type="password" class="w-full bg-[#030014] border border-white/10 rounded-xl px-5 py-4 text-white focus:border-brand-primary outline-none text-sm transition" placeholder="Sua senha" required>
-                    <button type="submit" class="btn-primary w-full py-4 rounded-xl text-sm uppercase tracking-widest mt-2" id="auth-submit-btn">Entrar</button>
+                    <div id="field-name" class="hidden"><input type="text" id="input-name" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white outline-none" placeholder="Nome"></div>
+                    <input type="email" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white outline-none" placeholder="Email" required>
+                    <input type="password" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white outline-none" placeholder="Senha" required>
+                    <button type="submit" class="w-full py-4 bg-brand-primary rounded-xl font-bold uppercase tracking-widest" id="auth-btn">Entrar</button>
                 </form>
-
-                <div class="mt-8 text-center">
-                    <p class="text-sm text-gray-400">
-                        <span id="auth-toggle-text">Não tem conta?</span>
-                        <button onclick="toggleAuthMode()" class="text-brand-primary font-bold hover:underline ml-1" id="auth-toggle-btn">Criar agora</button>
-                    </p>
-                </div>
+                <p class="mt-6 text-center text-gray-400 text-sm"><span id="auth-toggle-text">Novo por aqui?</span> <button onclick="toggleAuthMode()" class="text-brand-primary font-bold ml-1" id="auth-toggle-btn">Criar conta</button></p>
             </div>
         </section>
-
-         <section id="view-showcase" class="hidden min-h-screen py-24 px-4 z-10 relative">
-             <div class="max-w-6xl mx-auto">
-                 <h2 class="text-4xl font-display font-bold text-center mb-12">Galeria de Criações</h2>
-                 <div class="grid md:grid-cols-3 gap-6">
-                     <div class="glass p-0 rounded-2xl overflow-hidden group">
-                         <div class="h-48 bg-gray-800 flex items-center justify-center group-hover:bg-gray-700 transition"><i class="fas fa-coffee text-4xl text-gray-500"></i></div>
-                         <div class="p-6">
-                             <h4 class="font-bold text-lg text-white">Cafeteria Modern</h4>
-                             <p class="text-sm text-gray-500 mt-1 mb-4">E-commerce Landing Page</p>
-                             <button class="text-brand-accent text-sm font-bold hover:underline">Ver Live Demo</button>
-                         </div>
-                     </div>
-                      <div class="glass p-0 rounded-2xl overflow-hidden group">
-                         <div class="h-48 bg-gray-800 flex items-center justify-center group-hover:bg-gray-700 transition"><i class="fas fa-car text-4xl text-gray-500"></i></div>
-                         <div class="p-6">
-                             <h4 class="font-bold text-lg text-white">Luxury Cars</h4>
-                             <p class="text-sm text-gray-500 mt-1 mb-4">Portfolio Showroom</p>
-                             <button class="text-brand-accent text-sm font-bold hover:underline">Ver Live Demo</button>
-                         </div>
-                     </div>
-                      <div class="glass p-0 rounded-2xl overflow-hidden group">
-                         <div class="h-48 bg-gray-800 flex items-center justify-center group-hover:bg-gray-700 transition"><i class="fas fa-building text-4xl text-gray-500"></i></div>
-                         <div class="p-6">
-                             <h4 class="font-bold text-lg text-white">Corp Agency</h4>
-                             <p class="text-sm text-gray-500 mt-1 mb-4">B2B Service Page</p>
-                             <button class="text-brand-accent text-sm font-bold hover:underline">Ver Live Demo</button>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </section>
 
     </main>
 
     <script>
-        // --- CONFIGURAÇÃO ---
-        const prices = {
-            monthly: { standard: "39,90", pro: "69,90", linkStandard: "https://mpago.la/1V3fYRm", linkPro: "https://mpago.la/1m8A4zt" },
-            annual: { standard: "49,90", pro: "97,90", linkStandard: "https://mpago.la/2tEyxN5", linkPro: "https://mpago.la/2PqbRfB" }
-        };
-
-        // --- ESTADO (LOCALSTORAGE) ---
+        const prices = { monthly: { standard: "39,90", pro: "69,90" }, annual: { standard: "31,90", pro: "55,90" } };
+        let currentCode = ""; // MEMÓRIA DO SITE ATUAL
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         let userName = localStorage.getItem('userName') || "Usuário";
         let projects = JSON.parse(localStorage.getItem('projects')) || [];
-        let isSignupMode = false;
+        let isSignup = false;
 
-        // --- INICIALIZAÇÃO ---
-        window.onload = () => {
-            updateNavState();
-            if(isLoggedIn) {
-                document.getElementById('profile-name').innerText = userName;
-                renderProjects();
-            }
-        };
-
-        // --- SISTEMA DE NAVEGAÇÃO ---
-        function navigateTo(viewId, mode = null) {
-            // Esconder todas as views
+        // NAVEGAÇÃO
+        function navigateTo(viewId, mode) {
             document.querySelectorAll('section[id^="view-"]').forEach(el => el.classList.add('hidden'));
-            
-            // Mostrar view alvo
-            const target = document.getElementById('view-' + viewId);
-            if(target) target.classList.remove('hidden');
-
-            // Lógica específica
-            if(viewId === 'auth') {
-                isSignupMode = (mode === 'signup');
-                updateAuthUI();
-            }
-
-            // Scroll reset
-            document.getElementById('main-content').scrollTop = 0;
-
-            // Header update
-            updateNavState();
+            document.getElementById('view-' + viewId).classList.remove('hidden');
+            if(viewId === 'auth') { isSignup = (mode === 'signup'); updateAuthUI(); }
+            if(viewId === 'profile') renderProjects();
+            updateNav();
         }
 
-        // --- MENU MOBILE ---
+        // MOBILE MENU
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
-            
-            if (menu.classList.contains('open')) {
-                menu.classList.remove('open');
-                setTimeout(() => menu.style.pointerEvents = 'none', 400); // Evita cliques fantasmas
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            } else {
-                menu.style.pointerEvents = 'auto';
-                menu.classList.add('open');
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            }
-        }
-        // Fechar menu ao iniciar para garantir
-        document.getElementById('mobile-menu').style.pointerEvents = 'none';
-
-        // --- ESTADO DE LOGIN UI ---
-        function updateNavState() {
-            const dGuest = document.getElementById('desktop-guest');
-            const dUser = document.getElementById('desktop-user');
-            const mGuest = document.getElementById('mobile-guest-buttons');
-            const mUser = document.getElementById('mobile-user-buttons');
-            
-            if (isLoggedIn) {
-                dGuest.classList.add('hidden'); dUser.classList.remove('hidden'); dUser.classList.add('flex');
-                mGuest.classList.add('hidden'); mUser.classList.remove('hidden');
-                
-                // Avatar Initials
-                const initials = userName.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-                document.getElementById('nav-avatar').innerText = initials;
-                document.getElementById('profile-avatar-big').innerText = initials;
-            } else {
-                dGuest.classList.remove('hidden'); dUser.classList.add('hidden'); dUser.classList.remove('flex');
-                mGuest.classList.remove('hidden'); mUser.classList.add('hidden');
-            }
+            menu.classList.toggle('open');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
         }
 
-        // --- AUTH LOGIC ---
-        function toggleAuthMode() {
-            isSignupMode = !isSignupMode;
-            updateAuthUI();
-        }
-
-        function updateAuthUI() {
-            const title = document.getElementById('auth-title');
-            const btn = document.getElementById('auth-submit-btn');
-            const toggleText = document.getElementById('auth-toggle-text');
-            const toggleBtn = document.getElementById('auth-toggle-btn');
-            const nameField = document.getElementById('field-name');
-
-            if (isSignupMode) {
-                title.innerText = "Criar Conta";
-                btn.innerText = "REGISTRAR";
-                toggleText.innerText = "Já possui conta?";
-                toggleBtn.innerText = "Entrar";
-                nameField.classList.remove('hidden');
-            } else {
-                title.innerText = "Bem-vindo";
-                btn.innerText = "ENTRAR";
-                toggleText.innerText = "Não tem conta?";
-                toggleBtn.innerText = "Criar agora";
-                nameField.classList.add('hidden');
-            }
-        }
-
-        function handleAuth(e) {
-            e.preventDefault();
-            const btn = document.getElementById('auth-submit-btn');
-            const originalText = btn.innerText;
-            const nameInput = document.getElementById('input-name');
-
-            if (isSignupMode && nameInput.value) userName = nameInput.value;
-            else if (!isSignupMode) userName = "Usuário Registrado";
-
-            btn.innerText = "PROCESSANDO...";
-            btn.classList.add('opacity-70', 'cursor-not-allowed');
-
-            setTimeout(() => {
-                isLoggedIn = true;
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userName', userName);
-                
-                document.getElementById('profile-name').innerText = userName;
-                renderProjects();
-                
-                navigateTo('profile');
-                
-                btn.innerText = originalText;
-                btn.classList.remove('opacity-70', 'cursor-not-allowed');
-            }, 1500);
-        }
-
-        function googleLogin() {
-            isLoggedIn = true;
-            userName = "Google User";
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userName', userName);
-            navigateTo('profile');
-        }
-
-        function logout() {
-            isLoggedIn = false;
-            userName = "Usuário";
-            localStorage.clear();
-            navigateTo('home');
-        }
-
-        // --- PRICING LOGIC ---
-        function togglePricing() {
-            const isAnnual = document.getElementById('billing-toggle').checked;
-            const type = isAnnual ? 'annual' : 'monthly';
-            
-            document.getElementById('price-standard').innerText = prices[type].standard;
-            document.getElementById('price-pro').innerText = prices[type].pro;
-            
-            document.getElementById('btn-buy-standard').href = prices[type].linkStandard;
-            document.getElementById('btn-buy-pro').href = prices[type].linkPro;
-            
-            // Visual feedback
-            const lblM = document.getElementById('label-monthly');
-            const lblA = document.getElementById('label-annual');
-            if(isAnnual) {
-                lblA.classList.add('text-white'); lblA.classList.remove('text-gray-400');
-                lblM.classList.add('text-gray-400'); lblM.classList.remove('text-white');
-            } else {
-                lblM.classList.add('text-white'); lblM.classList.remove('text-gray-400');
-                lblA.classList.add('text-gray-400'); lblA.classList.remove('text-white');
-            }
-        }
-
-        // --- PROFILE TABS ---
-        function switchTab(tab) {
-            document.getElementById('tab-projects').classList.add('hidden');
-            document.getElementById('tab-subscription').classList.add('hidden');
-            
-            // Reset buttons styling
-            document.getElementById('tab-btn-projects').classList.remove('bg-brand-primary/10', 'text-brand-accent');
-            document.getElementById('tab-btn-projects').classList.add('text-gray-400');
-            
-            document.getElementById('tab-btn-subscription').classList.remove('bg-brand-primary/10', 'text-brand-accent');
-            document.getElementById('tab-btn-subscription').classList.add('text-gray-400');
-
-            // Activate target
-            document.getElementById('tab-' + tab).classList.remove('hidden');
-            const btn = document.getElementById('tab-btn-' + tab);
-            btn.classList.remove('text-gray-400');
-            btn.classList.add('bg-brand-primary/10', 'text-brand-accent');
-        }
-
-        // --- PROJECTS LOGIC ---
-        function saveProject(html, prompt) {
-            const newProject = {
-                id: Date.now(),
-                name: prompt.length > 20 ? prompt.substring(0, 20) + "..." : prompt,
-                date: new Date().toLocaleDateString('pt-BR'),
-                code: html
-            };
-            projects.unshift(newProject);
-            localStorage.setItem('projects', JSON.stringify(projects));
-            renderProjects();
-        }
-
-        function renderProjects() {
-            const grid = document.getElementById('projects-grid');
-            grid.innerHTML = "";
-            
-            if (projects.length === 0) return;
-
-            projects.forEach(proj => {
-                const card = document.createElement('div');
-                card.className = "glass p-5 rounded-xl flex flex-col justify-between hover:border-brand-primary/40 transition cursor-pointer";
-                card.onclick = () => loadProject(proj.id);
-                card.innerHTML = `
-                    <div class="mb-4">
-                        <div class="w-10 h-10 rounded-full bg-brand-surface border border-white/10 flex items-center justify-center mb-3 text-brand-primary">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <h4 class="font-bold text-white text-sm">${proj.name}</h4>
-                        <p class="text-xs text-gray-500 mt-1">${proj.date}</p>
-                    </div>
-                    <div class="flex justify-between items-center border-t border-white/5 pt-3">
-                        <span class="text-[10px] text-gray-400 uppercase tracking-widest">HTML</span>
-                        <i class="fas fa-chevron-right text-xs text-brand-primary"></i>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function loadProject(id) {
-            const proj = projects.find(p => p.id === id);
-            if(proj) {
-                navigateTo('app');
-                const frame = document.getElementById('siteFrame');
-                const empty = document.getElementById('emptyState');
-                empty.classList.add('hidden');
-                frame.classList.remove('hidden');
-                const doc = frame.contentWindow.document;
-                doc.open(); doc.write(proj.code); doc.close();
-            }
-        }
-
-        // --- AI GENERATION ---
+        // GERAÇÃO IA (INCREMENTAL)
         async function generateSite() {
             const input = document.getElementById('userPrompt');
-            const prompt = input.value;
-            
-            if (!prompt) { showToast("⚠️ Digite um comando para a IA"); return; }
-            if (!isLoggedIn) { 
-                showToast("🔒 Faça login para usar a IA"); 
-                setTimeout(() => navigateTo('auth'), 1500); 
-                return; 
-            }
+            const history = document.getElementById('chat-history');
+            const prompt = input.value.trim();
+            if(!prompt) return;
+            if(!isLoggedIn) { showToast("Login Necessário"); navigateTo('auth'); return; }
 
-            // UI Update
+            // Adicionar ao chat e limpar input
+            const userMsg = document.createElement('div');
+            userMsg.className = "flex justify-end mb-4 fade-in-up";
+            userMsg.innerHTML = `<div class="bg-brand-primary p-3 rounded-2xl rounded-br-none text-sm text-white max-w-[80%]">${prompt}</div>`;
+            history.appendChild(userMsg);
+            input.value = ""; // LIMPA NA HORA
+            history.scrollTop = history.scrollHeight;
+
             const loading = document.getElementById('loadingState');
             const frame = document.getElementById('siteFrame');
-            const empty = document.getElementById('emptyState');
-            
             loading.classList.remove('hidden');
-            empty.classList.add('hidden');
-            frame.classList.add('hidden');
 
             try {
                 const response = await fetch('/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: prompt })
+                    body: JSON.stringify({ prompt, existingCode: currentCode }) // ENVIA O CÓDIGO ATUAL
                 });
 
-                if (!response.ok) throw new Error('API Error');
-
                 const data = await response.json();
+                currentCode = data.html; // ATUALIZA A MEMÓRIA
                 
-                // Render
                 const doc = frame.contentWindow.document;
-                doc.open(); doc.write(data.html); doc.close();
+                doc.open(); doc.write(currentCode); doc.close();
                 
-                // Save & Success
-                saveProject(data.html, prompt);
-                showToast("✨ Site gerado com sucesso!");
-                
-                loading.classList.add('hidden');
+                document.getElementById('emptyState').classList.add('hidden');
                 frame.classList.remove('hidden');
-
-            } catch (error) {
-                console.error(error);
-                showToast("❌ Erro ao conectar com a IA");
+                saveProject(currentCode, prompt);
+            } catch (e) {
+                showToast("Erro na Conexão");
+            } finally {
                 loading.classList.add('hidden');
-                empty.classList.remove('hidden');
+                history.scrollTop = history.scrollHeight;
             }
         }
 
-        // --- TOAST NOTIFICATIONS ---
-        function showToast(msg) {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = "toast glass bg-[#0a0518] border border-brand-primary/30 px-6 py-4 rounded-xl text-sm font-medium text-white flex items-center shadow-2xl";
-            toast.innerHTML = msg;
-            
-            container.appendChild(toast);
-            
-            setTimeout(() => toast.classList.add('show'), 100);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400);
-            }, 3000);
+        // AUTH & PROFILE
+        function updateNav() {
+            const guest = document.getElementById('desktop-guest');
+            const user = document.getElementById('desktop-user');
+            if(isLoggedIn) {
+                guest.classList.add('hidden'); user.classList.remove('hidden'); user.classList.add('flex');
+                document.getElementById('nav-avatar').innerText = userName.charAt(0).toUpperCase();
+            } else {
+                guest.classList.remove('hidden'); user.classList.add('hidden');
+            }
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            userName = document.getElementById('input-name').value || "Membro";
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userName', userName);
+            navigateTo('profile');
+        }
+
+        function toggleAuthMode() {
+            isSignup = !isSignup;
+            updateAuthUI();
+        }
+
+        function updateAuthUI() {
+            document.getElementById('auth-title').innerText = isSignup ? "Criar Conta" : "Entrar";
+            document.getElementById('field-name').classList.toggle('hidden', !isSignup);
+            document.getElementById('auth-btn').innerText = isSignup ? "Registrar" : "Entrar";
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            grid.innerHTML = projects.map((p, i) => `
+                <div class="glass p-5 rounded-2xl flex justify-between items-center">
+                    <div><h4 class="font-bold">${p.name}</h4><p class="text-xs text-gray-500">${p.date}</p></div>
+                    <button onclick="loadProject(${i})" class="bg-brand-primary px-3 py-1 rounded-lg text-xs">Abrir</button>
+                </div>
+            `).join('') || '<p class="text-gray-500 italic">Nenhum projeto ainda.</p>';
+        }
+
+        function saveProject(code, prompt) {
+            projects.unshift({ name: prompt.substring(0, 15), date: new Date().toLocaleDateString(), code });
+            localStorage.setItem('projects', JSON.stringify(projects));
+        }
+
+        function loadProject(i) {
+            currentCode = projects[i].code;
+            navigateTo('app');
+            const frame = document.getElementById('siteFrame');
+            const doc = frame.contentWindow.document;
+            doc.open(); doc.write(currentCode); doc.close();
+            document.getElementById('emptyState').classList.add('hidden');
+            frame.classList.remove('hidden');
+        }
+
+        function togglePricing() {
+            const isAnnual = document.getElementById('billing-toggle').checked;
+            const type = isAnnual ? 'annual' : 'monthly';
+            document.getElementById('price-standard').innerText = prices[type].standard;
+            document.getElementById('price-pro').innerText = prices[type].pro;
+        }
+
+        function showToast(m) {
+            const t = document.createElement('div');
+            t.className = "bg-brand-primary text-white px-6 py-3 rounded-xl shadow-2xl fade-in-up mb-2";
+            t.innerText = m;
+            document.getElementById('toast-container').appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
+        function logout() {
+            localStorage.clear();
+            location.reload();
         }
     </script>
 </body>
