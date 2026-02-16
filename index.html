@@ -52,18 +52,18 @@
         .switch-checkbox:checked + .switch-label { background: #7c3aed; }
         .switch-checkbox:checked + .switch-label .switch-button { left: calc(100% - 3px); transform: translateX(-100%); }
 
-        /* MENU MOBILE (SÓLIDO) */
+        /* MENU MOBILE */
         #mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); background: #030014; z-index: 100; }
         #mobile-menu.open { transform: translateX(0); }
 
         .fade-in-up { animation: fadeInUp 0.4s ease-out; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TABS PERFIL */
+        /* TABS */
         .active-tab { background: rgba(124, 58, 237, 0.1); color: #d8b4fe; border-color: rgba(124, 58, 237, 0.3); }
         .inactive-tab { color: #9ca3af; border-color: transparent; }
         
-        /* SHOWCASE EFFECTS */
+        /* SHOWCASE CARDS */
         .showcase-card { transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.05); }
         .showcase-card:hover { transform: translateY(-8px); border-color: #7c3aed; box-shadow: 0 15px 30px rgba(124, 58, 237, 0.2); }
     </style>
@@ -156,9 +156,8 @@
                         <ul class="space-y-4 mb-10 flex-1 text-gray-300 text-sm">
                             <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> 5 Projetos Ativos</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> Edição Incremental IA</li>
-                            <li class="flex items-center gap-3 text-gray-600"><i class="fas fa-times"></i> Licença Comercial Zenith</li>
                         </ul>
-                        <a href="https://mpago.la/1V3fYRm" id="link-standard" target="_blank" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-center hover:bg-white/10 transition">Assinar Agora</a>
+                        <a href="https://mpago.la/1V3fYRm" id="link-standard" target="_blank" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-center">Assinar Agora</a>
                     </div>
                     <div class="glass p-10 rounded-3xl border-brand-primary border-2 flex flex-col text-left bg-[#0a0518] relative shadow-[0_0_40px_rgba(124,58,237,0.1)]">
                         <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-primary text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase">Recomendado</div>
@@ -170,10 +169,9 @@
                         </div>
                         <ul class="space-y-4 mb-10 flex-1 text-white text-sm">
                             <li class="flex items-center gap-3 font-bold"><i class="fas fa-bolt text-brand-accent"></i> Projetos Ilimitados</li>
-                            <li class="flex items-center gap-3 font-bold"><i class="fas fa-bolt text-brand-accent"></i> Edição em Tempo Real</li>
                             <li class="flex items-center gap-3 font-bold"><i class="fas fa-bolt text-brand-accent"></i> Licença Comercial</li>
                         </ul>
-                        <a href="https://mpago.la/1m8A4zt" id="link-pro" target="_blank" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-center hover:bg-brand-hover transition shadow-xl shadow-brand-primary/20">Assinar Agora</a>
+                        <a href="https://mpago.la/1m8A4zt" id="link-pro" target="_blank" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-center">Assinar Agora</a>
                     </div>
                 </div>
             </div>
@@ -194,9 +192,9 @@
                         <p class="text-xs text-gray-500 leading-relaxed">Interface minimalista para serviços exclusivos de hospitalidade.</p>
                     </div>
                     <div class="showcase-card glass p-6 rounded-2xl group">
-                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-cube text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
+                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-car text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
                         <h4 class="font-bold text-white mb-2 text-lg">Zenith Configurator</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">Configurador 3D para visualização de cores e materiais em tempo real.</p>
+                        <p class="text-xs text-gray-500 leading-relaxed">Configurador de alta performance para marcas automotivas.</p>
                     </div>
                 </div>
             </div>
@@ -215,13 +213,13 @@
                     <div class="flex gap-4">
                         <div class="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-xs shadow-lg"><i class="fas fa-robot"></i></div>
                         <div class="bg-white/5 border border-white/10 p-4 rounded-2xl rounded-tl-none text-sm text-gray-300 leading-relaxed">
-                            Sistema pronto. Descreva o que deseja criar ou mudar no projeto atual.
+                            Sistema pronto. Descreva sua visão e eu construirei agora mesmo.
                         </div>
                     </div>
                 </div>
                 <div class="absolute bottom-0 w-full p-4 bg-[#0a0518] border-t border-white/5 z-20">
                     <div class="relative">
-                        <textarea id="userPrompt" class="w-full h-16 bg-[#030014] border border-white/10 rounded-xl py-3 px-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none transition-all" placeholder="Adicione um botão de contato roxo..."></textarea>
+                        <textarea id="userPrompt" class="w-full h-16 bg-[#030014] border border-white/10 rounded-xl py-3 px-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none transition-all" placeholder="Adicione um botão de contato..."></textarea>
                         <button onclick="generateSite()" class="absolute right-2 bottom-3 w-10 h-10 bg-brand-primary hover:bg-brand-hover text-white rounded-lg flex items-center justify-center transition shadow-lg">
                             <i class="fas fa-paper-plane"></i>
                         </button>
@@ -238,49 +236,75 @@
             </div>
         </section>
 
-        <section id="view-profile" class="hidden min-h-full py-20 px-6 fade-in-up bg-[#050014]">
-            <div class="max-w-7xl mx-auto w-full">
+        <section id="view-profile" class="hidden h-full flex flex-col bg-[#050014] fade-in-up">
+            <div class="max-w-7xl mx-auto w-full p-6 md:p-12 overflow-y-auto">
                 <div class="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12 border-b border-white/5 pb-10">
                     <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-primary to-blue-600 flex items-center justify-center text-3xl font-bold shadow-2xl border-4 border-white/5" id="profile-avatar-big">US</div>
                     <div class="text-center md:text-left">
                         <h2 class="text-3xl font-display font-bold text-white" id="profile-name-display">Usuário</h2>
-                        <p class="text-gray-500 font-mono text-xs mt-1 mb-4">ID: #882-991-SYN</p>
-                        <span class="px-4 py-1.5 bg-brand-primary/10 border border-brand-primary/40 text-brand-accent rounded-full text-[10px] font-bold uppercase">Pro Member</span>
+                        <p class="text-gray-500 font-mono text-[10px] mt-1 mb-4 uppercase tracking-[0.3em]">Status: Conexão Estável</p>
+                        <span class="px-4 py-1.5 bg-brand-primary/10 border border-brand-primary/40 text-brand-accent rounded-full text-[10px] font-bold uppercase">Pro Architect</span>
                     </div>
                     <div class="md:ml-auto flex gap-4 w-full md:w-auto">
-                        <button onclick="logout()" class="flex-1 md:flex-none px-6 py-2.5 border border-white/10 rounded-xl text-sm font-medium hover:bg-white/5 transition">Sair</button>
-                        <button onclick="navigateTo('pricing')" class="flex-1 md:flex-none bg-brand-primary px-8 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-hover transition">Upgrade</button>
+                        <button onclick="logout()" class="flex-1 md:flex-none px-6 py-2.5 border border-white/10 rounded-xl text-sm font-medium hover:bg-red-500/10 hover:text-red-400 transition">Sair</button>
+                        <button onclick="navigateTo('app')" class="flex-1 md:flex-none bg-brand-primary px-8 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-hover transition">Abrir Editor</button>
                     </div>
                 </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                     <div class="col-span-1 space-y-3">
                         <button onclick="switchTab('projects')" id="tab-btn-projects" class="active-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3"><i class="fas fa-layer-group"></i> Projetos</button>
                         <button onclick="switchTab('subscription')" id="tab-btn-subscription" class="inactive-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3 hover:bg-white/5"><i class="fas fa-credit-card"></i> Assinatura</button>
                         <button onclick="switchTab('settings')" id="tab-btn-settings" class="inactive-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3 hover:bg-white/5"><i class="fas fa-cog"></i> Configurações</button>
                     </div>
+
                     <div class="col-span-3">
                         <div id="tab-projects" class="fade-in-up">
-                            <h3 class="text-xl font-bold mb-8 text-white">Projetos Ativos</h3>
+                            <h3 class="text-xl font-bold mb-8 text-white">Repositório de Arquiteturas</h3>
                             <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-                            <div id="empty-projects-state" class="hidden py-20 text-center border-2 border-dashed border-white/5 rounded-2xl text-gray-600 text-sm">Nenhum projeto registrado.</div>
+                            <div id="empty-projects-state" class="hidden py-20 text-center border-2 border-dashed border-white/5 rounded-2xl text-gray-600">Nenhum projeto salvo.</div>
                         </div>
-                        <div id="tab-subscription" class="hidden fade-in-up"><h3 class="text-xl font-bold mb-8">Plano Ativo: Pro Architect</h3></div>
-                        <div id="tab-settings" class="hidden fade-in-up"><h3 class="text-xl font-bold mb-8">Ajustes de Sistema</h3></div>
+
+                        <div id="tab-subscription" class="hidden fade-in-up">
+                            <h3 class="text-xl font-bold mb-8 text-white">Plano e Faturamento</h3>
+                            <div class="glass p-8 rounded-2xl border-brand-primary/20">
+                                <p class="text-sm text-gray-400 mb-6 font-bold uppercase tracking-widest">Plano Ativo: Anual Pro</p>
+                                <p class="text-xs text-gray-500 mb-8 leading-relaxed">Sua assinatura está ativa. Acesso ilimitado às ferramentas de edição incremental liberado.</p>
+                                <button onclick="navigateTo('pricing')" class="text-xs font-bold text-brand-primary hover:underline">GERENCIAR ASSINATURA</button>
+                            </div>
+                        </div>
+
+                        <div id="tab-settings" class="hidden fade-in-up">
+                            <h3 class="text-xl font-bold mb-8 text-white">Ajustes da Estação</h3>
+                            <div class="space-y-6">
+                                <div class="glass p-6 rounded-2xl border-white/5">
+                                    <label class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-4">Nome de Identificação</label>
+                                    <div class="flex gap-4">
+                                        <input type="text" id="settings-name" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-brand-primary outline-none" placeholder="Seu nome">
+                                        <button onclick="saveSettingsName()" class="bg-brand-primary px-6 py-3 rounded-xl text-xs font-bold hover:bg-brand-hover transition">SALVAR</button>
+                                    </div>
+                                </div>
+                                <div class="glass p-6 rounded-2xl border-white/5">
+                                    <label class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-4">Segurança</label>
+                                    <button onclick="showToast('Email de redefinição enviado!')" class="text-xs text-brand-accent font-bold">SOLICITAR ALTERAÇÃO DE SENHA</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="view-auth" class="hidden min-h-full flex items-center justify-center px-4 fade-in-up">
-            <div class="glass p-10 rounded-3xl w-full max-w-md shadow-2xl">
+        <section id="view-auth" class="hidden h-full flex items-center justify-center px-4">
+            <div class="glass p-10 rounded-3xl w-full max-w-md">
                 <h2 class="text-3xl font-display font-bold text-center mb-8" id="auth-title">Acesso</h2>
                 <form onsubmit="handleAuth(event)" class="space-y-4">
-                    <div id="field-name" class="hidden"><input type="text" id="input-name" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-brand-primary" placeholder="Nome"></div>
+                    <div id="field-name" class="hidden"><input type="text" id="input-name" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none" placeholder="Nome"></div>
                     <input type="email" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none" placeholder="Email" required>
                     <input type="password" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none" placeholder="Senha" required>
-                    <button type="submit" class="w-full py-4 bg-brand-primary rounded-xl font-bold uppercase mt-4 tracking-widest shadow-lg shadow-brand-primary/20" id="auth-btn">Confirmar</button>
+                    <button type="submit" class="w-full py-4 bg-brand-primary rounded-xl font-bold uppercase mt-4">Confirmar</button>
                 </form>
-                <button onclick="toggleAuthMode()" class="mt-8 text-center w-full text-xs text-brand-accent uppercase font-bold" id="auth-toggle-btn">Criar Nova Conta</button>
+                <button onclick="toggleAuthMode()" class="mt-8 text-center w-full text-xs text-brand-accent uppercase font-bold">Criar Nova Conta</button>
             </div>
         </section>
     </main>
@@ -290,6 +314,15 @@
             monthly: { standard: "29,90", pro: "49,90", linkS: "https://mpago.la/1V3fYRm", linkP: "https://mpago.la/1m8A4zt" },
             annual: { standard: "19,90", pro: "39,90", linkS: "https://mpago.la/2tEyxN5", linkP: "https://mpago.la/2PqbRfB" }
         };
+
+        const aiTips = [
+            "💡 Dica: Que tal adicionar um 'Dark Mode' automático para dar um ar mais premium?",
+            "🎨 Sugestão: Fontes sem serifa (como Inter) trazem mais modernidade ao seu projeto.",
+            "🚀 Performance: Vi que o site está leve. Se quiser, posso adicionar animações de entrada nos textos.",
+            "🛠️ Ajuste: Posso criar um formulário de contato integrado para aumentar sua conversão.",
+            "📱 Mobile: O layout já é responsivo, mas se quiser, posso esconder elementos secundários no celular.",
+            "🌟 Design: Sua interface está ficando tão limpa que dá até dó de clicar. Quer testar um gradiente no fundo?"
+        ];
 
         let currentCode = ""; 
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -303,7 +336,11 @@
             document.querySelectorAll('section[id^="view-"]').forEach(el => el.classList.add('hidden'));
             document.getElementById('view-' + viewId).classList.remove('hidden');
             if(viewId === 'auth') { isSignup = (mode === 'signup'); updateAuthUI(); }
-            if(viewId === 'profile') renderProjects();
+            if(viewId === 'profile') { 
+                renderProjects(); 
+                switchTab('projects');
+                document.getElementById('settings-name').value = userName;
+            }
             updateNav();
         }
 
@@ -327,10 +364,11 @@
             currentCode = "";
             document.getElementById('siteFrame').classList.add('hidden');
             document.getElementById('emptyState').classList.remove('hidden');
-            document.getElementById('chat-history').innerHTML = `<div class="bg-white/5 p-4 rounded-2xl text-xs text-gray-500 italic">Memória limpa. O que vamos criar do zero?</div>`;
+            document.getElementById('chat-history').innerHTML = `<div class="bg-white/5 p-4 rounded-2xl text-xs text-gray-500 italic">Memória limpa. O que vamos criar agora?</div>`;
             showToast("Editor Resetado");
         }
 
+        // GERAÇÃO IA INTERATIVA COM DICAS
         async function generateSite() {
             const input = document.getElementById('userPrompt');
             const history = document.getElementById('chat-history');
@@ -338,11 +376,13 @@
             if(!prompt) return;
             if(!isLoggedIn) { navigateTo('auth'); return; }
 
+            // 1. Enviar mensagem do usuário e limpar input
             const uDiv = document.createElement('div');
             uDiv.className = "flex justify-end mb-4 fade-in-up";
             uDiv.innerHTML = `<div class="bg-brand-primary p-4 rounded-2xl rounded-br-none text-sm text-white max-w-[85%] shadow-lg shadow-brand-primary/10">${prompt}</div>`;
             history.appendChild(uDiv);
-            input.value = ""; history.scrollTop = history.scrollHeight;
+            input.value = ""; 
+            history.scrollTop = history.scrollHeight;
 
             const loading = document.getElementById('loadingState');
             const frame = document.getElementById('siteFrame');
@@ -356,12 +396,41 @@
                 });
                 const data = await response.json();
                 currentCode = data.html;
+                
                 const doc = frame.contentWindow.document;
                 doc.open(); doc.write(currentCode); doc.close();
+                
                 document.getElementById('emptyState').classList.add('hidden');
                 frame.classList.remove('hidden');
+
+                // 2. Resposta de Confirmação da IA
+                const aiMsg = document.createElement('div');
+                aiMsg.className = "flex gap-4 mb-4 fade-in-up";
+                aiMsg.innerHTML = `<div class="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-xs shadow-lg"><i class="fas fa-robot"></i></div><div class="bg-white/5 border border-white/10 p-4 rounded-2xl rounded-tl-none text-sm text-brand-accent">✨ Alteração aplicada à arquitetura.</div>`;
+                history.appendChild(aiMsg);
+
+                // 3. Dica Interativa Aleatória
+                setTimeout(() => {
+                    const tip = aiTips[Math.floor(Math.random() * aiTips.length)];
+                    const tipDiv = document.createElement('div');
+                    tipDiv.className = "flex gap-4 mb-4 fade-in-up";
+                    tipDiv.innerHTML = `<div class="w-8 h-8 rounded-full bg-brand-surface border border-brand-primary/30 flex items-center justify-center text-[10px] text-brand-primary shadow-lg"><i class="fas fa-lightbulb"></i></div><div class="bg-brand-primary/5 p-4 rounded-2xl rounded-tl-none text-xs text-gray-400 italic">${tip}</div>`;
+                    history.appendChild(tipDiv);
+                    history.scrollTop = history.scrollHeight;
+                }, 1000);
+
                 saveProject(currentCode, prompt);
             } catch (e) { showToast("Erro Conexão"); } finally { loading.classList.add('hidden'); }
+        }
+
+        // CONFIGURAÇÕES DE PERFIL
+        function saveSettingsName() {
+            const n = document.getElementById('settings-name').value.trim();
+            if(n.length < 3) { showToast("Nome muito curto"); return; }
+            userName = n;
+            localStorage.setItem('userName', userName);
+            updateNav();
+            showToast("✨ Perfil Atualizado!");
         }
 
         function switchTab(id) {
@@ -370,7 +439,7 @@
                 document.getElementById('tab-btn-' + t).className = "inactive-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3";
             });
             document.getElementById('tab-' + id).classList.remove('hidden');
-            document.getElementById('tab-btn-' + id).className = "active-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3";
+            document.getElementById('tab-btn-' + id).className = "active-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3 shadow-lg shadow-brand-primary/10";
         }
 
         function updateNav() {
@@ -392,7 +461,7 @@
 
         function handleAuth(e) {
             e.preventDefault();
-            userName = document.getElementById('input-name').value || "Membro";
+            userName = document.getElementById('input-name')?.value || "Membro";
             isLoggedIn = true;
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userName', userName);
@@ -401,9 +470,8 @@
 
         function toggleAuthMode() { isSignup = !isSignup; updateAuthUI(); }
         function updateAuthUI() {
-            document.getElementById('auth-title').innerText = isSignup ? "Criar Conta" : "Acesso";
+            document.getElementById('auth-title').innerText = isSignup ? "Criar Conta" : "Identificação";
             document.getElementById('field-name').classList.toggle('hidden', !isSignup);
-            document.getElementById('auth-toggle-btn').innerText = isSignup ? "Já tenho conta" : "Criar Nova Conta";
         }
 
         function renderProjects() {
@@ -414,9 +482,9 @@
             empty.classList.add('hidden');
             projects.forEach((p, i) => {
                 const c = document.createElement('div');
-                c.className = "glass p-6 rounded-2xl flex flex-col justify-between hover:border-brand-primary/40 transition cursor-pointer";
+                c.className = "glass p-6 rounded-2xl flex flex-col justify-between hover:border-brand-primary/40 transition group cursor-pointer";
                 c.onclick = () => loadProject(i);
-                c.innerHTML = `<div><h4 class="font-bold text-white mb-1">${p.name}</h4><p class="text-[9px] text-gray-500 uppercase">${p.date}</p></div><div class="mt-6 flex justify-end text-brand-primary"><i class="fas fa-arrow-right"></i></div>`;
+                c.innerHTML = `<div><div class="w-10 h-10 bg-brand-primary/10 rounded-lg flex items-center justify-center text-brand-primary mb-4 group-hover:bg-brand-primary group-hover:text-white transition"><i class="fas fa-code"></i></div><h4 class="font-bold text-white mb-1">${p.name}</h4><p class="text-[9px] text-gray-500 uppercase">${p.date}</p></div>`;
                 grid.appendChild(c);
             });
         }
