@@ -2,486 +2,351 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SYNTHETIX AI | Zenith Engine</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#050505', 
-                            primary: '#7c3aed',
-                            hover: '#6d28d9',
-                            accent: '#d8b4fe',
-                            surface: '#0a0a0a',
-                            border: 'rgba(255,255,255,0.08)'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base44 Clone - Landing & Editor</title>
     <style>
-        body { background-color: #050505; color: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-        .glass { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .logo-hexagon { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); background: linear-gradient(135deg, #7c3aed, #4c1d95); }
+        /* --- CSS GERAL (Reset e utilitários básicos) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body, html { height: 100%; background-color: #f9fafb; color: #111827; }
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .h-full { height: 100%; }
+        .w-full { width: 100%; }
+        .cursor-pointer { cursor: pointer; }
+        a { text-decoration: none; }
 
-        /* CHAT BASE44 */
-        .chat-bubble-user { background: #7c3aed; color: white; border-radius: 12px 12px 2px 12px; font-size: 13px; line-height: 1.5; }
-        .chat-bubble-ai { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px 12px 12px 2px; font-size: 13px; line-height: 1.5; color: #d1d5db; }
-        
-        /* UTILITÁRIOS */
-        .switch-checkbox { display: none; }
-        .switch-label { display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 52px; height: 28px; background: #1f2937; border-radius: 100px; position: relative; transition: background-color 0.3s ease; border: 1px solid rgba(255,255,255,0.1); }
-        .switch-button { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15); background: #fff; }
-        .switch-checkbox:checked + .switch-label { background: #7c3aed; }
-        .switch-checkbox:checked + .switch-label .switch-button { left: calc(100% - 3px); transform: translateX(-100%); }
-        .fade-in-up { animation: fadeInUp 0.4s ease-out; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- PARTE 1: LANDING PAGE (Design da 1ª Foto) --- */
+        .landing-container {
+            min-height: 100vh;
+            /* Gradiente sutil de fundo parecido com a imagem 1 */
+            background: linear-gradient(135deg, #f0f4ff 0%, #fff5f5 50%, #fdfae8 100%);
+        }
 
-        /* TABS */
-        .active-tab { background: rgba(124, 58, 237, 0.1); color: #d8b4fe; border-color: rgba(124, 58, 237, 0.3); }
-        .inactive-tab { color: #9ca3af; border-color: transparent; }
-        #mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); background: #050505; z-index: 100; }
-        #mobile-menu.open { transform: translateX(0); }
+        .landing-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 40px; background: transparent;
+        }
+
+        .brand-logo { font-weight: 700; font-size: 24px; display: flex; align-items: center; color: #333; }
+        .brand-icon { color: #f97316; font-size: 28px; margin-right: 8px; } /* Cor laranja do logo */
+
+        .landing-nav a { color: #4b5563; margin: 0 15px; font-weight: 500; font-size: 16px; }
+        .btn-orange { background-color: #f97316; color: white; padding: 10px 24px; border-radius: 9999px; font-weight: 600; border: none; transition: background 0.2s; }
+        .btn-orange:hover { background-color: #ea580c; }
+
+        .hero-section { text-align: center; padding-top: 80px; px-4; }
+        .hero-title {
+            font-size: 56px; font-weight: 800; line-height: 1.1; color: #1f2937;
+            max-width: 900px; margin: 0 auto 24px; letter-spacing: -1px;
+        }
+        .hero-title .highlight { color: #a5b4fc; /* Um azul claro para a palavra "realidade" */ }
+
+        .hero-subtitle { font-size: 20px; color: #6b7280; max-width: 700px; margin: 0 auto 48px; line-height: 1.5; }
+
+        /* Barra de pesquisa estilo flutuante com botão laranja interno */
+        .input-capsule {
+            background: white; padding: 8px 8px 8px 24px; border-radius: 9999px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            display: flex; align-items: center; max-width: 720px; margin: 0 auto 40px; border: 1px solid #e5e7eb;
+        }
+        .input-capsule input { flex-grow: 1; border: none; outline: none; font-size: 18px; color: #374151; }
+        .input-capsule button { padding: 12px 32px; font-size: 18px; }
+
+        .suggestions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+        .suggestion-chip {
+            background: white; border: 1px solid #e5e7eb; padding: 10px 20px;
+            border-radius: 9999px; font-size: 14px; color: #4b5563; transition: all 0.2s;
+        }
+        .suggestion-chip:hover { border-color: #f97316; color: #f97316; }
+
+
+        /* --- PARTE 2: EDITOR DE IA (Design da 2ª Foto) --- */
+        .editor-layout { display: flex; flex-direction: column; height: 100vh; background-color: #fff; }
+
+        /* Cabeçalho do Editor */
+        .editor-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 24px; border-bottom: 1px solid #e5e7eb; background: white; height: 60px;
+        }
+        .editor-left { display: flex; align-items: center; gap: 20px; }
+        .project-breadcrumb { font-size: 14px; color: #374151; display: flex; align-items: center; gap: 8px; }
+        .project-breadcrumb span.muted { color: #9ca3af; }
+
+        .editor-tabs { display: flex; gap: 24px; height: 100%; }
+        .tab-item {
+            display: flex; align-items: center; height: 60px; font-size: 14px; font-weight: 500; color: #6b7280; border-bottom: 2px solid transparent; cursor: pointer;
+        }
+        .tab-item.active { color: #7c3aed; border-bottom-color: #7c3aed; } /* Roxo do Base44 */
+
+        .editor-actions { display: flex; gap: 12px; align-items: center; }
+        .btn-secondary { background: white; border: 1px solid #d1d5db; color: #374151; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; }
+        .btn-primary-purple { background: #7c3aed; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; }
+        .user-avatar { width: 32px; height: 32px; background: #e0e7ff; color: #7c3aed; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+        /* Corpo do Editor (Sidebar + Preview) */
+        .editor-body { display: flex; flex: 1; overflow: hidden; }
+
+        /* Sidebar Esquerda (Chat) */
+        .editor-sidebar { width: 340px; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; background: #f9fafb; }
+        .sidebar-header { padding: 16px; font-weight: 600; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; background: white; }
+        .chat-container { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+
+        .chat-bubble { padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; max-width: 90%; }
+        .chat-bubble.ai { background: white; border: 1px solid #e5e7eb; align-self: flex-start; color: #374151; }
+        .chat-bubble.user { background: #7c3aed; color: white; align-self: flex-end; }
+
+        .input-area { padding: 16px; background: white; border-top: 1px solid #e5e7eb; }
+        .input-wrapper { position: relative; }
+        .chat-input { width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 12px 40px 12px 12px; resize: none; height: 50px; font-family: inherit; }
+        .send-btn { position: absolute; right: 10px; bottom: 10px; background: #7c3aed; color: white; border: none; width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+        /* Área de Pré-visualização Direita */
+        .preview-area { flex: 1; background-color: #f3f4f6; padding: 24px; display: flex; justify-content: center; align-items: center; }
+        .preview-browser-mockup {
+            width: 100%; height: 100%; background: white; border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden; border: 1px solid #e5e7eb; display: flex; flex-direction: column;
+        }
+        .browser-address-bar { background: #f9fafb; padding: 8px 16px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 8px; color: #9ca3af; font-size: 12px; }
+        .browser-dots { display: flex; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #d1d5db; }
+        .address-input { flex: 1; background: white; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 12px; text-align: center; }
+
+        .preview-content { flex: 1; overflow: auto; position: relative; }
+
+        /* Estado de carregamento */
+        .loading-state {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; color: #6b7280;
+        }
+        .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #7c3aed; animation: spin 1s linear infinite; margin-bottom: 16px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+
+        /* --- PARTE 3: O SITE GERADO (Design da 2ª Foto - Fundo Roxo) --- */
+        /* Este CSS só se aplica dentro do container de preview quando o site é "gerado" */
+        .generated-site-container {
+            height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            /* Gradiente Roxo/Azul exato da imagem 2 */
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: white; padding: 40px;
+        }
+
+        .gen-headline { font-size: 48px; font-weight: 800; margin-bottom: 24px; line-height: 1.1; }
+        .gen-subheadline { font-size: 20px; max-width: 600px; margin: 0 auto 40px; opacity: 0.9; }
+
+        .gen-buttons { display: flex; gap: 16px; margin-bottom: 60px; }
+        .gen-btn-primary { background: white; color: #7c3aed; padding: 12px 32px; border-radius: 9999px; font-weight: 700; border: none; cursor: pointer; }
+        .gen-btn-outline { background: transparent; color: white; padding: 12px 32px; border-radius: 9999px; font-weight: 700; border: 2px solid white; cursor: pointer; }
+
+        .gen-stats { display: flex; gap: 48px; }
+        .stat-item { display: flex; flex-direction: column; }
+        .stat-num { font-size: 32px; font-weight: 800; }
+        .stat-label { font-size: 14px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
-<body class="flex flex-col h-screen overflow-hidden">
+<body>
 
-    <nav class="fixed top-0 w-full z-50 border-b border-brand-border bg-brand-dark/90 backdrop-blur-xl h-16 md:h-20">
-        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('home')">
-                <div class="logo-hexagon w-8 h-8 md:w-10 md:h-10"></div>
-                <div class="flex flex-col">
-                    <span class="font-display font-bold text-lg md:text-xl tracking-widest text-white leading-none">SYNTHETIX</span>
-                    <span class="text-[0.6rem] text-brand-accent tracking-[0.3em] font-semibold uppercase opacity-70">Intelligence</span>
-                </div>
+    <div id="landingPage" class="landing-container">
+        <header class="landing-header">
+            <div class="brand-logo">
+                <span class="brand-icon">●</span> Base44
             </div>
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
-                <button onclick="navigateTo('home')" class="hover:text-white transition">Início</button>
-                <button onclick="navigateTo('app')" class="hover:text-white transition text-brand-primary">Editor IA</button>
-                <button onclick="navigateTo('pricing')" class="hover:text-white transition">Planos</button>
-                <button onclick="navigateTo('showcase')" class="hover:text-white transition">Showcase</button>
-            </div>
-            <div class="hidden md:flex items-center gap-4">
-                <div id="desktop-guest" class="flex gap-4">
-                    <button onclick="navigateTo('auth')" class="text-sm font-medium text-white hover:text-brand-accent">Login</button>
-                    <button onclick="navigateTo('app')" class="bg-brand-primary hover:bg-brand-hover px-5 py-2 rounded-lg text-sm font-bold transition shadow-lg shadow-brand-primary/20">Join Station</button>
-                </div>
-                <div id="desktop-user" class="hidden items-center gap-4">
-                    <div onclick="navigateTo('profile')" class="w-9 h-9 rounded-full bg-brand-primary flex items-center justify-center font-bold text-xs cursor-pointer border-2 border-transparent hover:border-white transition shadow-lg" id="nav-avatar">US</div>
-                </div>
-            </div>
-            <button onclick="toggleMobileMenu()" class="md:hidden text-white text-xl z-[110] p-2"><i class="fas fa-bars" id="menu-icon"></i></button>
-        </div>
-    </nav>
+            <nav class="landing-nav flex items-center">
+                <a href="#">Preços</a>
+                <a href="#">Empresarial</a>
+                <a href="#" style="margin-left: 20px;">🌐</a>
+                <button class="btn-orange" style="margin-left: 20px;">Comece já</button>
+            </nav>
+        </header>
 
-    <div id="mobile-menu" class="fixed inset-0 z-[100] flex flex-col pt-24 px-8 md:hidden">
-        <div class="flex flex-col space-y-8">
-            <button onclick="navigateTo('home'); toggleMobileMenu()" class="text-3xl font-display font-bold text-white">Início</button>
-            <button onclick="navigateTo('app'); toggleMobileMenu()" class="text-3xl font-display font-bold text-brand-primary">Editor IA</button>
-            <button onclick="navigateTo('pricing'); toggleMobileMenu()" class="text-3xl font-display font-bold text-white">Planos</button>
-            <button onclick="navigateTo('showcase'); toggleMobileMenu()" class="text-3xl font-display font-bold text-white">Showcase</button>
-        </div>
-        <div class="mt-auto mb-12">
-            <div id="mobile-guest" class="w-full">
-                <button onclick="navigateTo('auth'); toggleMobileMenu()" class="w-full py-4 border border-white/10 rounded-xl font-bold mb-4 text-white">Entrar</button>
-                <button onclick="navigateTo('app'); toggleMobileMenu()" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-white">Criar Conta</button>
+        <main class="hero-section">
+            <h1 class="hero-title">
+                Transforme seu sonho em <span class="highlight">realidade</span>.<br>
+                Crie um app com IA agora mesmo.
+            </h1>
+            <p class="hero-subtitle">
+                Com a Base44, você cria aplicativos totalmente funcionais em minutos, usando apenas suas palavras. Sem precisar programar.
+            </p>
+
+            <div class="input-capsule">
+                <input type="text" id="landingInput" placeholder="O que você quer criar?">
+                <button class="btn-orange" onclick="goToEditor()">Criar ➔</button>
             </div>
-            <div id="mobile-user" class="hidden w-full">
-                <button onclick="navigateTo('profile'); toggleMobileMenu()" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-white">Meu Perfil</button>
-                <button onclick="logout(); toggleMobileMenu()" class="w-full py-2 text-red-400 text-sm mt-2">Sair</button>
+
+            <p style="color: #6b7280; font-size: 14px; margin-top: 40px;">Não sabe por onde começar? Experimente uma destas opções:</p>
+            <div class="suggestions">
+                <button class="suggestion-chip">Painel de relatórios</button>
+                <button class="suggestion-chip">Plataforma de jogos</button>
+                <button class="suggestion-chip">Portal de integração</button>
+                <button class="suggestion-chip">Aplicativo de networking</button>
+                <button class="suggestion-chip">Visualizador de ambientes</button>
             </div>
-        </div>
+        </main>
     </div>
 
-    <main id="main-content" class="flex-1 pt-16 md:pt-20 overflow-y-auto bg-brand-dark relative scroll-smooth">
-        
-        <section id="view-home" class="min-h-full flex flex-col items-center justify-center text-center px-4 pb-20 fade-in-up">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
-            <h1 class="font-display text-5xl md:text-8xl font-bold mb-6 tracking-tighter leading-none uppercase">Código<br><span class="text-brand-primary">Sintético</span></h1>
-            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-10 font-light leading-relaxed">Arquitetura digital autônoma. Onde a visão encontra a execução instantânea.</p>
-            <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-6">
-                <button onclick="navigateTo('app')" class="bg-brand-primary px-10 py-4 rounded-xl text-lg font-bold hover:bg-brand-hover transition shadow-2xl shadow-brand-primary/20">Iniciar Estação</button>
-                <button onclick="navigateTo('showcase')" class="bg-white/5 border border-white/10 px-10 py-4 rounded-xl text-lg font-bold hover:bg-white/10 transition">Explorar Showcase</button>
-            </div>
-        </section>
 
-        <section id="view-pricing" class="hidden py-16 md:py-24 px-6 fade-in-up">
-            <div class="max-w-5xl mx-auto text-center">
-                <h2 class="text-4xl font-display font-bold mb-10 text-white uppercase tracking-widest">Protocolos de Acesso</h2>
-                <div class="flex items-center justify-center gap-6 mb-16">
-                    <span class="text-sm font-bold text-gray-400 transition" id="lbl-monthly">Mensal</span>
-                    <input type="checkbox" id="billing-toggle" class="switch-checkbox" onclick="togglePricing()">
-                    <label for="billing-toggle" class="switch-label"><span class="switch-button"></span></label>
-                    <span class="text-sm font-bold text-white transition" id="lbl-annual">Anual <span class="text-brand-accent text-xs">(- R$ 120/ano)</span></span>
+    <div id="editorPage" class="editor-layout hidden">
+        <header class="editor-header">
+            <div class="editor-left">
+                <div class="brand-logo" style="font-size: 20px;">
+                    <span class="brand-icon" style="font-size: 22px;">●</span> Base44
                 </div>
-                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    <div class="glass p-10 rounded-3xl flex flex-col text-left border-white/5 relative">
-                        <h3 class="text-2xl font-bold mb-2">Initiate</h3>
-                        <div class="flex items-baseline mb-8">
-                            <span class="text-2xl font-bold mr-1">R$</span><span class="text-6xl font-bold tracking-tighter" id="price-standard">29,90</span><span class="text-gray-500 text-sm ml-2">/mês</span>
-                        </div>
-                        <ul class="space-y-4 mb-10 flex-1 text-gray-300 text-sm">
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> 5 Projetos Ativos</li>
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> Edição Incremental IA</li>
-                        </ul>
-                        <a href="https://mpago.la/1V3fYRm" id="link-standard" target="_blank" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-center hover:bg-white/10 transition">Assinar</a>
-                    </div>
-                    <div class="glass p-10 rounded-3xl border-brand-primary border-2 flex flex-col text-left bg-[#0a0a0a] relative shadow-2xl">
-                        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-primary text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase">Recomendado</div>
-                        <h3 class="text-2xl font-bold mb-2">Architect <span class="text-brand-primary">PRO</span></h3>
-                        <div class="flex items-baseline mb-8">
-                            <span class="text-2xl font-bold text-brand-primary mr-1">R$</span><span class="text-6xl font-bold tracking-tighter text-brand-primary" id="price-pro">49,90</span><span class="text-gray-500 text-sm ml-2">/mês</span>
-                        </div>
-                        <ul class="space-y-4 mb-10 flex-1 text-white text-sm font-bold">
-                            <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> Projetos Ilimitados</li>
-                            <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> <strong>Base44 Design Engine</strong></li>
-                            <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> Publicação Instantânea</li>
-                        </ul>
-                        <a href="https://mpago.la/1m8A4zt" id="link-pro" target="_blank" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-center hover:bg-brand-hover transition shadow-xl shadow-brand-primary/20">Assinar</a>
-                    </div>
+                <div class="project-breadcrumb">
+                    <span class="muted">/</span>
+                    <strong>Nova</strong>
+                    <span class="muted">|</span>
+                    <span>Espaço de trabalho pessoal</span>
                 </div>
             </div>
-        </section>
+            <div class="editor-tabs">
+                <div class="tab-item">Painel</div>
+                <div class="tab-item active">Pré-visualização</div>
+            </div>
+            <div class="editor-actions">
+                <span class="text-gray-400 cursor-pointer">↩</span>
+                <span class="text-gray-400 cursor-pointer">↪</span>
+                <button class="btn-secondary">Atualizar</button>
+                <button class="btn-primary-purple">Publicar</button>
+                <div class="user-avatar">U</div>
+            </div>
+        </header>
 
-        <section id="view-app" class="hidden h-full flex flex-col md:flex-row bg-[#000]">
-            <aside class="w-full md:w-[400px] border-r border-brand-border flex flex-col h-[45vh] md:h-full relative bg-[#0a0a0a] z-20">
-                <div class="p-4 border-b border-brand-border flex justify-between items-center bg-[#0a0a0a]">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">NLP Context: Active</span>
-                    </div>
-                    <button onclick="clearEditor()" class="text-[10px] font-bold text-gray-500 hover:text-red-400 uppercase transition tracking-widest">Reset</button>
+        <div class="editor-body">
+            <aside class="editor-sidebar">
+                <div class="sidebar-header">
+                    <span>Base44 AI</span>
+                    <span class="cursor-pointer">⋮</span>
                 </div>
-                <div id="chat-history" class="flex-1 overflow-y-auto p-4 space-y-6 pb-28">
-                    <div class="flex gap-3 fade-in-up">
-                        <div class="w-6 h-6 rounded bg-brand-primary/10 flex items-center justify-center text-[10px] text-brand-primary font-bold">AI</div>
-                        <div class="chat-bubble-ai p-3 max-w-[90%]">
-                            Estação Zenith online. Qual a intenção do projeto? (Ex: "Site de luxo para venda de relógios").
-                        </div>
+                <div class="chat-container" id="chatContainer">
+                    <div class="chat-bubble ai">
+                        Vou criar uma landing page elegante e moderna para o seu projeto. Descreva mais detalhes ou clique em enviar para gerar a primeira versão.
                     </div>
                 </div>
-                <div class="absolute bottom-0 w-full p-4 bg-[#0a0a0a] border-t border-brand-border">
-                    <div class="relative group">
-                        <textarea id="userPrompt" class="w-full h-16 bg-[#151515] border border-brand-border rounded-xl py-3 px-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none transition-all placeholder-gray-600" placeholder="Digite sua instrução..."></textarea>
-                        <button onclick="generateSite()" class="absolute right-2 bottom-3 w-10 h-10 bg-brand-primary hover:bg-brand-hover text-white rounded-lg flex items-center justify-center transition shadow-lg">
-                            <i class="fas fa-arrow-up"></i>
-                        </button>
+                <div class="input-area">
+                    <div class="input-wrapper">
+                        <textarea id="chatInput" class="chat-input" placeholder="Descreva a mudança..."></textarea>
+                        <button class="send-btn" onclick="sendMessage()">➤</button>
                     </div>
                 </div>
             </aside>
 
-            <div class="flex-1 bg-black relative flex flex-col h-[55vh] md:h-full">
-                <div class="h-12 bg-[#111] border-b border-brand-border flex items-center justify-between px-4 flex-none">
-                    <div class="flex gap-1.5 opacity-50">
-                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            <main class="preview-area">
+                <div class="preview-browser-mockup">
+                    <div class="browser-address-bar">
+                        <div class="browser-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                        <div class="address-input">app.base44.com/preview/site-incrivel</div>
                     </div>
-                    <button onclick="postSite()" class="text-[10px] font-bold bg-white text-black px-4 py-1.5 rounded-full hover:bg-brand-accent hover:text-white transition uppercase tracking-widest shadow-lg">Deploy Site</button>
-                </div>
-                <div class="flex-1 relative overflow-hidden bg-[#111]">
-                    <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0a0a]/95 backdrop-blur-sm">
-                        <div class="w-12 h-12 border-2 border-brand-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-                        <div id="loadingText" class="text-brand-primary font-mono text-[10px] animate-pulse tracking-widest uppercase">Iniciando Engine...</div>
-                    </div>
-                    <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center opacity-20 pointer-events-none">
-                        <i class="fas fa-code text-5xl mb-4 text-gray-500"></i>
-                        <span class="text-[10px] uppercase tracking-[0.5em] text-gray-500">Awaiting Input</span>
-                    </div>
-                    <iframe id="siteFrame" class="w-full h-full border-0 hidden bg-white"></iframe>
-                </div>
-            </div>
-        </section>
-
-        <section id="view-showcase" class="hidden py-16 md:py-24 px-6 fade-in-up">
-            <div class="max-w-6xl mx-auto text-center">
-                <h2 class="text-4xl font-display font-bold mb-16 uppercase tracking-widest">Showcase</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
-                    <div class="glass p-6 rounded-2xl group border-white/5 transition duration-500 hover:-translate-y-2 hover:border-brand-primary/50">
-                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-rocket text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
-                        <h4 class="font-bold text-white mb-2 text-lg">Nexus Dashboard</h4>
-                        <p class="text-xs text-gray-500">SaaS de alta performance compilado em 14 segundos.</p>
-                    </div>
-                    </div>
-            </div>
-        </section>
-
-        <section id="view-profile" class="hidden min-h-full py-20 px-6 fade-in-up bg-[#050505]">
-            <div class="max-w-7xl mx-auto w-full">
-                <div class="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12 border-b border-white/5 pb-10">
-                    <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-primary to-blue-600 flex items-center justify-center text-3xl font-bold shadow-2xl border-4 border-white/5" id="profile-avatar-big">US</div>
-                    <div class="text-center md:text-left">
-                        <h2 class="text-3xl font-display font-bold text-white" id="profile-name-display">Usuário</h2>
-                        <span class="px-4 py-1.5 bg-brand-primary/10 border border-brand-primary/40 text-brand-accent rounded-full text-[10px] font-bold uppercase tracking-widest">Pro Architect</span>
-                    </div>
-                    <div class="md:ml-auto flex gap-4 w-full md:w-auto">
-                        <button onclick="logout()" class="flex-1 md:flex-none px-6 py-2.5 border border-white/10 rounded-xl text-sm font-medium hover:bg-red-500/10 hover:text-red-400 transition">Sair</button>
-                        <button onclick="navigateTo('app')" class="flex-1 md:flex-none bg-brand-primary px-8 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-hover transition shadow-xl shadow-brand-primary/20">Abrir Editor</button>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
-                    <div class="col-span-1 space-y-3">
-                        <button onclick="switchTab('projects')" id="tab-btn-projects" class="active-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3"><i class="fas fa-layer-group"></i> Projetos</button>
-                        <button onclick="switchTab('subscription')" id="tab-btn-subscription" class="inactive-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3 hover:bg-white/5"><i class="fas fa-credit-card"></i> Assinatura</button>
-                        <button onclick="switchTab('settings')" id="tab-btn-settings" class="inactive-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3 hover:bg-white/5"><i class="fas fa-cog"></i> Configurações</button>
-                    </div>
-                    <div class="col-span-3">
-                        <div id="tab-projects" class="fade-in-up">
-                            <h3 class="text-xl font-bold mb-8 text-white">Projetos Ativos</h3>
-                            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-                            <div id="empty-projects-state" class="hidden py-20 text-center border-2 border-dashed border-white/5 rounded-2xl text-gray-600">Nenhuma arquitetura salva.</div>
-                        </div>
-                        <div id="tab-subscription" class="hidden fade-in-up">
-                            <div class="glass p-8 rounded-2xl border-brand-primary/20">
-                                <h4 class="text-2xl font-bold text-brand-accent mb-6">ARCHITECT PRO</h4>
-                                <button onclick="navigateTo('pricing')" class="text-[10px] font-bold text-brand-primary hover:underline uppercase tracking-widest">Gerenciar</button>
-                            </div>
-                        </div>
-                        <div id="tab-settings" class="hidden fade-in-up">
-                            <div class="glass p-6 rounded-2xl border-white/5">
-                                <label class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-4">Nome de Identificação</label>
-                                <div class="flex gap-4">
-                                    <input type="text" id="settings-name" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-brand-primary outline-none" placeholder="Seu nome">
-                                    <button onclick="saveSettingsName()" class="bg-brand-primary px-6 py-3 rounded-xl text-xs font-bold hover:bg-brand-hover transition">SALVAR</button>
-                                </div>
-                            </div>
+                    <div class="preview-content" id="previewContent">
+                        <div class="loading-state">
+                            <p>Aguardando sua instrução para gerar o site...</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </main>
+        </div>
+    </div>
 
-        <section id="view-auth" class="hidden min-h-full flex items-center justify-center px-4 fade-in-up">
-            <div class="glass p-10 rounded-3xl w-full max-w-md shadow-2xl">
-                <h2 class="text-3xl font-display font-bold text-center mb-8" id="auth-title">Identificação</h2>
-                <form onsubmit="handleAuth(event)" class="space-y-4">
-                    <div id="field-name" class="hidden"><input type="text" id="input-name" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-brand-primary" placeholder="Nome"></div>
-                    <input type="email" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-brand-primary" placeholder="Email" required>
-                    <input type="password" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-brand-primary" placeholder="Senha" required>
-                    <button type="submit" class="w-full py-4 bg-brand-primary rounded-xl font-bold uppercase mt-4 tracking-widest shadow-lg shadow-brand-primary/20" id="auth-btn">Confirmar</button>
-                </form>
-                <button onclick="toggleAuthMode()" class="mt-8 text-center w-full text-[10px] text-brand-accent uppercase font-bold tracking-widest" id="auth-toggle-btn">Criar Novo Registro</button>
-            </div>
-        </section>
-
-    </main>
-
-    <div id="toast-container" class="fixed bottom-6 right-6 z-[200]"></div>
 
     <script>
-        const pricingData = { monthly: { standard: "29,90", pro: "49,90", linkS: "https://mpago.la/1V3fYRm", linkP: "https://mpago.la/1m8A4zt" }, annual: { standard: "19,90", pro: "39,90", linkS: "https://mpago.la/2tEyxN5", linkP: "https://mpago.la/2PqbRfB" } };
-        const aiTips = ["Dica: O Design Token 'bg-glass' cria profundidade moderna.", "SEO: O layout semântico melhora o ranqueamento.", "UX: Botões grandes aumentam a taxa de conversão."];
+        const landingPage = document.getElementById('landingPage');
+        const editorPage = document.getElementById('editorPage');
+        const landingInput = document.getElementById('landingInput');
+        const chatContainer = document.getElementById('chatContainer');
+        const chatInput = document.getElementById('chatInput');
+        const previewContent = document.getElementById('previewContent');
 
-        let currentCode = ""; 
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        let userName = localStorage.getItem('userName') || "Usuário";
-        let projects = JSON.parse(localStorage.getItem('projects')) || [];
-        let isSignup = false;
+        // Função para transição da Landing Page para o Editor
+        function goToEditor() {
+            const initialPrompt = landingInput.value;
+            landingPage.classList.add('hidden');
+            editorPage.classList.remove('hidden');
 
-        window.onload = () => { updateNav(); };
-
-        function navigateTo(viewId) {
-            document.querySelectorAll('section[id^="view-"]').forEach(el => el.classList.add('hidden'));
-            document.getElementById('view-' + viewId).classList.remove('hidden');
-            if(viewId === 'auth') updateAuthUI();
-            if(viewId === 'profile') { renderProjects(); switchTab('projects'); document.getElementById('settings-name').value = userName; }
-            updateNav();
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            menu.classList.toggle('open');
-            icon.classList.toggle('fa-bars'); icon.classList.toggle('fa-times');
-        }
-
-        function togglePricing() {
-            const isA = document.getElementById('billing-toggle').checked;
-            const type = isA ? 'annual' : 'monthly';
-            document.getElementById('price-standard').innerText = pricingData[type].standard;
-            document.getElementById('price-pro').innerText = pricingData[type].pro;
-            document.getElementById('link-standard').href = pricingData[type].linkS;
-            document.getElementById('link-pro').href = pricingData[type].linkP;
-        }
-
-        function clearEditor() {
-            currentCode = "";
-            document.getElementById('siteFrame').classList.add('hidden');
-            document.getElementById('emptyState').classList.remove('hidden');
-            document.getElementById('chat-history').innerHTML = `<div class="flex gap-3 fade-in-up"><div class="w-6 h-6 rounded bg-brand-primary/10 flex items-center justify-center text-[10px] text-brand-primary font-bold">AI</div><div class="chat-bubble-ai p-3 max-w-[90%]">Memória resetada.</div></div>`;
-            showToast("Editor Resetado");
-        }
-
-        async function generateSite() {
-            const input = document.getElementById('userPrompt');
-            const history = document.getElementById('chat-history');
-            const prompt = input.value.trim();
-            if(!prompt) return;
-            if(!isLoggedIn) { showToast("🔒 Login Necessário"); navigateTo('auth'); return; }
-
-            const uDiv = document.createElement('div');
-            uDiv.className = "flex justify-end fade-in-up";
-            uDiv.innerHTML = `<div class="chat-bubble-user p-3 max-w-[90%] shadow-lg">${prompt}</div>`;
-            history.appendChild(uDiv);
-            input.value = ""; history.scrollTop = history.scrollHeight;
-
-            const loading = document.getElementById('loadingState');
-            const loadingText = document.getElementById('loadingText');
-            loading.classList.remove('hidden');
-
-            // Simulação de Etapas (A Mágica Visual)
-            loadingText.innerText = "🔍 Analisando Intenção (NLP)...";
-            setTimeout(() => loadingText.innerText = "🧱 Selecionando Componentes...", 1500);
-            setTimeout(() => loadingText.innerText = "🎨 Aplicando Design Tokens...", 3000);
-
-            try {
-                const response = await fetch('/api/generate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt, existingCode: currentCode })
-                });
-                const data = await response.json();
-                
-                if (data.html && data.html.includes('<html')) {
-                    currentCode = data.html;
-                    const f = document.getElementById('siteFrame');
-                    f.contentWindow.document.open();
-                    f.contentWindow.document.write(currentCode);
-                    f.contentWindow.document.close();
-                    document.getElementById('emptyState').classList.add('hidden');
-                    f.classList.remove('hidden');
-
-                    const aiDiv = document.createElement('div');
-                    aiDiv.className = "flex gap-3 fade-in-up";
-                    aiDiv.innerHTML = `<div class="w-6 h-6 rounded bg-brand-primary/10 flex items-center justify-center text-[10px] text-brand-primary font-bold">AI</div><div class="chat-bubble-ai p-3 max-w-[90%]">Interface compilada. <span class="text-brand-accent">Dica:</span> ${aiTips[Math.floor(Math.random() * aiTips.length)]}</div>`;
-                    history.appendChild(aiDiv);
-                    history.scrollTop = history.scrollHeight;
-
-                    saveProject(currentCode, prompt);
-                }
-            } catch (e) { showToast("❌ Falha Neural"); } finally { loading.classList.add('hidden'); }
-        }
-
-        function postSite() {
-            if(!currentCode) { showToast("⚠️ Site Vazio"); return; }
-            showToast("🚀 Publicando...");
-            const loading = document.getElementById('loadingState');
-            loading.classList.remove('hidden');
-            document.getElementById('loadingText').innerText = "📡 Deploying to Edge Network...";
-
-            setTimeout(() => {
-                loading.classList.add('hidden');
-                const siteUrl = "https://synthetix.ai/live/" + Math.random().toString(36).substring(7);
-                showToast("✨ Publicado!");
-                const history = document.getElementById('chat-history');
-                const postDiv = document.createElement('div');
-                postDiv.className = "bg-green-500/10 border border-green-500/20 p-3 rounded-xl mb-4 fade-in-up";
-                postDiv.innerHTML = `<p class="text-[10px] text-green-400 font-bold mb-1">DEPLOY SUCCESS</p><a href="#" class="text-[10px] text-brand-accent underline break-all">${siteUrl}</a>`;
-                history.appendChild(postDiv);
-                history.scrollTop = history.scrollHeight;
-            }, 2500);
-        }
-
-        function saveSettingsName() {
-            const n = document.getElementById('settings-name').value.trim();
-            if(n.length < 3) { showToast("⚠️ Inválido"); return; }
-            userName = n;
-            localStorage.setItem('userName', userName);
-            updateNav();
-            showToast("✨ Salvo");
-        }
-
-        function switchTab(id) {
-            ['projects', 'subscription', 'settings'].forEach(t => {
-                document.getElementById('tab-' + t).classList.add('hidden');
-                document.getElementById('tab-btn-' + t).className = "inactive-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3 hover:bg-white/5";
-            });
-            document.getElementById('tab-' + id).classList.remove('hidden');
-            document.getElementById('tab-btn-' + id).className = "active-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3 shadow-lg shadow-brand-primary/10";
-        }
-
-        function updateNav() {
-            const gD = document.getElementById('desktop-guest');
-            const uD = document.getElementById('desktop-user');
-            const gM = document.getElementById('mobile-guest');
-            const uM = document.getElementById('mobile-user');
-            if(isLoggedIn) {
-                gD.classList.add('hidden'); uD.classList.remove('hidden'); uD.classList.add('flex');
-                gM.classList.add('hidden'); uM.classList.remove('hidden');
-                document.getElementById('nav-avatar').innerText = userName.charAt(0).toUpperCase();
-            } else {
-                gD.classList.remove('hidden'); uD.classList.add('hidden');
-                gM.classList.remove('hidden'); uM.classList.add('hidden');
+            // Se o usuário digitou algo na landing page, já envia como mensagem
+            if (initialPrompt.trim() !== "") {
+                addMessage('user', initialPrompt);
+                simulateGeneration();
             }
         }
 
-        function handleAuth(e) {
-            e.preventDefault();
-            const inputN = document.getElementById('input-name')?.value;
-            userName = isSignup ? inputN : (userName || "Membro");
-            isLoggedIn = true;
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userName', userName);
-            navigateTo('profile');
+        // Função para adicionar mensagens ao chat
+        function addMessage(sender, text) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('chat-bubble', sender);
+            bubble.innerText = text;
+            chatContainer.appendChild(bubble);
+            chatContainer.scrollTop = chatContainer.scrollHeight; // Rola para baixo
         }
 
-        function toggleAuthMode() { isSignup = !isSignup; updateAuthUI(); }
-        function updateAuthUI() {
-            document.getElementById('auth-title').innerText = isSignup ? "Registro" : "Identificação";
-            document.getElementById('field-name').classList.toggle('hidden', !isSignup);
+        // Função chamada ao clicar no botão de enviar do editor
+        function sendMessage() {
+            const text = chatInput.value;
+            if (text.trim() === "") return;
+            addMessage('user', text);
+            chatInput.value = '';
+            simulateGeneration();
         }
 
-        function renderProjects() {
-            const grid = document.getElementById('projects-grid');
-            const empty = document.getElementById('empty-projects-state');
-            grid.innerHTML = "";
-            if (projects.length === 0) { empty.classList.remove('hidden'); return; }
-            empty.classList.add('hidden');
-            projects.forEach((p, i) => {
-                const c = document.createElement('div');
-                c.className = "glass p-4 rounded-xl flex flex-col justify-between hover:border-brand-primary transition cursor-pointer";
-                c.onclick = () => loadProject(i);
-                c.innerHTML = `<h4 class="font-bold text-white mb-1 truncate text-sm">${p.name}</h4><p class="text-[9px] text-gray-500 uppercase">${p.date}</p>`;
-                grid.appendChild(c);
-            });
+        // Simula o processo de "Geração" da IA
+        function simulateGeneration() {
+            // 1. Mostra estado de carregamento na pré-visualização
+            previewContent.innerHTML = `
+                <div class="loading-state" style="padding-top: 100px;">
+                    <div class="spinner"></div>
+                    <p>A IA está gerando seu site...</p>
+                </div>
+            `;
+
+            // 2. Resposta da IA no chat (simulada)
+            setTimeout(() => {
+                 addMessage('ai', 'Entendido! Estou gerando uma nova versão do site com base nas suas instruções. Aplicando o tema moderno com fundo gradiente e seções de destaque.');
+            }, 1000);
+
+            // 3. Após 2.5 segundos, "Gera" o site final (PARTE 3 DO PEDIDO)
+            setTimeout(() => {
+                // Injeta o HTML do site roxo exatamente como na foto 2
+                previewContent.innerHTML = `
+                    <div class="generated-site-container">
+                        <h1 class="gen-headline">TRANSFORME SUAS IDEIAS EM REALIDADE</h1>
+                        <p class="gen-subheadline">Plataforma completa para criar, gerenciar e escalar seus projetos com ferramentas intuitivas e inteligência artificial de ponta.</p>
+
+                        <div class="gen-buttons">
+                            <button class="gen-btn-primary">Começar gratuitamente ➔</button>
+                            <button class="gen-btn-outline">Agendar demo</button>
+                        </div>
+
+                        <div class="gen-stats">
+                            <div class="stat-item">
+                                <span class="stat-num">10k+</span>
+                                <span class="stat-label">Usuários ativos</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num">99.9%</span>
+                                <span class="stat-label">Uptime</span>
+                            </div>
+                             <div class="stat-item">
+                                <span class="stat-num">4.9★</span>
+                                <span class="stat-label">Avaliação</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }, 2500);
         }
 
-        function saveProject(code, prompt) {
-            const n = prompt.substring(0, 20);
-            projects.unshift({ name: n, code, date: new Date().toLocaleDateString('pt-BR') });
-            localStorage.setItem('projects', JSON.stringify(projects.slice(0, 10)));
-        }
-
-        function loadProject(i) {
-            currentCode = projects[i].code;
-            navigateTo('app');
-            const f = document.getElementById('siteFrame');
-            f.contentWindow.document.open(); f.contentWindow.document.write(currentCode); f.contentWindow.document.close();
-            document.getElementById('emptyState').classList.add('hidden');
-            f.classList.remove('hidden');
-        }
-
-        function showToast(m) {
-            const t = document.createElement('div');
-            t.className = "bg-white text-black px-4 py-2 rounded-full shadow-2xl mb-2 text-[10px] font-bold fade-in-up uppercase tracking-widest";
-            t.innerText = m;
-            document.getElementById('toast-container').appendChild(t);
-            setTimeout(() => t.remove(), 3000);
-        }
-
-        function logout() { localStorage.clear(); location.reload(); }
+        // Permite enviar mensagem com Enter no textarea
+        chatInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
     </script>
+
 </body>
 </html>
