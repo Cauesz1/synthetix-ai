@@ -2,23 +2,32 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base44 AI | Builder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SYNTHETIX AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
                         brand: {
-                            orange: '#f97316', // Laranja da Landing
-                            purple: '#7c3aed', // Roxo do Editor
-                            bg: '#f9fafb'
+                            dark: '#030014', // O Fundo Profundo da Synthetix
+                            primary: '#7c3aed', // Roxo Neon
+                            hover: '#6d28d9',
+                            accent: '#d8b4fe',
+                            surface: '#0f0720',
+                            border: 'rgba(255,255,255,0.1)'
                         }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     }
                 }
             }
@@ -26,248 +35,256 @@
     </script>
 
     <style>
-        /* CSS ESPECÍFICO PARA FICAR IGUAL ÀS FOTOS */
-        body { background-color: #f9fafb; color: #111827; overflow: hidden; }
+        body { background-color: #030014; color: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         
-        /* Landing Page - Fundo Gradiente Suave */
-        #view-landing {
-            background: linear-gradient(135deg, #f0f4ff 0%, #fff5f5 50%, #fdfae8 100%);
-            overflow-y: auto;
-        }
-
-        /* Input Cápsula (Igual Foto 1) */
-        .input-capsule {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-        }
-        .input-capsule:focus-within { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-
-        /* Editor (Igual Foto 2) */
-        .editor-sidebar { background-color: #f9fafb; border-right: 1px solid #e5e7eb; }
-        .chat-bubble-ai { background: white; border: 1px solid #e5e7eb; color: #374151; border-radius: 12px 12px 12px 0; }
-        .chat-bubble-user { background: #7c3aed; color: white; border-radius: 12px 12px 0 12px; }
+        /* O FAMOSO GLASSMORPHISM DA SYNTHETIX */
+        .glass { background: rgba(15, 7, 32, 0.90); backdrop-filter: blur(24px); border: 1px solid rgba(124, 58, 237, 0.1); box-shadow: 0 0 40px -10px rgba(124, 58, 237, 0.1); }
         
-        /* Tabs do Editor */
-        .nav-tab { border-bottom: 2px solid transparent; color: #6b7280; }
-        .nav-tab.active { border-bottom: 2px solid #7c3aed; color: #7c3aed; font-weight: 600; }
+        /* LOGO */
+        .logo-hexagon { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); background: linear-gradient(135deg, #7c3aed, #4c1d95); box-shadow: 0 0 20px #7c3aed; }
 
-        /* Animações */
-        .fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* CHAT */
+        .chat-bubble-user { background: #7c3aed; color: white; border-radius: 12px 12px 2px 12px; font-size: 13px; box-shadow: 0 4px 15px rgba(124,58,237,0.3); }
+        .chat-bubble-ai { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px 12px 12px 2px; font-size: 13px; color: #d1d5db; }
+        
+        /* STEPS DO LOADING */
+        .step-row { display: flex; align-items: center; gap: 10px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; opacity: 0.4; transition: all 0.3s; }
+        .step-row.active { opacity: 1; color: #d8b4fe; text-shadow: 0 0 10px rgba(124,58,237,0.5); }
+        .step-row.done { opacity: 0.6; color: #10b981; }
+        .step-icon { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; }
+
+        /* ANIMAÇÕES */
+        .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="h-screen flex flex-col">
+<body class="flex flex-col h-screen overflow-hidden">
 
-    <section id="view-landing" class="h-full flex flex-col">
-        <header class="flex justify-between items-center px-8 py-6">
-            <div class="flex items-center gap-2 font-bold text-xl text-gray-800">
-                <span class="text-brand-orange text-2xl">●</span> Base44
+    <nav class="fixed top-0 w-full z-50 border-b border-brand-border bg-brand-dark/80 backdrop-blur-xl h-16 md:h-20">
+        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('landing')">
+                <div class="logo-hexagon w-8 h-8 md:w-10 md:h-10 animate-pulse-slow"></div>
+                <div class="flex flex-col">
+                    <span class="font-display font-bold text-lg md:text-xl tracking-widest text-white leading-none">SYNTHETIX</span>
+                    <span class="text-[0.6rem] text-brand-accent tracking-[0.4em] font-semibold uppercase opacity-70">Intelligence</span>
+                </div>
             </div>
-            <nav class="hidden md:flex gap-8 text-sm font-medium text-gray-600">
-                <a href="#" class="hover:text-black">Preços</a>
-                <a href="#" class="hover:text-black">Empresarial</a>
-                <a href="#" class="hover:text-black">Showcase</a>
-            </nav>
-            <div class="flex items-center gap-4">
-                <a href="#" class="text-gray-500 hover:text-black"><i class="fas fa-globe"></i></a>
-                <button onclick="navigateTo('editor')" class="bg-brand-orange text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-orange-600 transition shadow-lg shadow-orange-200">Comece já</button>
+            <div class="hidden md:flex gap-6 text-xs font-mono text-gray-400">
+                <span>STATUS: <span class="text-green-400">OPERATIONAL</span></span>
+                <span>LATENCY: <span class="text-brand-accent">12ms</span></span>
             </div>
-        </header>
+        </div>
+    </nav>
 
-        <main class="flex-1 flex flex-col items-center pt-20 px-4 text-center fade-in">
-            <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 leading-[1.1] mb-6 tracking-tight">
-                Transforme seu sonho em <span class="text-indigo-400">realidade</span>.<br>
-                Crie um app com IA agora.
+    <section id="view-landing" class="h-full flex flex-col pt-20 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+
+        <main class="flex-1 flex flex-col items-center justify-center text-center px-4 relative z-10 fade-in-up">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-primary/30 bg-brand-primary/10 mb-8 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
+                <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-brand-accent">Engine V5 Online</span>
+            </div>
+            
+            <h1 class="font-display text-5xl md:text-8xl font-bold mb-6 tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/40">
+                CÓDIGO<br>SINTÉTICO
             </h1>
-            <p class="text-xl text-gray-500 max-w-2xl mb-12 font-light">
-                Com a Base44, você cria aplicativos totalmente funcionais em minutos, usando apenas suas palavras. Sem precisar programar.
+            
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 font-light leading-relaxed">
+                Arquitetura Full-Stack autônoma. De NLP a Banco de Dados em segundos.
             </p>
 
-            <div class="input-capsule w-full max-w-2xl bg-white rounded-full p-2 flex items-center border border-gray-200 relative z-10">
-                <input type="text" id="landingInput" class="flex-1 bg-transparent px-6 text-lg outline-none text-gray-700 placeholder-gray-400 h-14" placeholder="O que você quer criar? (ex: Site Roxo para SaaS)">
-                <button onclick="startCreation()" class="bg-brand-orange text-white px-8 h-14 rounded-full font-bold text-lg hover:bg-orange-600 transition flex items-center gap-2">
-                    Criar <i class="fas fa-arrow-right"></i>
-                </button>
+            <div class="w-full max-w-2xl relative group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-brand-primary to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                <div class="relative bg-brand-surface border border-brand-border rounded-xl p-2 flex items-center shadow-2xl">
+                    <input type="text" id="landingInput" class="flex-1 bg-transparent px-6 py-4 text-white outline-none placeholder-gray-600 font-mono text-sm" placeholder="Ex: SaaS de Gestão com Login e Dashboard...">
+                    <button onclick="startCreation()" class="bg-brand-primary text-white px-8 py-4 rounded-lg font-bold hover:bg-brand-hover transition shadow-[0_0_20px_rgba(124,58,237,0.4)]">
+                        <i class="fas fa-bolt"></i>
+                    </button>
+                </div>
             </div>
 
-            <p class="text-sm text-gray-400 mt-10 mb-4">Não sabe por onde começar? Experimente:</p>
-            <div class="flex flex-wrap justify-center gap-3">
-                <button onclick="fillInput('Painel de relatórios dark mode')" class="bg-white border border-gray-200 px-4 py-2 rounded-full text-sm text-gray-600 hover:border-brand-orange hover:text-brand-orange transition">Painel de relatórios</button>
-                <button onclick="fillInput('Landing page roxa para startup')" class="bg-white border border-gray-200 px-4 py-2 rounded-full text-sm text-gray-600 hover:border-brand-orange hover:text-brand-orange transition">Landing Page SaaS</button>
-                <button onclick="fillInput('Portfolio minimalista')" class="bg-white border border-gray-200 px-4 py-2 rounded-full text-sm text-gray-600 hover:border-brand-orange hover:text-brand-orange transition">Portfólio</button>
+            <div class="flex gap-4 mt-12 text-xs font-mono text-gray-500 uppercase tracking-widest">
+                <span><i class="fas fa-database text-brand-primary"></i> Auto-DB</span>
+                <span><i class="fas fa-shield-alt text-brand-primary"></i> Auth V2</span>
+                <span><i class="fas fa-robot text-brand-primary"></i> AI Agents</span>
             </div>
         </main>
     </section>
 
-    <section id="view-editor" class="hidden h-full flex flex-col bg-white">
-        <header class="h-16 border-b border-gray-200 flex justify-between items-center px-6 bg-white shrink-0">
-            <div class="flex items-center gap-6">
-                <div class="flex items-center gap-2 font-bold text-lg text-gray-800">
-                    <span class="text-brand-orange text-xl">●</span> Base44
+    <section id="view-editor" class="hidden h-full flex flex-col md:flex-row bg-[#030014]">
+        
+        <aside class="w-full md:w-[420px] border-r border-brand-border flex flex-col relative bg-[#050210] z-20">
+            <div class="p-4 border-b border-brand-border flex justify-between items-center bg-[#050210]">
+                <span class="text-[10px] font-mono text-brand-accent uppercase tracking-widest">Terminal Neural</span>
+                <button onclick="location.reload()" class="text-[10px] text-gray-600 hover:text-red-500 transition uppercase tracking-widest">Reiniciar</button>
+            </div>
+
+            <div id="chat-history" class="flex-1 overflow-y-auto p-5 space-y-6 pb-32 scroll-smooth">
+                <div class="flex gap-4 fade-in-up">
+                    <div class="logo-hexagon w-8 h-8 flex items-center justify-center text-[10px] text-white font-bold">AI</div>
+                    <div class="chat-bubble-ai p-4 glass">
+                        <strong class="text-brand-accent">Synthetix Engine Iniciada.</strong><br><br>
+                        Módulos Carregados:<br>
+                        - 🗄️ Entidades (SQL/NoSQL)<br>
+                        - 🤖 Agentes Autônomos<br>
+                        - 🔐 Protocolos de Segurança<br><br>
+                        Descreva a aplicação para iniciar a compilação.
+                    </div>
                 </div>
-                <div class="flex items-center text-sm gap-2 text-gray-500 border-l border-gray-200 pl-6 h-8">
-                    <span>Nova</span>
-                    <span class="text-gray-300">/</span>
-                    <span class="font-medium text-gray-700">Espaço Pessoal</span>
+            </div>
+
+            <div class="absolute bottom-0 w-full p-4 bg-[#050210] border-t border-brand-border backdrop-blur-md">
+                <div class="relative">
+                    <textarea id="editorInput" class="w-full h-20 bg-[#0a0518] border border-brand-border rounded-xl py-3 px-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none transition-all placeholder-gray-600 font-mono" placeholder="Instrução de comando..."></textarea>
+                    <button onclick="generateSite()" class="absolute right-2 bottom-3 w-10 h-10 bg-brand-primary hover:bg-brand-hover text-white rounded-lg flex items-center justify-center transition shadow-lg">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 bg-black relative flex flex-col">
+            <div class="h-10 bg-[#050210] border-b border-brand-border flex items-center justify-between px-4 flex-none">
+                <div class="flex gap-2 opacity-50">
+                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                    <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Render: React v18</span>
+                    <button class="text-[10px] font-bold bg-brand-primary/10 text-brand-primary border border-brand-primary/20 px-4 py-1 rounded hover:bg-brand-primary hover:text-white transition uppercase tracking-widest">Deploy</button>
                 </div>
             </div>
             
-            <div class="flex h-full gap-8 text-sm">
-                <button class="nav-tab h-full px-2">Painel</button>
-                <button class="nav-tab active h-full px-2">Pré-visualização</button>
-                <button class="nav-tab h-full px-2">Integrações</button>
-            </div>
-
-            <div class="flex items-center gap-3">
-                <button class="p-2 text-gray-400 hover:text-gray-600"><i class="fas fa-undo"></i></button>
-                <button class="p-2 text-gray-400 hover:text-gray-600"><i class="fas fa-redo"></i></button>
-                <div class="h-6 w-px bg-gray-200 mx-2"></div>
-                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-50">Atualizar</button>
-                <button class="bg-brand-purple text-white px-4 py-1.5 rounded-lg text-sm font-semibold hover:bg-purple-800 shadow-md shadow-purple-200">Publicar</button>
-                <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs ml-2">US</div>
-            </div>
-        </header>
-
-        <div class="flex-1 flex overflow-hidden">
-            <aside class="w-[350px] editor-sidebar flex flex-col z-10 shadow-sm">
-                <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-white">
-                    <span class="font-semibold text-sm text-gray-700">Base44 AI</span>
-                    <i class="fas fa-ellipsis-h text-gray-400 cursor-pointer"></i>
-                </div>
-                
-                <div id="chat-history" class="flex-1 overflow-y-auto p-5 space-y-6">
-                    <div class="flex flex-col gap-2 items-start fade-in">
-                        <div class="chat-bubble-ai p-3 text-sm shadow-sm">
-                            Olá! Sou a IA da Base44. Vamos transformar sua ideia em realidade. O que vamos construir hoje?
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-4 bg-white border-t border-gray-200">
-                    <div class="relative">
-                        <textarea id="editorInput" class="w-full border border-gray-300 rounded-xl p-3 pr-10 text-sm focus:border-brand-purple focus:ring-1 focus:ring-brand-purple outline-none resize-none h-[50px]" placeholder="Descreva a alteração..."></textarea>
-                        <button onclick="generateSite()" class="absolute right-2 bottom-2 w-8 h-8 bg-brand-purple text-white rounded-lg flex items-center justify-center hover:bg-purple-800 transition">
-                            <i class="fas fa-arrow-up text-xs"></i>
-                        </button>
-                    </div>
-                    <div class="flex gap-4 mt-2 justify-center">
-                        <button class="text-xs text-gray-400 hover:text-brand-purple flex items-center gap-1"><i class="fas fa-magic"></i> Sugestões</button>
-                        <button class="text-xs text-gray-400 hover:text-brand-purple flex items-center gap-1"><i class="fas fa-image"></i> Templates</button>
-                    </div>
-                </div>
-            </aside>
-
-            <main class="flex-1 bg-gray-100 p-6 flex justify-center items-center">
-                <div class="w-full h-full bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
-                    <div class="h-9 bg-gray-50 border-b border-gray-200 flex items-center px-4 gap-4">
-                        <div class="flex gap-1.5">
-                            <div class="w-3 h-3 rounded-full bg-gray-300"></div>
-                            <div class="w-3 h-3 rounded-full bg-gray-300"></div>
-                            <div class="w-3 h-3 rounded-full bg-gray-300"></div>
-                        </div>
-                        <div class="flex-1 bg-white border border-gray-200 h-6 rounded flex items-center justify-center text-[10px] text-gray-400 font-mono">
-                            base44.preview/app/v1
-                        </div>
+            <div class="flex-1 relative overflow-hidden bg-[#030014]">
+                <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#030014]/95 backdrop-blur-md">
+                    <div class="w-20 h-20 relative mb-10">
+                        <div class="absolute inset-0 border-4 border-brand-primary/20 rounded-full"></div>
+                        <div class="absolute inset-0 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
+                        <div class="absolute inset-4 logo-hexagon animate-pulse"></div>
                     </div>
                     
-                    <div class="flex-1 relative">
-                        <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm">
-                            <div class="w-10 h-10 border-4 border-brand-purple border-t-transparent rounded-full animate-spin mb-4"></div>
-                            <div class="text-brand-purple font-medium text-xs animate-pulse">GERANDO INTERFACE...</div>
-                        </div>
-                        <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
-                            <i class="fas fa-layer-group text-4xl mb-4 opacity-20"></i>
-                            <span class="text-xs uppercase tracking-widest opacity-50">Preview Vazio</span>
-                        </div>
-                        <iframe id="siteFrame" class="w-full h-full border-0 hidden"></iframe>
+                    <div class="w-72 space-y-4">
+                        <div id="step-1" class="step-row"><span class="step-icon"><i class="fas fa-brain"></i></span> 1. Interpretando NLP (Intenção)...</div>
+                        <div id="step-2" class="step-row"><span class="step-icon"><i class="fas fa-database"></i></span> 2. Estruturando Banco de Dados...</div>
+                        <div id="step-3" class="step-row"><span class="step-icon"><i class="fas fa-lock"></i></span> 3. Injetando Auth JWT...</div>
+                        <div id="step-4" class="step-row"><span class="step-icon"><i class="fas fa-robot"></i></span> 4. Conectando Agentes IA...</div>
+                        <div id="step-5" class="step-row"><span class="step-icon"><i class="fas fa-code"></i></span> 5. Compilando Interface...</div>
                     </div>
                 </div>
-            </main>
+
+                <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center opacity-30 pointer-events-none">
+                    <div class="logo-hexagon w-16 h-16 mb-6 opacity-50 grayscale"></div>
+                    <span class="text-[10px] font-mono uppercase tracking-[0.5em] text-gray-500">System Idle</span>
+                </div>
+                <iframe id="siteFrame" class="w-full h-full border-0 hidden bg-white"></iframe>
+            </div>
         </div>
     </section>
 
-    <script>
-        let currentCode = "";
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[200]"></div>
 
-        // NAVEGAÇÃO
+    <script>
+        let currentCode = ""; 
+        const aiTips = [
+            "Arquitetura: Tabela 'Users' e 'Logs' criadas no DB.",
+            "Backend: Endpoints de API gerados para InvokeLLM.",
+            "Segurança: Middleware de Autenticação ativo.",
+            "Frontend: Componentes Tailwind Glassmorphism aplicados."
+        ];
+
         function navigateTo(view) {
             document.getElementById('view-landing').classList.add('hidden');
             document.getElementById('view-editor').classList.add('hidden');
             document.getElementById('view-' + view).classList.remove('hidden');
         }
 
-        function fillInput(text) {
-            document.getElementById('landingInput').value = text;
-        }
-
-        // FLUXO: LANDING -> EDITOR
         function startCreation() {
             const prompt = document.getElementById('landingInput').value;
             if(!prompt) return;
-            
             navigateTo('editor');
-            
-            // Injeta o prompt no editor e dispara
             setTimeout(() => {
                 document.getElementById('editorInput').value = prompt;
                 generateSite();
-            }, 500);
+            }, 600);
         }
 
-        // LÓGICA DE GERAÇÃO (CONECTADA À API)
         async function generateSite() {
             const input = document.getElementById('editorInput');
             const history = document.getElementById('chat-history');
             const prompt = input.value.trim();
             if(!prompt) return;
 
-            // 1. UI do Usuário
+            // 1. Mensagem Usuário
             const uDiv = document.createElement('div');
-            uDiv.className = "flex flex-col gap-2 items-end fade-in";
-            uDiv.innerHTML = `<div class="chat-bubble-user p-3 text-sm shadow-md">${prompt}</div>`;
+            uDiv.className = "flex justify-end fade-in-up";
+            uDiv.innerHTML = `<div class="chat-bubble-user p-4 text-sm max-w-[90%]">${prompt}</div>`;
             history.appendChild(uDiv);
-            input.value = ""; 
-            history.scrollTop = history.scrollHeight;
+            input.value = ""; history.scrollTop = history.scrollHeight;
 
-            // 2. Loading
+            // 2. Simulação de Processamento
             const loading = document.getElementById('loadingState');
-            const frame = document.getElementById('siteFrame');
-            const empty = document.getElementById('emptyState');
             loading.classList.remove('hidden');
+            
+            // Sequência Visual
+            updateStep('step-1', 'active'); await wait(1500); updateStep('step-1', 'done');
+            updateStep('step-2', 'active'); await wait(1200); updateStep('step-2', 'done');
+            updateStep('step-3', 'active'); await wait(1000); updateStep('step-3', 'done');
+            updateStep('step-4', 'active'); await wait(1000); updateStep('step-4', 'done');
+            updateStep('step-5', 'active');
 
             try {
-                // CHAMA A SUA API REAL
                 const response = await fetch('/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt, existingCode: currentCode })
                 });
-                
                 const data = await response.json();
                 
                 if (data.html) {
                     currentCode = data.html;
+                    const f = document.getElementById('siteFrame');
+                    f.contentWindow.document.open(); f.contentWindow.document.write(currentCode); f.contentWindow.document.close();
                     
-                    const doc = frame.contentWindow.document;
-                    doc.open(); doc.write(currentCode); doc.close();
-                    
-                    empty.classList.add('hidden');
-                    frame.classList.remove('hidden');
+                    document.getElementById('emptyState').classList.add('hidden');
+                    f.classList.remove('hidden');
 
-                    // 3. UI da IA
+                    // 3. Resposta da IA
+                    const tip = aiTips[Math.floor(Math.random() * aiTips.length)];
                     const aiDiv = document.createElement('div');
-                    aiDiv.className = "flex flex-col gap-2 items-start fade-in";
-                    aiDiv.innerHTML = `<div class="chat-bubble-ai p-3 text-sm shadow-sm">Interface gerada com sucesso! Configurei o gradiente e a tipografia conforme solicitado.</div>`;
+                    aiDiv.className = "flex gap-4 fade-in-up";
+                    aiDiv.innerHTML = `<div class="logo-hexagon w-8 h-8 flex items-center justify-center text-[10px] text-white font-bold shrink-0">AI</div><div class="chat-bubble-ai p-4 glass"><strong>Compilação Finalizada.</strong><br><br><span class="text-brand-accent text-xs uppercase tracking-widest">System Log:</span><br><span class="font-mono text-xs text-green-400">✔ ${tip}</span></div>`;
                     history.appendChild(aiDiv);
                     history.scrollTop = history.scrollHeight;
                 }
             } catch (e) {
-                console.error(e);
-                alert("Erro ao conectar com a API. Verifique sua chave.");
+                alert("Erro de conexão com o Núcleo Synthetix.");
             } finally {
                 loading.classList.add('hidden');
+                resetSteps();
             }
         }
+
+        function updateStep(id, status) {
+            const el = document.getElementById(id);
+            const icon = el.querySelector('.step-icon');
+            if(status === 'active') { 
+                el.classList.add('active'); 
+                icon.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+            }
+            if(status === 'done') { 
+                el.classList.remove('active'); el.classList.add('done'); 
+                icon.innerHTML = '<i class="fas fa-check text-green-400"></i>';
+            }
+        }
+        function resetSteps() {
+            document.querySelectorAll('.step-row').forEach(el => {
+                el.className = 'step-row';
+                el.querySelector('.step-icon').innerHTML = '<i class="fas fa-circle"></i>';
+            });
+        }
+        function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
     </script>
 </body>
 </html>
