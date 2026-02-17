@@ -3,350 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base44 Clone - Landing & Editor</title>
+    <title>Base44 AI | Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            orange: '#f97316', // Laranja da Landing
+                            purple: '#7c3aed', // Roxo do Editor
+                            bg: '#f9fafb'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        /* --- CSS GERAL (Reset e utilitários básicos) --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body, html { height: 100%; background-color: #f9fafb; color: #111827; }
-        .hidden { display: none !important; }
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .justify-center { justify-content: center; }
-        .h-full { height: 100%; }
-        .w-full { width: 100%; }
-        .cursor-pointer { cursor: pointer; }
-        a { text-decoration: none; }
-
-        /* --- PARTE 1: LANDING PAGE (Design da 1ª Foto) --- */
-        .landing-container {
-            min-height: 100vh;
-            /* Gradiente sutil de fundo parecido com a imagem 1 */
+        /* CSS ESPECÍFICO PARA FICAR IGUAL ÀS FOTOS */
+        body { background-color: #f9fafb; color: #111827; overflow: hidden; }
+        
+        /* Landing Page - Fundo Gradiente Suave */
+        #view-landing {
             background: linear-gradient(135deg, #f0f4ff 0%, #fff5f5 50%, #fdfae8 100%);
+            overflow-y: auto;
         }
 
-        .landing-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 40px; background: transparent;
-        }
-
-        .brand-logo { font-weight: 700; font-size: 24px; display: flex; align-items: center; color: #333; }
-        .brand-icon { color: #f97316; font-size: 28px; margin-right: 8px; } /* Cor laranja do logo */
-
-        .landing-nav a { color: #4b5563; margin: 0 15px; font-weight: 500; font-size: 16px; }
-        .btn-orange { background-color: #f97316; color: white; padding: 10px 24px; border-radius: 9999px; font-weight: 600; border: none; transition: background 0.2s; }
-        .btn-orange:hover { background-color: #ea580c; }
-
-        .hero-section { text-align: center; padding-top: 80px; px-4; }
-        .hero-title {
-            font-size: 56px; font-weight: 800; line-height: 1.1; color: #1f2937;
-            max-width: 900px; margin: 0 auto 24px; letter-spacing: -1px;
-        }
-        .hero-title .highlight { color: #a5b4fc; /* Um azul claro para a palavra "realidade" */ }
-
-        .hero-subtitle { font-size: 20px; color: #6b7280; max-width: 700px; margin: 0 auto 48px; line-height: 1.5; }
-
-        /* Barra de pesquisa estilo flutuante com botão laranja interno */
+        /* Input Cápsula (Igual Foto 1) */
         .input-capsule {
-            background: white; padding: 8px 8px 8px 24px; border-radius: 9999px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            display: flex; align-items: center; max-width: 720px; margin: 0 auto 40px; border: 1px solid #e5e7eb;
+            transition: all 0.3s;
         }
-        .input-capsule input { flex-grow: 1; border: none; outline: none; font-size: 18px; color: #374151; }
-        .input-capsule button { padding: 12px 32px; font-size: 18px; }
+        .input-capsule:focus-within { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
 
-        .suggestions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
-        .suggestion-chip {
-            background: white; border: 1px solid #e5e7eb; padding: 10px 20px;
-            border-radius: 9999px; font-size: 14px; color: #4b5563; transition: all 0.2s;
-        }
-        .suggestion-chip:hover { border-color: #f97316; color: #f97316; }
+        /* Editor (Igual Foto 2) */
+        .editor-sidebar { background-color: #f9fafb; border-right: 1px solid #e5e7eb; }
+        .chat-bubble-ai { background: white; border: 1px solid #e5e7eb; color: #374151; border-radius: 12px 12px 12px 0; }
+        .chat-bubble-user { background: #7c3aed; color: white; border-radius: 12px 12px 0 12px; }
+        
+        /* Tabs do Editor */
+        .nav-tab { border-bottom: 2px solid transparent; color: #6b7280; }
+        .nav-tab.active { border-bottom: 2px solid #7c3aed; color: #7c3aed; font-weight: 600; }
 
-
-        /* --- PARTE 2: EDITOR DE IA (Design da 2ª Foto) --- */
-        .editor-layout { display: flex; flex-direction: column; height: 100vh; background-color: #fff; }
-
-        /* Cabeçalho do Editor */
-        .editor-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 24px; border-bottom: 1px solid #e5e7eb; background: white; height: 60px;
-        }
-        .editor-left { display: flex; align-items: center; gap: 20px; }
-        .project-breadcrumb { font-size: 14px; color: #374151; display: flex; align-items: center; gap: 8px; }
-        .project-breadcrumb span.muted { color: #9ca3af; }
-
-        .editor-tabs { display: flex; gap: 24px; height: 100%; }
-        .tab-item {
-            display: flex; align-items: center; height: 60px; font-size: 14px; font-weight: 500; color: #6b7280; border-bottom: 2px solid transparent; cursor: pointer;
-        }
-        .tab-item.active { color: #7c3aed; border-bottom-color: #7c3aed; } /* Roxo do Base44 */
-
-        .editor-actions { display: flex; gap: 12px; align-items: center; }
-        .btn-secondary { background: white; border: 1px solid #d1d5db; color: #374151; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; }
-        .btn-primary-purple { background: #7c3aed; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; }
-        .user-avatar { width: 32px; height: 32px; background: #e0e7ff; color: #7c3aed; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-
-        /* Corpo do Editor (Sidebar + Preview) */
-        .editor-body { display: flex; flex: 1; overflow: hidden; }
-
-        /* Sidebar Esquerda (Chat) */
-        .editor-sidebar { width: 340px; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; background: #f9fafb; }
-        .sidebar-header { padding: 16px; font-weight: 600; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; background: white; }
-        .chat-container { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
-
-        .chat-bubble { padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; max-width: 90%; }
-        .chat-bubble.ai { background: white; border: 1px solid #e5e7eb; align-self: flex-start; color: #374151; }
-        .chat-bubble.user { background: #7c3aed; color: white; align-self: flex-end; }
-
-        .input-area { padding: 16px; background: white; border-top: 1px solid #e5e7eb; }
-        .input-wrapper { position: relative; }
-        .chat-input { width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 12px 40px 12px 12px; resize: none; height: 50px; font-family: inherit; }
-        .send-btn { position: absolute; right: 10px; bottom: 10px; background: #7c3aed; color: white; border: none; width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-
-        /* Área de Pré-visualização Direita */
-        .preview-area { flex: 1; background-color: #f3f4f6; padding: 24px; display: flex; justify-content: center; align-items: center; }
-        .preview-browser-mockup {
-            width: 100%; height: 100%; background: white; border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            overflow: hidden; border: 1px solid #e5e7eb; display: flex; flex-direction: column;
-        }
-        .browser-address-bar { background: #f9fafb; padding: 8px 16px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 8px; color: #9ca3af; font-size: 12px; }
-        .browser-dots { display: flex; gap: 6px; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; background: #d1d5db; }
-        .address-input { flex: 1; background: white; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 12px; text-align: center; }
-
-        .preview-content { flex: 1; overflow: auto; position: relative; }
-
-        /* Estado de carregamento */
-        .loading-state {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100%; color: #6b7280;
-        }
-        .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #7c3aed; animation: spin 1s linear infinite; margin-bottom: 16px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-
-        /* --- PARTE 3: O SITE GERADO (Design da 2ª Foto - Fundo Roxo) --- */
-        /* Este CSS só se aplica dentro do container de preview quando o site é "gerado" */
-        .generated-site-container {
-            height: 100%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            /* Gradiente Roxo/Azul exato da imagem 2 */
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white; padding: 40px;
-        }
-
-        .gen-headline { font-size: 48px; font-weight: 800; margin-bottom: 24px; line-height: 1.1; }
-        .gen-subheadline { font-size: 20px; max-width: 600px; margin: 0 auto 40px; opacity: 0.9; }
-
-        .gen-buttons { display: flex; gap: 16px; margin-bottom: 60px; }
-        .gen-btn-primary { background: white; color: #7c3aed; padding: 12px 32px; border-radius: 9999px; font-weight: 700; border: none; cursor: pointer; }
-        .gen-btn-outline { background: transparent; color: white; padding: 12px 32px; border-radius: 9999px; font-weight: 700; border: 2px solid white; cursor: pointer; }
-
-        .gen-stats { display: flex; gap: 48px; }
-        .stat-item { display: flex; flex-direction: column; }
-        .stat-num { font-size: 32px; font-weight: 800; }
-        .stat-label { font-size: 14px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+        /* Animações */
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
+<body class="h-screen flex flex-col">
 
-    <div id="landingPage" class="landing-container">
-        <header class="landing-header">
-            <div class="brand-logo">
-                <span class="brand-icon">●</span> Base44
+    <section id="view-landing" class="h-full flex flex-col">
+        <header class="flex justify-between items-center px-8 py-6">
+            <div class="flex items-center gap-2 font-bold text-xl text-gray-800">
+                <span class="text-brand-orange text-2xl">●</span> Base44
             </div>
-            <nav class="landing-nav flex items-center">
-                <a href="#">Preços</a>
-                <a href="#">Empresarial</a>
-                <a href="#" style="margin-left: 20px;">🌐</a>
-                <button class="btn-orange" style="margin-left: 20px;">Comece já</button>
+            <nav class="hidden md:flex gap-8 text-sm font-medium text-gray-600">
+                <a href="#" class="hover:text-black">Preços</a>
+                <a href="#" class="hover:text-black">Empresarial</a>
+                <a href="#" class="hover:text-black">Showcase</a>
             </nav>
+            <div class="flex items-center gap-4">
+                <a href="#" class="text-gray-500 hover:text-black"><i class="fas fa-globe"></i></a>
+                <button onclick="navigateTo('editor')" class="bg-brand-orange text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-orange-600 transition shadow-lg shadow-orange-200">Comece já</button>
+            </div>
         </header>
 
-        <main class="hero-section">
-            <h1 class="hero-title">
-                Transforme seu sonho em <span class="highlight">realidade</span>.<br>
-                Crie um app com IA agora mesmo.
+        <main class="flex-1 flex flex-col items-center pt-20 px-4 text-center fade-in">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 leading-[1.1] mb-6 tracking-tight">
+                Transforme seu sonho em <span class="text-indigo-400">realidade</span>.<br>
+                Crie um app com IA agora.
             </h1>
-            <p class="hero-subtitle">
+            <p class="text-xl text-gray-500 max-w-2xl mb-12 font-light">
                 Com a Base44, você cria aplicativos totalmente funcionais em minutos, usando apenas suas palavras. Sem precisar programar.
             </p>
 
-            <div class="input-capsule">
-                <input type="text" id="landingInput" placeholder="O que você quer criar?">
-                <button class="btn-orange" onclick="goToEditor()">Criar ➔</button>
+            <div class="input-capsule w-full max-w-2xl bg-white rounded-full p-2 flex items-center border border-gray-200 relative z-10">
+                <input type="text" id="landingInput" class="flex-1 bg-transparent px-6 text-lg outline-none text-gray-700 placeholder-gray-400 h-14" placeholder="O que você quer criar? (ex: Site Roxo para SaaS)">
+                <button onclick="startCreation()" class="bg-brand-orange text-white px-8 h-14 rounded-full font-bold text-lg hover:bg-orange-600 transition flex items-center gap-2">
+                    Criar <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
 
-            <p style="color: #6b7280; font-size: 14px; margin-top: 40px;">Não sabe por onde começar? Experimente uma destas opções:</p>
-            <div class="suggestions">
-                <button class="suggestion-chip">Painel de relatórios</button>
-                <button class="suggestion-chip">Plataforma de jogos</button>
-                <button class="suggestion-chip">Portal de integração</button>
-                <button class="suggestion-chip">Aplicativo de networking</button>
-                <button class="suggestion-chip">Visualizador de ambientes</button>
+            <p class="text-sm text-gray-400 mt-10 mb-4">Não sabe por onde começar? Experimente:</p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button onclick="fillInput('Painel de relatórios dark mode')" class="bg-white border border-gray-200 px-4 py-2 rounded-full text-sm text-gray-600 hover:border-brand-orange hover:text-brand-orange transition">Painel de relatórios</button>
+                <button onclick="fillInput('Landing page roxa para startup')" class="bg-white border border-gray-200 px-4 py-2 rounded-full text-sm text-gray-600 hover:border-brand-orange hover:text-brand-orange transition">Landing Page SaaS</button>
+                <button onclick="fillInput('Portfolio minimalista')" class="bg-white border border-gray-200 px-4 py-2 rounded-full text-sm text-gray-600 hover:border-brand-orange hover:text-brand-orange transition">Portfólio</button>
             </div>
         </main>
-    </div>
+    </section>
 
-
-    <div id="editorPage" class="editor-layout hidden">
-        <header class="editor-header">
-            <div class="editor-left">
-                <div class="brand-logo" style="font-size: 20px;">
-                    <span class="brand-icon" style="font-size: 22px;">●</span> Base44
+    <section id="view-editor" class="hidden h-full flex flex-col bg-white">
+        <header class="h-16 border-b border-gray-200 flex justify-between items-center px-6 bg-white shrink-0">
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2 font-bold text-lg text-gray-800">
+                    <span class="text-brand-orange text-xl">●</span> Base44
                 </div>
-                <div class="project-breadcrumb">
-                    <span class="muted">/</span>
-                    <strong>Nova</strong>
-                    <span class="muted">|</span>
-                    <span>Espaço de trabalho pessoal</span>
+                <div class="flex items-center text-sm gap-2 text-gray-500 border-l border-gray-200 pl-6 h-8">
+                    <span>Nova</span>
+                    <span class="text-gray-300">/</span>
+                    <span class="font-medium text-gray-700">Espaço Pessoal</span>
                 </div>
             </div>
-            <div class="editor-tabs">
-                <div class="tab-item">Painel</div>
-                <div class="tab-item active">Pré-visualização</div>
+            
+            <div class="flex h-full gap-8 text-sm">
+                <button class="nav-tab h-full px-2">Painel</button>
+                <button class="nav-tab active h-full px-2">Pré-visualização</button>
+                <button class="nav-tab h-full px-2">Integrações</button>
             </div>
-            <div class="editor-actions">
-                <span class="text-gray-400 cursor-pointer">↩</span>
-                <span class="text-gray-400 cursor-pointer">↪</span>
-                <button class="btn-secondary">Atualizar</button>
-                <button class="btn-primary-purple">Publicar</button>
-                <div class="user-avatar">U</div>
+
+            <div class="flex items-center gap-3">
+                <button class="p-2 text-gray-400 hover:text-gray-600"><i class="fas fa-undo"></i></button>
+                <button class="p-2 text-gray-400 hover:text-gray-600"><i class="fas fa-redo"></i></button>
+                <div class="h-6 w-px bg-gray-200 mx-2"></div>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-50">Atualizar</button>
+                <button class="bg-brand-purple text-white px-4 py-1.5 rounded-lg text-sm font-semibold hover:bg-purple-800 shadow-md shadow-purple-200">Publicar</button>
+                <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs ml-2">US</div>
             </div>
         </header>
 
-        <div class="editor-body">
-            <aside class="editor-sidebar">
-                <div class="sidebar-header">
-                    <span>Base44 AI</span>
-                    <span class="cursor-pointer">⋮</span>
+        <div class="flex-1 flex overflow-hidden">
+            <aside class="w-[350px] editor-sidebar flex flex-col z-10 shadow-sm">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-white">
+                    <span class="font-semibold text-sm text-gray-700">Base44 AI</span>
+                    <i class="fas fa-ellipsis-h text-gray-400 cursor-pointer"></i>
                 </div>
-                <div class="chat-container" id="chatContainer">
-                    <div class="chat-bubble ai">
-                        Vou criar uma landing page elegante e moderna para o seu projeto. Descreva mais detalhes ou clique em enviar para gerar a primeira versão.
+                
+                <div id="chat-history" class="flex-1 overflow-y-auto p-5 space-y-6">
+                    <div class="flex flex-col gap-2 items-start fade-in">
+                        <div class="chat-bubble-ai p-3 text-sm shadow-sm">
+                            Olá! Sou a IA da Base44. Vamos transformar sua ideia em realidade. O que vamos construir hoje?
+                        </div>
                     </div>
                 </div>
-                <div class="input-area">
-                    <div class="input-wrapper">
-                        <textarea id="chatInput" class="chat-input" placeholder="Descreva a mudança..."></textarea>
-                        <button class="send-btn" onclick="sendMessage()">➤</button>
+
+                <div class="p-4 bg-white border-t border-gray-200">
+                    <div class="relative">
+                        <textarea id="editorInput" class="w-full border border-gray-300 rounded-xl p-3 pr-10 text-sm focus:border-brand-purple focus:ring-1 focus:ring-brand-purple outline-none resize-none h-[50px]" placeholder="Descreva a alteração..."></textarea>
+                        <button onclick="generateSite()" class="absolute right-2 bottom-2 w-8 h-8 bg-brand-purple text-white rounded-lg flex items-center justify-center hover:bg-purple-800 transition">
+                            <i class="fas fa-arrow-up text-xs"></i>
+                        </button>
+                    </div>
+                    <div class="flex gap-4 mt-2 justify-center">
+                        <button class="text-xs text-gray-400 hover:text-brand-purple flex items-center gap-1"><i class="fas fa-magic"></i> Sugestões</button>
+                        <button class="text-xs text-gray-400 hover:text-brand-purple flex items-center gap-1"><i class="fas fa-image"></i> Templates</button>
                     </div>
                 </div>
             </aside>
 
-            <main class="preview-area">
-                <div class="preview-browser-mockup">
-                    <div class="browser-address-bar">
-                        <div class="browser-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                        <div class="address-input">app.base44.com/preview/site-incrivel</div>
-                    </div>
-                    <div class="preview-content" id="previewContent">
-                        <div class="loading-state">
-                            <p>Aguardando sua instrução para gerar o site...</p>
+            <main class="flex-1 bg-gray-100 p-6 flex justify-center items-center">
+                <div class="w-full h-full bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
+                    <div class="h-9 bg-gray-50 border-b border-gray-200 flex items-center px-4 gap-4">
+                        <div class="flex gap-1.5">
+                            <div class="w-3 h-3 rounded-full bg-gray-300"></div>
+                            <div class="w-3 h-3 rounded-full bg-gray-300"></div>
+                            <div class="w-3 h-3 rounded-full bg-gray-300"></div>
                         </div>
+                        <div class="flex-1 bg-white border border-gray-200 h-6 rounded flex items-center justify-center text-[10px] text-gray-400 font-mono">
+                            base44.preview/app/v1
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 relative">
+                        <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm">
+                            <div class="w-10 h-10 border-4 border-brand-purple border-t-transparent rounded-full animate-spin mb-4"></div>
+                            <div class="text-brand-purple font-medium text-xs animate-pulse">GERANDO INTERFACE...</div>
+                        </div>
+                        <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
+                            <i class="fas fa-layer-group text-4xl mb-4 opacity-20"></i>
+                            <span class="text-xs uppercase tracking-widest opacity-50">Preview Vazio</span>
+                        </div>
+                        <iframe id="siteFrame" class="w-full h-full border-0 hidden"></iframe>
                     </div>
                 </div>
             </main>
         </div>
-    </div>
-
+    </section>
 
     <script>
-        const landingPage = document.getElementById('landingPage');
-        const editorPage = document.getElementById('editorPage');
-        const landingInput = document.getElementById('landingInput');
-        const chatContainer = document.getElementById('chatContainer');
-        const chatInput = document.getElementById('chatInput');
-        const previewContent = document.getElementById('previewContent');
+        let currentCode = "";
 
-        // Função para transição da Landing Page para o Editor
-        function goToEditor() {
-            const initialPrompt = landingInput.value;
-            landingPage.classList.add('hidden');
-            editorPage.classList.remove('hidden');
+        // NAVEGAÇÃO
+        function navigateTo(view) {
+            document.getElementById('view-landing').classList.add('hidden');
+            document.getElementById('view-editor').classList.add('hidden');
+            document.getElementById('view-' + view).classList.remove('hidden');
+        }
 
-            // Se o usuário digitou algo na landing page, já envia como mensagem
-            if (initialPrompt.trim() !== "") {
-                addMessage('user', initialPrompt);
-                simulateGeneration();
+        function fillInput(text) {
+            document.getElementById('landingInput').value = text;
+        }
+
+        // FLUXO: LANDING -> EDITOR
+        function startCreation() {
+            const prompt = document.getElementById('landingInput').value;
+            if(!prompt) return;
+            
+            navigateTo('editor');
+            
+            // Injeta o prompt no editor e dispara
+            setTimeout(() => {
+                document.getElementById('editorInput').value = prompt;
+                generateSite();
+            }, 500);
+        }
+
+        // LÓGICA DE GERAÇÃO (CONECTADA À API)
+        async function generateSite() {
+            const input = document.getElementById('editorInput');
+            const history = document.getElementById('chat-history');
+            const prompt = input.value.trim();
+            if(!prompt) return;
+
+            // 1. UI do Usuário
+            const uDiv = document.createElement('div');
+            uDiv.className = "flex flex-col gap-2 items-end fade-in";
+            uDiv.innerHTML = `<div class="chat-bubble-user p-3 text-sm shadow-md">${prompt}</div>`;
+            history.appendChild(uDiv);
+            input.value = ""; 
+            history.scrollTop = history.scrollHeight;
+
+            // 2. Loading
+            const loading = document.getElementById('loadingState');
+            const frame = document.getElementById('siteFrame');
+            const empty = document.getElementById('emptyState');
+            loading.classList.remove('hidden');
+
+            try {
+                // CHAMA A SUA API REAL
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt, existingCode: currentCode })
+                });
+                
+                const data = await response.json();
+                
+                if (data.html) {
+                    currentCode = data.html;
+                    
+                    const doc = frame.contentWindow.document;
+                    doc.open(); doc.write(currentCode); doc.close();
+                    
+                    empty.classList.add('hidden');
+                    frame.classList.remove('hidden');
+
+                    // 3. UI da IA
+                    const aiDiv = document.createElement('div');
+                    aiDiv.className = "flex flex-col gap-2 items-start fade-in";
+                    aiDiv.innerHTML = `<div class="chat-bubble-ai p-3 text-sm shadow-sm">Interface gerada com sucesso! Configurei o gradiente e a tipografia conforme solicitado.</div>`;
+                    history.appendChild(aiDiv);
+                    history.scrollTop = history.scrollHeight;
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Erro ao conectar com a API. Verifique sua chave.");
+            } finally {
+                loading.classList.add('hidden');
             }
         }
-
-        // Função para adicionar mensagens ao chat
-        function addMessage(sender, text) {
-            const bubble = document.createElement('div');
-            bubble.classList.add('chat-bubble', sender);
-            bubble.innerText = text;
-            chatContainer.appendChild(bubble);
-            chatContainer.scrollTop = chatContainer.scrollHeight; // Rola para baixo
-        }
-
-        // Função chamada ao clicar no botão de enviar do editor
-        function sendMessage() {
-            const text = chatInput.value;
-            if (text.trim() === "") return;
-            addMessage('user', text);
-            chatInput.value = '';
-            simulateGeneration();
-        }
-
-        // Simula o processo de "Geração" da IA
-        function simulateGeneration() {
-            // 1. Mostra estado de carregamento na pré-visualização
-            previewContent.innerHTML = `
-                <div class="loading-state" style="padding-top: 100px;">
-                    <div class="spinner"></div>
-                    <p>A IA está gerando seu site...</p>
-                </div>
-            `;
-
-            // 2. Resposta da IA no chat (simulada)
-            setTimeout(() => {
-                 addMessage('ai', 'Entendido! Estou gerando uma nova versão do site com base nas suas instruções. Aplicando o tema moderno com fundo gradiente e seções de destaque.');
-            }, 1000);
-
-            // 3. Após 2.5 segundos, "Gera" o site final (PARTE 3 DO PEDIDO)
-            setTimeout(() => {
-                // Injeta o HTML do site roxo exatamente como na foto 2
-                previewContent.innerHTML = `
-                    <div class="generated-site-container">
-                        <h1 class="gen-headline">TRANSFORME SUAS IDEIAS EM REALIDADE</h1>
-                        <p class="gen-subheadline">Plataforma completa para criar, gerenciar e escalar seus projetos com ferramentas intuitivas e inteligência artificial de ponta.</p>
-
-                        <div class="gen-buttons">
-                            <button class="gen-btn-primary">Começar gratuitamente ➔</button>
-                            <button class="gen-btn-outline">Agendar demo</button>
-                        </div>
-
-                        <div class="gen-stats">
-                            <div class="stat-item">
-                                <span class="stat-num">10k+</span>
-                                <span class="stat-label">Usuários ativos</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-num">99.9%</span>
-                                <span class="stat-label">Uptime</span>
-                            </div>
-                             <div class="stat-item">
-                                <span class="stat-num">4.9★</span>
-                                <span class="stat-label">Avaliação</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }, 2500);
-        }
-
-        // Permite enviar mensagem com Enter no textarea
-        chatInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
     </script>
-
 </body>
 </html>
