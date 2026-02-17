@@ -1,0 +1,10 @@
+/ai-site-generator
+
+ /api
+ generate.js
+
+ index.html
+ style.css
+ script.js
+ package.json
+ vercel.json
