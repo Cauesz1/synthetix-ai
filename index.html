@@ -14,12 +14,12 @@
                 extend: {
                     colors: {
                         brand: {
-                            dark: '#030014', 
-                            primary: '#7c3aed', 
-                            hover: '#6d28d9',
-                            accent: '#d8b4fe',
-                            surface: '#0f0720',
-                            border: 'rgba(255,255,255,0.1)'
+                            dark: '#020410',       // Fundo Deep Space
+                            primary: '#6366f1',    // Indigo Elétrico
+                            secondary: '#3b82f6',  // Azul Real
+                            accent: '#22d3ee',     // Ciano Neon (Detalhes)
+                            surface: '#0f172a',    // Superfície Slate Dark
+                            border: 'rgba(99, 102, 241, 0.15)' // Bordas Sutis
                         }
                     },
                     fontFamily: {
@@ -27,7 +27,18 @@
                         display: ['Space Grotesk', 'sans-serif'],
                     },
                     animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'pulse-glow': 'pulseGlow 3s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px #6366f1' },
+                            '50%': { boxShadow: '0 0 30px #22d3ee' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
                     }
                 }
             }
@@ -35,34 +46,64 @@
     </script>
 
     <style>
-        body { background-color: #030014; color: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        body { background-color: #020410; color: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         
-        /* GLASSMORPHISM */
-        .glass { background: rgba(15, 7, 32, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(124, 58, 237, 0.2); box-shadow: 0 0 30px rgba(124, 58, 237, 0.1); }
+        /* NOVO DESIGN SYSTEM: "ORBITAL GLASS" */
+        .glass { 
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(24px); 
+            border: 1px solid rgba(99, 102, 241, 0.2); 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); 
+        }
         
-        /* LOGO */
-        .logo-hexagon { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); background: linear-gradient(135deg, #7c3aed, #4c1d95); box-shadow: 0 0 15px #7c3aed; }
+        /* NOVO LOGO: ORBITAL CORE */
+        .logo-core {
+            width: 32px; height: 32px;
+            background: radial-gradient(circle at center, #22d3ee, #6366f1);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+        }
+        .logo-core::after {
+            content: ''; position: absolute; inset: 4px; background: #020410; border-radius: 50%;
+        }
+        .logo-core::before {
+            content: ''; position: absolute; inset: -2px; border: 1px dashed rgba(34, 211, 238, 0.5); border-radius: 50%; animation: spin 10s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* CHAT */
-        .chat-user { background: #7c3aed; color: white; border-radius: 12px 12px 2px 12px; padding: 12px; font-size: 13px; box-shadow: 0 0 15px rgba(124,58,237,0.3); border: 1px solid rgba(255,255,255,0.2); }
-        .chat-ai { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px 12px 12px 2px; padding: 12px; font-size: 13px; color: #d1d5db; }
+        /* CHAT BUBBLES REFINADOS */
+        .chat-user { 
+            background: linear-gradient(135deg, #6366f1, #3b82f6); 
+            color: white; border-radius: 16px 16px 2px 16px; padding: 14px; font-size: 13px; 
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3); border: 1px solid rgba(255,255,255,0.1); 
+        }
+        .chat-ai { 
+            background: rgba(30, 41, 59, 0.5); 
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 16px 16px 16px 2px; padding: 14px; 
+            font-size: 13px; color: #e2e8f0; 
+        }
         
-        /* LOADING STEPS (ENGENHARIA) */
-        .step-row { display: flex; align-items: center; gap: 12px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; opacity: 0.3; transition: all 0.2s; letter-spacing: 1px; }
-        .step-row.active { opacity: 1; color: #d8b4fe; text-shadow: 0 0 8px rgba(124,58,237,0.6); }
+        /* LOADING STEPS */
+        .step-row { display: flex; align-items: center; gap: 12px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; opacity: 0.3; transition: all 0.2s; letter-spacing: 0.5px; }
+        .step-row.active { opacity: 1; color: #22d3ee; text-shadow: 0 0 10px rgba(34, 211, 238, 0.5); }
         .step-row.done { opacity: 0.6; color: #10b981; }
-        .step-icon { width: 14px; display: flex; justify-content: center; }
 
-        /* TABS DO PERFIL (O QUE VOCÊ PEDIU) */
-        .active-tab { background: rgba(124, 58, 237, 0.15); color: #d8b4fe; border: 1px solid rgba(124, 58, 237, 0.4); box-shadow: 0 0 15px rgba(124, 58, 237, 0.1); }
-        .inactive-tab { color: #6b7280; border: 1px solid transparent; }
-        .inactive-tab:hover { background: rgba(255,255,255,0.03); color: white; }
+        /* TABS REFINADAS */
+        .active-tab { 
+            background: rgba(99, 102, 241, 0.1); 
+            color: #22d3ee; 
+            border: 1px solid rgba(99, 102, 241, 0.4); 
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.1) inset; 
+        }
+        .inactive-tab { color: #64748b; border: 1px solid transparent; }
+        .inactive-tab:hover { background: rgba(255,255,255,0.02); color: #94a3b8; }
 
-        /* PRICING SWITCH */
+        /* PRICING TOGGLE */
         .switch-checkbox { display: none; }
-        .switch-label { display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 52px; height: 28px; background: #0f0720; border-radius: 100px; position: relative; border: 1px solid rgba(255,255,255,0.1); }
+        .switch-label { display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 52px; height: 28px; background: #1e293b; border-radius: 100px; position: relative; border: 1px solid rgba(255,255,255,0.1); }
         .switch-button { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; transition: 0.3s; background: #fff; }
-        .switch-checkbox:checked + .switch-label { background: #7c3aed; }
+        .switch-checkbox:checked + .switch-label { background: #6366f1; }
         .switch-checkbox:checked + .switch-label .switch-button { left: calc(100% - 3px); transform: translateX(-100%); }
 
         .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -74,56 +115,58 @@
     <nav class="fixed top-0 w-full z-50 border-b border-brand-border bg-brand-dark/80 backdrop-blur-xl h-16">
         <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('landing')">
-                <div class="logo-hexagon w-8 h-8 animate-pulse-slow"></div>
+                <div class="logo-core"></div>
                 <div class="flex flex-col">
                     <span class="font-display font-bold text-lg tracking-widest text-white leading-none">SYNTHETIX</span>
-                    <span class="text-[0.6rem] text-brand-accent tracking-[0.4em] font-semibold uppercase opacity-70">Intelligence</span>
+                    <span class="text-[0.6rem] text-brand-accent tracking-[0.4em] font-semibold uppercase opacity-70">Core Engine</span>
                 </div>
             </div>
             
             <div class="hidden md:flex items-center gap-8 text-xs font-mono text-gray-400">
-                <button onclick="navigateTo('landing')" class="hover:text-white transition">HOME</button>
-                <button onclick="navigateTo('app')" class="hover:text-brand-primary transition">ENGINE</button>
+                <button onclick="navigateTo('landing')" class="hover:text-white transition">INÍCIO</button>
+                <button onclick="navigateTo('app')" class="hover:text-brand-accent transition">ENGINE</button>
                 <button onclick="navigateTo('pricing')" class="hover:text-white transition">UPGRADE</button>
             </div>
 
             <div class="hidden md:flex items-center gap-4">
                 <div id="desktop-guest" class="flex gap-4">
                     <button onclick="navigateTo('auth')" class="text-xs font-bold text-white hover:text-brand-accent uppercase tracking-widest">Login</button>
-                    <button onclick="navigateTo('app')" class="bg-brand-primary hover:bg-brand-hover px-5 py-2 rounded-lg text-xs font-bold transition shadow-[0_0_15px_rgba(124,58,237,0.4)] uppercase tracking-widest">Start</button>
+                    <button onclick="navigateTo('app')" class="bg-brand-primary hover:bg-brand-secondary px-6 py-2 rounded-lg text-xs font-bold transition shadow-[0_0_20px_rgba(99,102,241,0.4)] uppercase tracking-widest text-white">Start</button>
                 </div>
                 <div id="desktop-user" class="hidden items-center gap-4">
                      <div class="text-right mr-2">
-                        <div class="text-[10px] text-gray-400 uppercase tracking-widest">Operator</div>
+                        <div class="text-[10px] text-gray-500 uppercase tracking-widest">Operator</div>
                         <div class="text-xs font-bold text-brand-accent" id="nav-username-display">User</div>
                     </div>
-                    <div onclick="navigateTo('profile')" class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-primary to-purple-900 flex items-center justify-center font-bold text-xs cursor-pointer border border-brand-border hover:border-brand-accent transition shadow-lg" id="nav-avatar">US</div>
+                    <div onclick="navigateTo('profile')" class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center font-bold text-xs cursor-pointer border border-brand-border hover:border-white transition shadow-lg text-brand-dark" id="nav-avatar">OP</div>
                 </div>
             </div>
         </div>
     </nav>
 
     <section id="view-landing" class="h-full flex flex-col pt-20 relative overflow-hidden">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
-        
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-primary/10 rounded-full blur-[120px] pointer-events-none animate-pulse-glow"></div>
+        <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-accent/5 rounded-full blur-[100px] pointer-events-none"></div>
+
         <main class="flex-1 flex flex-col items-center justify-center text-center px-4 relative z-10 fade-in-up">
-            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-brand-primary/30 bg-brand-primary/5 mb-8 backdrop-blur-md">
-                <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-brand-accent">Zenith Engine V6 Online</span>
+            <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-brand-primary/30 bg-brand-primary/5 mb-8 backdrop-blur-md animate-float">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-accent shadow-[0_0_10px_#22d3ee]"></span>
+                <span class="text-[10px] uppercase tracking-[0.25em] font-bold text-brand-accent">Zenith V7 Online</span>
             </div>
             
             <h1 class="font-display text-5xl md:text-8xl font-bold mb-6 tracking-tighter leading-none text-white">
-                CÓDIGO <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-blue-500">SINTÉTICO</span>
+                INTELIGÊNCIA <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-primary">SINTÉTICA</span>
             </h1>
             
-            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 font-light">
-                Arquitetura Full-Stack autônoma. De NLP a Banco de Dados em segundos.
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 font-light leading-relaxed">
+                Arquitetura Full-Stack autônoma. Transforme intenção em código complexo instantaneamente.
             </p>
 
             <div class="w-full max-w-2xl relative group">
-                <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-primary to-blue-600 rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-1000"></div>
-                <div class="relative bg-[#0a0518] border border-brand-border rounded-xl p-2 flex items-center">
-                    <input type="text" id="landingInput" class="flex-1 bg-transparent px-6 py-4 text-white outline-none placeholder-gray-600 font-mono text-sm" placeholder="Ex: Dashboard SaaS Dark Mode com Login...">
-                    <button onclick="startCreation()" class="bg-brand-primary text-white px-8 py-4 rounded-lg font-bold hover:bg-brand-hover transition shadow-[0_0_20px_rgba(124,58,237,0.3)]">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-accent to-brand-primary rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-1000"></div>
+                <div class="relative bg-brand-dark border border-brand-border rounded-xl p-2 flex items-center shadow-2xl">
+                    <input type="text" id="landingInput" class="flex-1 bg-transparent px-6 py-4 text-white outline-none placeholder-gray-600 font-mono text-sm" placeholder="Ex: App de Finanças Dark Mode com IA...">
+                    <button onclick="startCreation()" class="bg-brand-primary text-white px-8 py-4 rounded-lg font-bold hover:bg-brand-secondary transition shadow-[0_0_20px_rgba(99,102,241,0.3)]">
                         <i class="fas fa-bolt"></i>
                     </button>
                 </div>
@@ -131,57 +174,59 @@
         </main>
     </section>
 
-    <section id="view-pricing" class="hidden min-h-full py-24 px-6 fade-in-up bg-[#030014]">
+    <section id="view-pricing" class="hidden min-h-full py-24 px-6 fade-in-up bg-brand-dark">
         <div class="max-w-5xl mx-auto text-center">
-            <h2 class="text-4xl font-display font-bold mb-10 text-white uppercase tracking-widest">Protocolos de Acesso</h2>
+            <h2 class="text-4xl font-display font-bold mb-4 text-white uppercase tracking-widest">Protocolos de Acesso</h2>
+            <p class="text-gray-500 mb-12">Escolha a capacidade de processamento da sua Engine.</p>
             
             <div class="flex items-center justify-center gap-6 mb-16">
-                <span class="text-sm font-bold text-gray-400 transition">Mensal</span>
+                <span class="text-sm font-bold text-gray-400">Mensal</span>
                 <input type="checkbox" id="billing-toggle" class="switch-checkbox" onclick="togglePricing()">
                 <label for="billing-toggle" class="switch-label"><span class="switch-button"></span></label>
-                <span class="text-sm font-bold text-white transition">Anual <span class="text-brand-accent text-xs">(-20%)</span></span>
+                <span class="text-sm font-bold text-white">Anual <span class="text-brand-accent text-xs">(-20%)</span></span>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="glass p-10 rounded-3xl flex flex-col text-left border-brand-border relative">
-                    <h3 class="text-2xl font-bold mb-2">Initiate</h3>
+                <div class="glass p-10 rounded-3xl flex flex-col text-left border-brand-border relative hover:border-brand-primary/30 transition duration-300">
+                    <h3 class="text-2xl font-bold mb-2 font-display">Initiate</h3>
                     <div class="flex items-baseline mb-8">
-                        <span class="text-2xl font-bold mr-1">R$</span><span class="text-6xl font-bold tracking-tighter" id="price-standard">29,90</span><span class="text-gray-500 text-sm ml-2">/mês</span>
+                        <span class="text-2xl font-bold mr-1 text-gray-400">R$</span><span class="text-6xl font-bold tracking-tighter" id="price-standard">29,90</span><span class="text-gray-500 text-sm ml-2">/mês</span>
                     </div>
                     <ul class="space-y-4 mb-10 flex-1 text-gray-400 text-sm font-mono">
                         <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> 5 Projetos Ativos</li>
-                        <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> Edição Incremental IA</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> Edição Básica</li>
                     </ul>
-                    <a href="#" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-center hover:bg-white/10 transition uppercase tracking-widest text-xs">Assinar</a>
+                    <button class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-center hover:bg-white/10 transition uppercase tracking-widest text-xs">Assinar</button>
                 </div>
-                <div class="glass p-10 rounded-3xl border-brand-primary/50 flex flex-col text-left relative shadow-[0_0_30px_rgba(124,58,237,0.15)]">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-primary text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-widest">Recomendado</div>
-                    <h3 class="text-2xl font-bold mb-2 text-white">Architect <span class="text-brand-primary">PRO</span></h3>
+
+                <div class="glass p-10 rounded-3xl border-brand-primary/50 flex flex-col text-left relative shadow-[0_0_40px_rgba(99,102,241,0.1)] hover:shadow-[0_0_60px_rgba(99,102,241,0.2)] transition duration-300">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-primary to-brand-accent text-brand-dark text-[10px] font-bold px-6 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Recomendado</div>
+                    <h3 class="text-2xl font-bold mb-2 text-white font-display">Architect <span class="text-brand-accent">PRO</span></h3>
                     <div class="flex items-baseline mb-8">
-                        <span class="text-2xl font-bold text-brand-primary mr-1">R$</span><span class="text-6xl font-bold tracking-tighter text-brand-primary" id="price-pro">49,90</span><span class="text-gray-500 text-sm ml-2">/mês</span>
+                        <span class="text-2xl font-bold text-brand-accent mr-1">R$</span><span class="text-6xl font-bold tracking-tighter text-brand-accent" id="price-pro">49,90</span><span class="text-gray-500 text-sm ml-2">/mês</span>
                     </div>
                     <ul class="space-y-4 mb-10 flex-1 text-white text-sm font-mono">
-                        <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> Projetos Ilimitados</li>
-                        <li class="flex items-center gap-3"><i class="fas fa-code text-brand-accent"></i> <strong>Engine V6 Acesso Total</strong></li>
-                        <li class="flex items-center gap-3"><i class="fas fa-rocket text-brand-accent"></i> Deploy Instantâneo</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-infinity text-brand-accent"></i> Projetos Ilimitados</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-code text-brand-accent"></i> <strong>Acesso Total Engine V7</strong></li>
+                        <li class="flex items-center gap-3"><i class="fas fa-rocket text-brand-accent"></i> Prioridade de GPU</li>
                     </ul>
-                    <a href="#" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-center hover:bg-brand-hover transition shadow-lg shadow-brand-primary/20 uppercase tracking-widest text-xs text-white">Assinar Agora</a>
+                    <button class="w-full py-4 bg-brand-primary rounded-xl font-bold text-center hover:bg-brand-secondary transition shadow-lg shadow-brand-primary/20 uppercase tracking-widest text-xs text-white">Assinar Agora</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="view-profile" class="hidden min-h-full py-24 px-6 fade-in-up bg-[#030014]">
+    <section id="view-profile" class="hidden min-h-full py-24 px-6 fade-in-up bg-brand-dark">
         <div class="max-w-6xl mx-auto w-full">
             <div class="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12 border-b border-brand-border pb-10">
-                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-primary to-purple-900 flex items-center justify-center text-3xl font-bold shadow-[0_0_30px_rgba(124,58,237,0.3)] border-2 border-white/10" id="profile-avatar-big">US</div>
+                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-primary to-brand-surface flex items-center justify-center text-3xl font-bold shadow-[0_0_30px_rgba(99,102,241,0.3)] border-2 border-brand-primary/30" id="profile-avatar-big">OP</div>
                 <div class="text-center md:text-left">
                     <h2 class="text-4xl font-display font-bold text-white mb-2" id="profile-name-display">Usuário</h2>
-                    <span class="px-4 py-1.5 bg-brand-primary/10 border border-brand-primary/40 text-brand-accent rounded-full text-[10px] font-bold uppercase tracking-widest">Plano Free</span>
+                    <span class="px-4 py-1.5 bg-brand-primary/10 border border-brand-primary/40 text-brand-accent rounded-full text-[10px] font-bold uppercase tracking-widest">Nível 1: Operador</span>
                 </div>
                 <div class="md:ml-auto flex gap-4 w-full md:w-auto mt-4 md:mt-0">
-                    <button onclick="logout()" class="flex-1 md:flex-none px-8 py-3 border border-white/10 rounded-xl text-xs font-bold hover:bg-red-500/10 hover:text-red-400 transition uppercase tracking-widest">Sair</button>
-                    <button onclick="navigateTo('app')" class="flex-1 md:flex-none bg-brand-primary px-8 py-3 rounded-xl text-xs font-bold hover:bg-brand-hover transition shadow-lg shadow-brand-primary/20 uppercase tracking-widest text-white">Abrir Engine</button>
+                    <button onclick="logout()" class="flex-1 md:flex-none px-8 py-3 border border-brand-border rounded-xl text-xs font-bold hover:border-red-500/50 hover:text-red-400 transition uppercase tracking-widest">Desconectar</button>
+                    <button onclick="navigateTo('app')" class="flex-1 md:flex-none bg-brand-primary px-8 py-3 rounded-xl text-xs font-bold hover:bg-brand-secondary transition shadow-lg shadow-brand-primary/20 uppercase tracking-widest text-white">Nova Compilação</button>
                 </div>
             </div>
 
@@ -194,39 +239,39 @@
                         <i class="fas fa-credit-card"></i> Assinatura
                     </button>
                     <button onclick="switchTab('settings')" id="tab-btn-settings" class="inactive-tab w-full text-left px-6 py-4 rounded-xl font-medium transition flex items-center gap-3 text-sm">
-                        <i class="fas fa-cog"></i> Configurações
+                        <i class="fas fa-cog"></i> Ajustes
                     </button>
                 </div>
 
                 <div class="col-span-3">
                     <div id="tab-projects" class="fade-in-up">
-                        <h3 class="text-xl font-bold mb-6 text-white font-display uppercase tracking-widest">Projetos Ativos</h3>
+                        <h3 class="text-xl font-bold mb-6 text-white font-display uppercase tracking-widest border-l-4 border-brand-accent pl-4">Projetos Ativos</h3>
                         <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-                        <div id="empty-projects-state" class="hidden py-24 text-center border border-dashed border-white/10 rounded-2xl text-gray-600 bg-white/5">
-                            <i class="fas fa-cube text-4xl mb-4 opacity-30"></i><br>
-                            <span class="text-xs uppercase tracking-widest">Nenhuma arquitetura compilada.</span>
+                        <div id="empty-projects-state" class="hidden py-24 text-center border border-dashed border-brand-border rounded-2xl text-gray-600 bg-brand-surface/30">
+                            <i class="fas fa-cube text-4xl mb-4 opacity-30 text-brand-primary"></i><br>
+                            <span class="text-xs uppercase tracking-widest">Nenhuma arquitetura encontrada.</span>
                         </div>
                     </div>
 
                     <div id="tab-subscription" class="hidden fade-in-up">
                         <div class="glass p-8 rounded-2xl border-brand-primary/30 relative overflow-hidden">
                             <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/10 blur-[80px] rounded-full pointer-events-none"></div>
-                            <h4 class="text-2xl font-bold text-brand-accent mb-2">PLANO ATUAL</h4>
-                            <p class="text-gray-400 text-sm mb-8">Você está operando no nível Initiate.</p>
+                            <h4 class="text-2xl font-bold text-brand-accent mb-2 font-display">STATUS DA ENGINE</h4>
+                            <p class="text-gray-400 text-sm mb-8">Você está operando com capacidade limitada.</p>
                             
                             <div class="flex gap-4">
-                                <button onclick="navigateTo('pricing')" class="bg-brand-primary px-6 py-3 rounded-lg text-xs font-bold text-white uppercase tracking-widest hover:bg-brand-hover transition">Fazer Upgrade</button>
-                                <button class="border border-white/10 px-6 py-3 rounded-lg text-xs font-bold text-gray-400 uppercase tracking-widest hover:bg-white/5 transition">Histórico</button>
+                                <button onclick="navigateTo('pricing')" class="bg-brand-primary px-6 py-3 rounded-lg text-xs font-bold text-white uppercase tracking-widest hover:bg-brand-secondary transition">Fazer Upgrade</button>
+                                <button class="border border-brand-border px-6 py-3 rounded-lg text-xs font-bold text-gray-400 uppercase tracking-widest hover:bg-white/5 transition">Faturas</button>
                             </div>
                         </div>
                     </div>
 
                     <div id="tab-settings" class="hidden fade-in-up">
-                        <div class="glass p-8 rounded-2xl border-white/5">
+                        <div class="glass p-8 rounded-2xl border-brand-border">
                             <label class="block text-[10px] text-brand-accent uppercase font-bold tracking-widest mb-4">Identificação do Operador</label>
                             <div class="flex gap-4">
-                                <input type="text" id="settings-name" class="flex-1 bg-[#050210] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-primary outline-none font-mono" placeholder="Seu nome">
-                                <button onclick="saveSettingsName()" class="bg-brand-primary px-6 py-3 rounded-xl text-xs font-bold text-white hover:bg-brand-hover transition uppercase tracking-widest">Salvar</button>
+                                <input type="text" id="settings-name" class="flex-1 bg-brand-surface border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-primary outline-none font-mono" placeholder="Seu nome">
+                                <button onclick="saveSettingsName()" class="bg-brand-primary px-6 py-3 rounded-xl text-xs font-bold text-white hover:bg-brand-secondary transition uppercase tracking-widest">Salvar</button>
                             </div>
                         </div>
                     </div>
@@ -236,47 +281,47 @@
     </section>
 
     <section id="view-auth" class="hidden min-h-full flex items-center justify-center px-4 fade-in-up">
-        <div class="glass p-10 rounded-3xl w-full max-w-md shadow-[0_0_50px_rgba(124,58,237,0.2)]">
-            <div class="logo-hexagon w-10 h-10 mx-auto mb-6"></div>
-            <h2 class="text-3xl font-display font-bold text-center mb-8 text-white" id="auth-title">Identificação</h2>
+        <div class="glass p-10 rounded-3xl w-full max-w-md shadow-[0_0_50px_rgba(99,102,241,0.2)]">
+            <div class="logo-core mx-auto mb-6"></div>
+            <h2 class="text-3xl font-display font-bold text-center mb-8 text-white" id="auth-title">Acesso Seguro</h2>
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div id="field-name" class="hidden">
-                    <input type="text" id="input-name" class="w-full bg-[#050210] border border-brand-border rounded-xl p-4 text-white outline-none focus:border-brand-primary font-mono text-sm" placeholder="NOME DO OPERADOR">
+                    <input type="text" id="input-name" class="w-full bg-brand-surface border border-brand-border rounded-xl p-4 text-white outline-none focus:border-brand-primary font-mono text-sm" placeholder="ID OPERADOR">
                 </div>
-                <input type="email" class="w-full bg-[#050210] border border-brand-border rounded-xl p-4 text-white outline-none focus:border-brand-primary font-mono text-sm" placeholder="EMAIL" required>
-                <input type="password" class="w-full bg-[#050210] border border-brand-border rounded-xl p-4 text-white outline-none focus:border-brand-primary font-mono text-sm" placeholder="SENHA" required>
-                <button type="submit" class="w-full py-4 bg-brand-primary rounded-xl font-bold uppercase mt-4 tracking-widest shadow-lg shadow-brand-primary/20 text-white hover:bg-brand-hover transition">Confirmar Acesso</button>
+                <input type="email" class="w-full bg-brand-surface border border-brand-border rounded-xl p-4 text-white outline-none focus:border-brand-primary font-mono text-sm" placeholder="EMAIL CRIPTOGRAFADO" required>
+                <input type="password" class="w-full bg-brand-surface border border-brand-border rounded-xl p-4 text-white outline-none focus:border-brand-primary font-mono text-sm" placeholder="CHAVE DE ACESSO" required>
+                <button type="submit" class="w-full py-4 bg-brand-primary rounded-xl font-bold uppercase mt-4 tracking-widest shadow-lg shadow-brand-primary/20 text-white hover:bg-brand-secondary transition">Autenticar</button>
             </form>
             <button onclick="toggleAuthMode()" class="mt-8 text-center w-full text-[10px] text-brand-accent uppercase font-bold tracking-widest hover:text-white transition" id="auth-toggle-btn">Solicitar Novo Registro</button>
         </div>
     </section>
 
-    <section id="view-editor" class="hidden h-full flex flex-col md:flex-row bg-[#030014]">
+    <section id="view-editor" class="hidden h-full flex flex-col md:flex-row bg-brand-dark">
         
-        <aside class="w-full md:w-[400px] border-r border-brand-border flex flex-col relative bg-[#050210] z-20">
-            <div class="p-4 border-b border-brand-border flex justify-between items-center bg-[#050210]">
-                <span class="text-[10px] font-mono text-brand-accent uppercase tracking-widest">Terminal Neural</span>
-                <button onclick="location.reload()" class="text-[10px] text-gray-600 hover:text-red-500 uppercase transition tracking-widest">Reiniciar</button>
+        <aside class="w-full md:w-[400px] border-r border-brand-border flex flex-col relative bg-brand-surface z-20">
+            <div class="p-4 border-b border-brand-border flex justify-between items-center bg-brand-surface">
+                <span class="text-[10px] font-mono text-brand-accent uppercase tracking-widest">Terminal Zenith</span>
+                <button onclick="location.reload()" class="text-[10px] text-gray-500 hover:text-red-500 uppercase transition tracking-widest">Reiniciar</button>
             </div>
 
             <div id="chat-history" class="flex-1 overflow-y-auto p-5 space-y-6 pb-32">
                 <div class="flex gap-4 fade-in-up">
-                    <div class="logo-hexagon w-8 h-8 flex items-center justify-center text-[10px] text-white font-bold shrink-0">AI</div>
+                    <div class="logo-core w-8 h-8 flex items-center justify-center shrink-0"></div>
                     <div class="chat-ai glass">
-                        <strong class="text-brand-accent">Synthetix Engine Pronta.</strong><br><br>
-                        Módulos Ativos:<br>
+                        <strong class="text-brand-accent">Synthetix V7 Pronta.</strong><br><br>
+                        Módulos Carregados:<br>
                         - 🗄️ Entidades (SQL/NoSQL)<br>
                         - 🤖 Agentes Autônomos<br>
                         - 🔐 Auth JWT<br><br>
-                        Iniciando sequência de criação...
+                        Aguardando comando de voz ou texto...
                     </div>
                 </div>
             </div>
 
-            <div class="absolute bottom-0 w-full p-4 bg-[#050210] border-t border-brand-border backdrop-blur-md">
+            <div class="absolute bottom-0 w-full p-4 bg-brand-surface border-t border-brand-border backdrop-blur-md">
                 <div class="relative">
-                    <textarea id="editorInput" class="w-full h-20 bg-[#0a0518] border border-brand-border rounded-xl py-3 px-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none transition-all placeholder-gray-600 font-mono" placeholder="Instrução de comando..."></textarea>
-                    <button onclick="generateSite()" class="absolute right-2 bottom-3 w-10 h-10 bg-brand-primary hover:bg-brand-hover text-white rounded-lg flex items-center justify-center transition shadow-lg">
+                    <textarea id="editorInput" class="w-full h-20 bg-brand-dark border border-brand-border rounded-xl py-3 px-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none transition-all placeholder-gray-600 font-mono" placeholder="Instrução do projeto..."></textarea>
+                    <button onclick="generateSite()" class="absolute right-2 bottom-3 w-10 h-10 bg-brand-primary hover:bg-brand-secondary text-white rounded-lg flex items-center justify-center transition shadow-lg">
                         <i class="fas fa-terminal"></i>
                     </button>
                 </div>
@@ -284,38 +329,38 @@
         </aside>
 
         <div class="flex-1 bg-black relative flex flex-col">
-            <div class="h-10 bg-[#050210] border-b border-brand-border flex items-center justify-between px-4 flex-none">
+            <div class="h-10 bg-brand-surface border-b border-brand-border flex items-center justify-between px-4 flex-none">
                 <div class="flex gap-2 opacity-50">
                     <div class="w-2 h-2 rounded-full bg-red-500"></div>
                     <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
                     <div class="w-2 h-2 rounded-full bg-green-500"></div>
                 </div>
                 <div class="flex items-center gap-4">
-                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Render: React v18</span>
-                    <button class="text-[10px] font-bold bg-brand-primary/10 text-brand-primary border border-brand-primary/20 px-4 py-1 rounded hover:bg-brand-primary hover:text-white transition uppercase tracking-widest">Deploy</button>
+                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Render: React v19</span>
+                    <button class="text-[10px] font-bold bg-brand-primary/10 text-brand-primary border border-brand-primary/20 px-4 py-1 rounded hover:bg-brand-primary hover:text-white transition uppercase tracking-widest">Publicar</button>
                 </div>
             </div>
             
-            <div class="flex-1 relative overflow-hidden bg-[#030014]">
-                <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#030014]/95 backdrop-blur-md">
+            <div class="flex-1 relative overflow-hidden bg-brand-dark">
+                <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-brand-dark/95 backdrop-blur-md">
                     <div class="w-20 h-20 relative mb-10">
                         <div class="absolute inset-0 border-2 border-brand-primary/20 rounded-full"></div>
                         <div class="absolute inset-0 border-2 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
-                        <div class="absolute inset-6 logo-hexagon animate-pulse"></div>
+                        <div class="absolute inset-6 logo-core animate-pulse"></div>
                     </div>
                     
                     <div class="w-72 space-y-4">
                         <div id="step-1" class="step-row"><span class="step-icon"><i class="fas fa-brain"></i></span> 1. Interpretando NLP...</div>
-                        <div id="step-2" class="step-row"><span class="step-icon"><i class="fas fa-database"></i></span> 2. Estruturando DB (Entidades)...</div>
+                        <div id="step-2" class="step-row"><span class="step-icon"><i class="fas fa-database"></i></span> 2. Estruturando DB...</div>
                         <div id="step-3" class="step-row"><span class="step-icon"><i class="fas fa-shield-alt"></i></span> 3. Configurando Auth...</div>
-                        <div id="step-4" class="step-row"><span class="step-icon"><i class="fas fa-robot"></i></span> 4. Conectando Agentes IA...</div>
-                        <div id="step-5" class="step-row"><span class="step-icon"><i class="fas fa-code"></i></span> 5. Compilando Interface...</div>
+                        <div id="step-4" class="step-row"><span class="step-icon"><i class="fas fa-robot"></i></span> 4. Conectando Agentes...</div>
+                        <div id="step-5" class="step-row"><span class="step-icon"><i class="fas fa-code"></i></span> 5. Compilando...</div>
                     </div>
                 </div>
 
-                <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center opacity-20 pointer-events-none">
-                    <div class="logo-hexagon w-16 h-16 mb-6 opacity-30 grayscale"></div>
-                    <span class="text-[10px] font-mono uppercase tracking-[0.5em] text-gray-500">Awaiting Input</span>
+                <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center opacity-30 pointer-events-none">
+                    <div class="logo-core w-16 h-16 mb-6 opacity-30 grayscale"></div>
+                    <span class="text-[10px] font-mono uppercase tracking-[0.5em] text-gray-500">System Idle</span>
                 </div>
                 <iframe id="siteFrame" class="w-full h-full border-0 hidden bg-white"></iframe>
             </div>
@@ -327,7 +372,7 @@
     <script>
         // --- DADOS E ESTADO ---
         const pricingData = { monthly: { standard: "29,90", pro: "49,90" }, annual: { standard: "19,90", pro: "39,90" } };
-        const aiTips = ["DB: Tabela 'Users' e 'Transactions' criadas.", "Backend: API Endpoints simulados.", "Security: Auth Middleware ativado."];
+        const aiTips = ["DB: Tabela 'Users' e 'Logs' criadas.", "Backend: API Endpoints simulados.", "Security: Auth Middleware ativado."];
 
         let currentCode = ""; 
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -353,32 +398,25 @@
         function updateNav() {
             const gD = document.getElementById('desktop-guest');
             const uD = document.getElementById('desktop-user');
-            const gM = document.getElementById('mobile-guest');
-            const uM = document.getElementById('mobile-user');
             
             if(isLoggedIn) {
                 gD.classList.add('hidden'); uD.classList.remove('hidden'); uD.classList.add('flex');
-                if(gM) gM.classList.add('hidden'); if(uM) uM.classList.remove('hidden');
                 document.getElementById('nav-avatar').innerText = userName.charAt(0).toUpperCase();
                 document.getElementById('nav-username-display').innerText = userName;
                 document.getElementById('profile-name-display').innerText = userName;
             } else {
                 gD.classList.remove('hidden'); uD.classList.add('hidden');
-                if(gM) gM.classList.remove('hidden'); if(uM) uM.classList.add('hidden');
             }
         }
 
         // --- LÓGICA DE ABAS (PERFIL) ---
         function switchTab(id) {
-            // Esconde todos os conteúdos
             ['projects', 'subscription', 'settings'].forEach(t => {
                 document.getElementById('tab-' + t).classList.add('hidden');
                 const btn = document.getElementById('tab-btn-' + t);
-                // Remove estilo ativo e adiciona inativo
                 btn.classList.remove('active-tab');
                 btn.classList.add('inactive-tab');
             });
-            // Mostra o selecionado
             document.getElementById('tab-' + id).classList.remove('hidden');
             const activeBtn = document.getElementById('tab-btn-' + id);
             activeBtn.classList.remove('inactive-tab');
@@ -391,10 +429,7 @@
             const empty = document.getElementById('empty-projects-state');
             grid.innerHTML = "";
             
-            if (projects.length === 0) { 
-                empty.classList.remove('hidden'); 
-                return; 
-            }
+            if (projects.length === 0) { empty.classList.remove('hidden'); return; }
             empty.classList.add('hidden');
             
             projects.forEach((p, i) => {
@@ -403,7 +438,7 @@
                 c.onclick = () => loadProject(i);
                 c.innerHTML = `
                     <div class="flex justify-between items-start mb-4">
-                        <div class="logo-hexagon w-8 h-8 flex items-center justify-center text-[10px] font-bold">V${i+1}</div>
+                        <div class="logo-core w-8 h-8 flex items-center justify-center text-[10px] font-bold">V${i+1}</div>
                         <span class="text-[10px] text-gray-500 font-mono">${p.date}</span>
                     </div>
                     <h4 class="font-bold text-white mb-1 truncate text-sm group-hover:text-brand-accent transition">${p.name}</h4>
@@ -442,7 +477,6 @@
         function updateAuthUI() {
             document.getElementById('auth-title').innerText = isSignup ? "Registro de Operador" : "Identificação";
             document.getElementById('field-name').classList.toggle('hidden', !isSignup);
-            document.getElementById('auth-btn').innerText = isSignup ? "CRIAR ACESSO" : "CONFIRMAR ACESSO";
             document.getElementById('auth-toggle-btn').innerText = isSignup ? "Já tenho acesso" : "Solicitar Novo Registro";
         }
         function saveSettingsName() {
@@ -515,7 +549,7 @@
                     const tip = aiTips[Math.floor(Math.random() * aiTips.length)];
                     const aiDiv = document.createElement('div');
                     aiDiv.className = "flex gap-4 fade-in-up";
-                    aiDiv.innerHTML = `<div class="logo-hexagon w-8 h-8 flex items-center justify-center text-[10px] text-white font-bold shrink-0">AI</div><div class="chat-ai glass"><strong>Compilação Finalizada.</strong><br><br><span class="text-brand-accent text-xs uppercase tracking-widest">System Log:</span><br><span class="font-mono text-xs text-green-400">✔ ${tip}</span></div>`;
+                    aiDiv.innerHTML = `<div class="logo-core w-8 h-8 flex items-center justify-center text-[10px] font-bold shrink-0"></div><div class="chat-ai glass"><strong>Compilação Finalizada.</strong><br><br><span class="text-brand-accent text-xs uppercase tracking-widest">System Log:</span><br><span class="font-mono text-xs text-green-400">✔ ${tip}</span></div>`;
                     history.appendChild(aiDiv);
                     history.scrollTop = history.scrollHeight;
                     
