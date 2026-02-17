@@ -3,9 +3,48 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { prompt } = req.body;
+  const { prompt, existingCode } = req.body;
 
   try {
+    const systemPrompt = `
+Você é uma IA arquiteta full-stack chamada SYNTHETIX V7.
+
+REGRAS ABSOLUTAS:
+- Sempre retornar HTML completo
+- Incluir <html>, <head>, <body>
+- Código moderno
+- Responsivo
+- Visual premium
+- Sem explicações
+- Sem markdown
+- Apenas código puro
+
+Se existir código anterior, você deve melhorar ou modificar mantendo estrutura.
+`;
+
+    const userPrompt = existingCode
+      ? `
+CÓDIGO ATUAL:
+${existingCode}
+
+MODIFICAÇÃO SOLICITADA:
+${prompt}
+
+Atualize o código completo mantendo funcionalidades anteriores.
+`
+      : `
+Crie um site completo com base na seguinte descrição:
+
+${prompt}
+
+O site deve:
+- Ter design moderno
+- Ser responsivo
+- Ter animações suaves
+- Usar CSS interno
+- Usar JS interno
+`;
+
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -15,19 +54,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
-          {
-            role: "system",
-            content: `
-Você é um gerador profissional de sites.
-Retorne apenas HTML completo com CSS e JS embutidos.
-Código limpo, moderno e responsivo.
-Sem explicações.
-            `
-          },
-          {
-            role: "user",
-            content: prompt
-          }
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt }
         ],
         temperature: 0.7
       })
@@ -35,11 +63,12 @@ Sem explicações.
 
     const data = await response.json();
 
-    res.status(200).json({
-      code: data.choices[0].message.content
-    });
+    const html = data.choices[0].message.content;
+
+    res.status(200).json({ html });
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Erro ao gerar site." });
   }
 }
