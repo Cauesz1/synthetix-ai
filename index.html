@@ -513,67 +513,57 @@
         }
 
         async function generateSite() {
-    const input = document.getElementById('editorInput');
-    const history = document.getElementById('chat-history');
-    const prompt = input.value.trim();
-    if (!prompt) return;
+            const input = document.getElementById('editorInput');
+            const history = document.getElementById('chat-history');
+            const prompt = input.value.trim();
+            if(!prompt) return;
+            if(!isLoggedIn) { showToast("🔒 Acesso Negado. Faça Login."); navigateTo('auth'); return; }
 
-    if (!isLoggedIn) {
-        showToast("🔒 Acesso Negado. Faça Login.");
-        navigateTo('auth');
-        return;
-    }
+            const uDiv = document.createElement('div');
+            uDiv.className = "flex justify-end fade-in-up";
+            uDiv.innerHTML = `<div class="chat-user">${prompt}</div>`;
+            history.appendChild(uDiv);
+            input.value = ""; history.scrollTop = history.scrollHeight;
 
-    const uDiv = document.createElement('div');
-    uDiv.className = "flex justify-end fade-in-up";
-    uDiv.innerHTML = `<div class="chat-user">${prompt}</div>`;
-    history.appendChild(uDiv);
+            const loading = document.getElementById('loadingState');
+            loading.classList.remove('hidden');
+            
+            updateStep('step-1', 'active'); await wait(1500); updateStep('step-1', 'done');
+            updateStep('step-2', 'active'); await wait(1200); updateStep('step-2', 'done');
+            updateStep('step-3', 'active'); await wait(1000); updateStep('step-3', 'done');
+            updateStep('step-4', 'active'); await wait(1000); updateStep('step-4', 'done');
+            updateStep('step-5', 'active');
 
-    input.value = "";
-    history.scrollTop = history.scrollHeight;
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt, existingCode: currentCode })
+                });
+                const data = await response.json();
+                
+                if (data.html || data.code) {
+                    currentCode = data.html || data.code;
+                    const f = document.getElementById('siteFrame');
+                    f.contentWindow.document.open(); f.contentWindow.document.write(currentCode); f.contentWindow.document.close();
+                    document.getElementById('emptyState').classList.add('hidden');
+                    f.classList.remove('hidden');
 
-    const loading = document.getElementById('loadingState');
-    loading.classList.remove('hidden');
-
-    try {
-        const response = await fetch('/api/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                prompt,
-                existingCode: currentCode
-            })
-        });
-
-        const data = await response.json();
-
-        const generatedHTML = (data.html || data.code || "").trim();
-
-        if (!generatedHTML.startsWith("<!DOCTYPE")) {
-            showToast("⚠️ Resposta inválida da IA");
-            loading.classList.add('hidden');
-            return;
-        }
-
-        currentCode = generatedHTML;
-
-        const frame = document.getElementById('siteFrame');
-        frame.contentWindow.document.open();
-        frame.contentWindow.document.write(currentCode);
-        frame.contentWindow.document.close();
-
-        document.getElementById('emptyState').classList.add('hidden');
-        frame.classList.remove('hidden');
-
-        saveProject(currentCode, prompt);
-
-    } catch (err) {
-        console.error(err);
-        showToast("❌ Erro ao gerar site");
-    }
-
-    loading.classList.add('hidden');
-         }
+                    const tip = aiTips[Math.floor(Math.random() * aiTips.length)];
+                    const aiDiv = document.createElement('div');
+                    aiDiv.className = "flex gap-4 fade-in-up";
+                    aiDiv.innerHTML = `<div class="logo-core w-8 h-8 flex items-center justify-center shrink-0"></div><div class="chat-ai glass"><strong>Compilação Finalizada.</strong><br><br><span class="text-brand-accent text-xs uppercase tracking-widest">System Log:</span><br><span class="font-mono text-xs text-green-400">✔ ${tip}</span></div>`;
+                    history.appendChild(aiDiv);
+                    history.scrollTop = history.scrollHeight;
+                    
+                    saveProject(currentCode, prompt);
+                }
+            } catch (e) {
+                showToast("❌ Erro de Conexão");
+            } finally {
+                loading.classList.add('hidden');
+                resetSteps();
+            }
         }
 
         function showToast(m) {
@@ -599,4 +589,3 @@
     </script>
 </body>
 </html>
-
