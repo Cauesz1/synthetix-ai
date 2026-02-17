@@ -1,25 +1,591 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Site Builder</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SYNTHETIX AI | Zenith Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#020410',       // Fundo Deep Space
+                            primary: '#6366f1',    // Indigo Elétrico
+                            secondary: '#3b82f6',  // Azul Real
+                            accent: '#22d3ee',     // Ciano Neon
+                            surface: '#0f172a',    // Superfície
+                            border: 'rgba(99, 102, 241, 0.15)' 
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px #6366f1' },
+                            '50%': { boxShadow: '0 0 30px #22d3ee' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #020410; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+
+        body { background-color: #020410; color: #ffffff; -webkit-font-smoothing: antialiased; overflow: hidden; }
+        
+        .glass { 
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(24px); 
+            border: 1px solid rgba(99, 102, 241, 0.2); 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); 
+        }
+        
+        .logo-core {
+            width: 32px; height: 32px;
+            background: radial-gradient(circle at center, #22d3ee, #6366f1);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+        }
+        .logo-core::after { content: ''; position: absolute; inset: 4px; background: #020410; border-radius: 50%; }
+        .logo-core::before { content: ''; position: absolute; inset: -2px; border: 1px dashed rgba(34, 211, 238, 0.5); border-radius: 50%; animation: spin 10s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* CHAT */
+        .chat-user { background: linear-gradient(135deg, #6366f1, #3b82f6); color: white; border-radius: 16px 16px 2px 16px; padding: 14px; font-size: 13px; box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3); border: 1px solid rgba(255,255,255,0.1); }
+        .chat-ai { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px 16px 16px 2px; padding: 14px; font-size: 13px; color: #e2e8f0; }
+        
+        .step-row { display: flex; align-items: center; gap: 12px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; opacity: 0.3; transition: all 0.2s; letter-spacing: 0.5px; }
+        .step-row.active { opacity: 1; color: #22d3ee; text-shadow: 0 0 10px rgba(34, 211, 238, 0.5); }
+        .step-row.done { opacity: 0.6; color: #10b981; }
+
+        .active-tab { background: rgba(99, 102, 241, 0.1); color: #22d3ee; border: 1px solid rgba(99, 102, 241, 0.4); box-shadow: 0 0 20px rgba(99, 102, 241, 0.1) inset; }
+        .inactive-tab { color: #64748b; border: 1px solid transparent; }
+        .inactive-tab:hover { background: rgba(255,255,255,0.02); color: #94a3b8; }
+
+        .switch-checkbox { display: none; }
+        .switch-label { display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 52px; height: 28px; background: #1e293b; border-radius: 100px; position: relative; border: 1px solid rgba(255,255,255,0.1); }
+        .switch-button { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; transition: 0.3s; background: #fff; }
+        .switch-checkbox:checked + .switch-label { background: #6366f1; }
+        .switch-checkbox:checked + .switch-label .switch-button { left: calc(100% - 3px); transform: translateX(-100%); }
+
+        .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
-<body>
+<body class="flex flex-col h-screen overflow-hidden">
 
-  <div class="container">
-    <h1>Gerador de Sites com IA</h1>
+    <nav class="fixed top-0 w-full z-50 border-b border-brand-border bg-brand-dark/90 backdrop-blur-xl h-16">
+        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('landing')">
+                <div class="logo-core"></div>
+                <div class="flex flex-col">
+                    <span class="font-display font-bold text-lg tracking-widest text-white leading-none">SYNTHETIX</span>
+                    <span class="text-[0.6rem] text-brand-accent tracking-[0.4em] font-semibold uppercase opacity-70">Core Engine</span>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8 text-xs font-mono text-gray-400">
+                <button onclick="navigateTo('landing')" class="hover:text-white transition">INÍCIO</button>
+                <button onclick="navigateTo('app')" class="hover:text-brand-accent transition">ENGINE</button>
+                <button onclick="navigateTo('pricing')" class="hover:text-white transition">UPGRADE</button>
+            </div>
 
-    <textarea id="prompt" placeholder="Descreva o site que deseja criar..."></textarea>
+            <div class="hidden md:flex items-center gap-4">
+                <div id="desktop-guest" class="flex gap-4">
+                    <button onclick="navigateTo('auth')" class="text-xs font-bold text-white hover:text-brand-accent uppercase tracking-widest">Login</button>
+                    <button onclick="navigateTo('app')" class="bg-brand-primary hover:bg-brand-secondary px-6 py-2 rounded-lg text-xs font-bold transition shadow-[0_0_20px_rgba(99,102,241,0.4)] uppercase tracking-widest text-white">Start</button>
+                </div>
+                <div id="desktop-user" class="hidden items-center gap-4">
+                     <div class="text-right mr-2">
+                        <div class="text-[10px] text-gray-500 uppercase tracking-widest">Operator</div>
+                        <div class="text-xs font-bold text-brand-accent" id="nav-username-display">User</div>
+                    </div>
+                    <div onclick="navigateTo('profile')" class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center font-bold text-xs cursor-pointer border border-brand-border hover:border-white transition shadow-lg text-brand-dark" id="nav-avatar">OP</div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <button onclick="generateSite()">Gerar Site</button>
+    <main id="main-scroll-container" class="flex-1 overflow-y-auto pt-16 scroll-smooth bg-brand-dark">
 
-    <div class="output">
-      <iframe id="preview"></iframe>
-    </div>
-  </div>
+        <section id="view-landing" class="min-h-screen flex flex-col relative">
+            <div class="min-h-[90vh] flex flex-col items-center justify-center text-center px-4 relative z-10 fade-in-up">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-primary/10 rounded-full blur-[120px] pointer-events-none animate-pulse-glow"></div>
+                
+                <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-brand-primary/30 bg-brand-primary/5 mb-8 backdrop-blur-md animate-float">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-accent shadow-[0_0_10px_#22d3ee]"></span>
+                    <span class="text-[10px] uppercase tracking-[0.25em] font-bold text-brand-accent">Zenith V7 Online</span>
+                </div>
+                
+                <h1 class="font-display text-5xl md:text-8xl font-bold mb-6 tracking-tighter leading-none text-white">
+                    INTELIGÊNCIA <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-primary">SINTÉTICA</span>
+                </h1>
+                
+                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 font-light leading-relaxed">
+                    Arquitetura Full-Stack autônoma. Role para baixo e conheça o futuro.
+                </p>
 
-  <script src="script.js"></script>
+                <div class="w-full max-w-2xl relative group">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-accent to-brand-primary rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-1000"></div>
+                    <div class="relative bg-brand-dark border border-brand-border rounded-xl p-2 flex items-center shadow-2xl">
+                        <input type="text" id="landingInput" class="flex-1 bg-transparent px-6 py-4 text-white outline-none placeholder-gray-600 font-mono text-sm" placeholder="Ex: App de Finanças Dark Mode com IA...">
+                        <button onclick="startCreation()" class="bg-brand-primary text-white px-8 py-4 rounded-lg font-bold hover:bg-brand-secondary transition shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                            <i class="fas fa-bolt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-20 animate-bounce text-gray-500 text-xs uppercase tracking-widest">
+                    Role para saber mais <br> <i class="fas fa-chevron-down mt-2"></i>
+                </div>
+            </div>
+
+            <div class="py-24 px-6 bg-[#030514]">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-3xl font-display font-bold text-center mb-16 uppercase tracking-widest text-white">Capacidades do Núcleo</h2>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="glass p-8 rounded-2xl hover:border-brand-accent/50 transition duration-500">
+                            <div class="w-12 h-12 rounded-lg bg-brand-primary/20 flex items-center justify-center mb-6 text-brand-accent text-xl"><i class="fas fa-database"></i></div>
+                            <h3 class="text-xl font-bold mb-3 text-white">Auto-Database</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">Criação instantânea de esquemas SQL e NoSQL baseados puramente na intenção do usuário.</p>
+                        </div>
+                        <div class="glass p-8 rounded-2xl hover:border-brand-accent/50 transition duration-500">
+                            <div class="w-12 h-12 rounded-lg bg-brand-primary/20 flex items-center justify-center mb-6 text-brand-accent text-xl"><i class="fas fa-shield-alt"></i></div>
+                            <h3 class="text-xl font-bold mb-3 text-white">Security Layer</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">Implementação automática de autenticação JWT, proteção contra DDoS e criptografia ponta a ponta.</p>
+                        </div>
+                        <div class="glass p-8 rounded-2xl hover:border-brand-accent/50 transition duration-500">
+                            <div class="w-12 h-12 rounded-lg bg-brand-primary/20 flex items-center justify-center mb-6 text-brand-accent text-xl"><i class="fas fa-microchip"></i></div>
+                            <h3 class="text-xl font-bold mb-3 text-white">Neural Agents</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">Implantação de agentes de IA autônomos para gerenciar suporte, análise de dados e automação.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="py-12 border-t border-brand-border bg-brand-dark text-center">
+                <div class="logo-core w-8 h-8 mx-auto mb-4"></div>
+                <p class="text-gray-500 text-xs font-mono uppercase tracking-widest">Synthetix AI Systems © 2026</p>
+            </footer>
+        </section>
+
+        <section id="view-pricing" class="hidden min-h-screen py-24 px-6 fade-in-up bg-brand-dark">
+            <div class="max-w-5xl mx-auto text-center pb-20">
+                <h2 class="text-4xl font-display font-bold mb-4 text-white uppercase tracking-widest">Protocolos de Acesso</h2>
+                <div class="flex items-center justify-center gap-6 mb-16 mt-8">
+                    <span class="text-sm font-bold text-gray-400">Mensal</span>
+                    <input type="checkbox" id="billing-toggle" class="switch-checkbox" onclick="togglePricing()">
+                    <label for="billing-toggle" class="switch-label"><span class="switch-button"></span></label>
+                    <span class="text-sm font-bold text-white">Anual <span class="text-brand-accent text-xs">(-20%)</span></span>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="glass p-10 rounded-3xl flex flex-col text-left border-brand-border relative hover:border-brand-primary/30 transition duration-300">
+                        <h3 class="text-2xl font-bold mb-2 font-display">Initiate</h3>
+                        <div class="flex items-baseline mb-8">
+                            <span class="text-2xl font-bold mr-1 text-gray-400">R$</span><span class="text-6xl font-bold tracking-tighter" id="price-standard">29,90</span><span class="text-gray-500 text-sm ml-2">/mês</span>
+                        </div>
+                        <ul class="space-y-4 mb-10 flex-1 text-gray-400 text-sm font-mono">
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> 5 Projetos Ativos</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> Edição Básica</li>
+                        </ul>
+                        <button class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-center hover:bg-white/10 transition uppercase tracking-widest text-xs">Assinar</button>
+                    </div>
+                    <div class="glass p-10 rounded-3xl border-brand-primary/50 flex flex-col text-left relative shadow-[0_0_40px_rgba(99,102,241,0.1)] hover:shadow-[0_0_60px_rgba(99,102,241,0.2)] transition duration-300">
+                        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-primary to-brand-accent text-brand-dark text-[10px] font-bold px-6 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Recomendado</div>
+                        <h3 class="text-2xl font-bold mb-2 text-white font-display">Architect <span class="text-brand-accent">PRO</span></h3>
+                        <div class="flex items-baseline mb-8">
+                            <span class="text-2xl font-bold text-brand-accent mr-1">R$</span><span class="text-6xl font-bold tracking-tighter text-brand-accent" id="price-pro">49,90</span><span class="text-gray-500 text-sm ml-2">/mês</span>
+                        </div>
+                        <ul class="space-y-4 mb-10 flex-1 text-white text-sm font-mono">
+                            <li class="flex items-center gap-3"><i class="fas fa-infinity text-brand-accent"></i> Projetos Ilimitados</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-code text-brand-accent"></i> <strong>Acesso Total Engine V7</strong></li>
+                        </ul>
+                        <button class="w-full py-4 bg-brand-primary rounded-xl font-bold text-center hover:bg-brand-secondary transition shadow-lg shadow-brand-primary/20 uppercase tracking-widest text-xs text-white">Assinar Agora</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-profile" class="hidden min-h-screen py-24 px-6 fade-in-up bg-brand-dark">
+            <div class="max-w-6xl mx-auto w-full pb-20">
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12 border-b border-brand-border pb-10">
+                    <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-primary to-brand-surface flex items-center justify-center text-3xl font-bold shadow-[0_0_30px_rgba(99,102,241,0.3)] border-2 border-brand-primary/30" id="profile-avatar-big">OP</div>
+                    <div class="text-center md:text-left">
+                        <h2 class="text-4xl font-display font-bold text-white mb-2" id="profile-name-display">Usuário</h2>
+                        <span class="px-4 py-1.5 bg-brand-primary/10 border border-brand-primary/40 text-brand-accent rounded-full text-[10px] font-bold uppercase tracking-widest">Nível 1: Operador</span>
+                    </div>
+                    <div class="md:ml-auto flex gap-4 w-full md:w-auto mt-4 md:mt-0">
+                        <button onclick="logout()" class="flex-1 md:flex-none px-8 py-3 border border-brand-border rounded-xl text-xs font-bold hover:border-red-500/50 hover:text-red-400 transition uppercase tracking-widest">Desconectar</button>
+                        <button onclick="navigateTo('app')" class="flex-1 md:flex-none bg-brand-primary px-8 py-3 rounded-xl text-xs font-bold hover:bg-brand-secondary transition shadow-lg shadow-brand-primary/20 uppercase tracking-widest text-white">Nova Compilação</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="col-span-1 space-y-3">
+                        <button onclick="switchTab('projects')" id="tab-btn-projects" class="active-tab w-full text-left px-6 py-4 rounded-xl font-medium transition flex items-center gap-3 text-sm"><i class="fas fa-layer-group"></i> Projetos</button>
+                        <button onclick="switchTab('subscription')" id="tab-btn-subscription" class="inactive-tab w-full text-left px-6 py-4 rounded-xl font-medium transition flex items-center gap-3 text-sm"><i class="fas fa-credit-card"></i> Assinatura</button>
+                        <button onclick="switchTab('settings')" id="tab-btn-settings" class="inactive-tab w-full text-left px-6 py-4 rounded-xl font-medium transition flex items-center gap-3 text-sm"><i class="fas fa-cog"></i> Ajustes</button>
+                    </div>
+
+                    <div class="col-span-3">
+                        <div id="tab-projects" class="fade-in-up">
+                            <h3 class="text-xl font-bold mb-6 text-white font-display uppercase tracking-widest border-l-4 border-brand-accent pl-4">Projetos Ativos</h3>
+                            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                            <div id="empty-projects-state" class="hidden py-24 text-center border border-dashed border-brand-border rounded-2xl text-gray-600 bg-brand-surface/30">
+                                <i class="fas fa-cube text-4xl mb-4 opacity-30 text-brand-primary"></i><br>
+                                <span class="text-xs uppercase tracking-widest">Nenhuma arquitetura encontrada.</span>
+                            </div>
+                        </div>
+
+                        <div id="tab-subscription" class="hidden fade-in-up">
+                            <div class="glass p-8 rounded-2xl border-brand-primary/30 relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/10 blur-[80px] rounded-full pointer-events-none"></div>
+                                <h4 class="text-2xl font-bold text-brand-accent mb-2 font-display">STATUS DA ENGINE</h4>
+                                <p class="text-gray-400 text-sm mb-8">Você está operando com capacidade limitada.</p>
+                                <div class="flex gap-4">
+                                    <button onclick="navigateTo('pricing')" class="bg-brand-primary px-6 py-3 rounded-lg text-xs font-bold text-white uppercase tracking-widest hover:bg-brand-secondary transition">Fazer Upgrade</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-settings" class="hidden fade-in-up">
+                            <div class="glass p-8 rounded-2xl border-brand-border">
+                                <label class="block text-[10px] text-brand-accent uppercase font-bold tracking-widest mb-4">Identificação do Operador</label>
+                                <div class="flex gap-4">
+                                    <input type="text" id="settings-name" class="flex-1 bg-brand-surface border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-primary outline-none font-mono" placeholder="Seu nome">
+                                    <button onclick="saveSettingsName()" class="bg-brand-primary px-6 py-3 rounded-xl text-xs font-bold text-white hover:bg-brand-secondary transition uppercase tracking-widest">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-auth" class="hidden min-h-screen flex items-center justify-center px-4 fade-in-up">
+            <div class="glass p-10 rounded-3xl w-full max-w-md shadow-[0_0_50px_rgba(99,102,241,0.2)]">
+                <div class="logo-core mx-auto mb-6"></div>
+                <h2 class="text-3xl font-display font-bold text-center mb-8 text-white" id="auth-title">Acesso Seguro</h2>
+                <form onsubmit="handleAuth(event)" class="space-y-4">
+                    <div id="field-name" class="hidden">
+                        <input type="text" id="input-name" class="w-full bg-brand-surface border border-brand-border rounded-xl p-4 text-white outline-none focus:border-brand-primary font-mono text-sm" placeholder="ID OPERADOR">
+                    </div>
+                    <input type="email" class="w-full bg-brand-surface border border-brand-border rounded-xl p-4 text-white outline-none focus:border-brand-primary font-mono text-sm" placeholder="EMAIL CRIPTOGRAFADO" required>
+                    <input type="password" class="w-full bg-brand-surface border border-brand-border rounded-xl p-4 text-white outline-none focus:border-brand-primary font-mono text-sm" placeholder="CHAVE DE ACESSO" required>
+                    <button type="submit" class="w-full py-4 bg-brand-primary rounded-xl font-bold uppercase mt-4 tracking-widest shadow-lg shadow-brand-primary/20 text-white hover:bg-brand-secondary transition">Autenticar</button>
+                </form>
+                <button onclick="toggleAuthMode()" class="mt-8 text-center w-full text-[10px] text-brand-accent uppercase font-bold tracking-widest hover:text-white transition" id="auth-toggle-btn">Solicitar Novo Registro</button>
+            </div>
+        </section>
+
+        <section id="view-editor" class="hidden fixed inset-0 top-16 z-40 flex flex-col md:flex-row bg-brand-dark">
+            
+            <aside class="w-full md:w-[400px] border-r border-brand-border flex flex-col h-full bg-brand-surface relative z-20">
+                <div class="p-4 border-b border-brand-border flex justify-between items-center bg-brand-surface flex-none">
+                    <span class="text-[10px] font-mono text-brand-accent uppercase tracking-widest">Terminal Zenith</span>
+                    <button onclick="location.reload()" class="text-[10px] text-gray-500 hover:text-red-500 uppercase transition tracking-widest">Reiniciar</button>
+                </div>
+
+                <div id="chat-history" class="flex-1 overflow-y-auto p-5 space-y-6">
+                    <div class="flex gap-4 fade-in-up">
+                        <div class="logo-core w-8 h-8 flex items-center justify-center shrink-0"></div>
+                        <div class="chat-ai glass">
+                            <strong class="text-brand-accent">Synthetix V7 Pronta.</strong><br><br>
+                            Módulos Carregados:<br>
+                            - 🗄️ Entidades (SQL/NoSQL)<br>
+                            - 🤖 Agentes Autônomos<br>
+                            - 🔐 Auth JWT<br><br>
+                            Aguardando comando...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-brand-surface border-t border-brand-border backdrop-blur-md flex-none z-30">
+                    <div class="relative">
+                        <textarea id="editorInput" class="w-full h-20 bg-brand-dark border border-brand-border rounded-xl py-3 px-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none transition-all placeholder-gray-600 font-mono" placeholder="Instrução do projeto..."></textarea>
+                        <button onclick="generateSite()" class="absolute right-2 bottom-3 w-10 h-10 bg-brand-primary hover:bg-brand-secondary text-white rounded-lg flex items-center justify-center transition shadow-lg">
+                            <i class="fas fa-terminal"></i>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="flex-1 bg-black relative flex flex-col h-full">
+                <div class="h-10 bg-brand-surface border-b border-brand-border flex items-center justify-between px-4 flex-none">
+                    <div class="flex gap-2 opacity-50">
+                        <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                        <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                        <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Render: React v19</span>
+                        <button class="text-[10px] font-bold bg-brand-primary/10 text-brand-primary border border-brand-primary/20 px-4 py-1 rounded hover:bg-brand-primary hover:text-white transition uppercase tracking-widest">Publicar</button>
+                    </div>
+                </div>
+                
+                <div class="flex-1 relative overflow-hidden bg-brand-dark">
+                    <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-brand-dark/95 backdrop-blur-md">
+                        <div class="w-20 h-20 relative mb-10">
+                            <div class="absolute inset-0 border-2 border-brand-primary/20 rounded-full"></div>
+                            <div class="absolute inset-0 border-2 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
+                            <div class="absolute inset-6 logo-core animate-pulse"></div>
+                        </div>
+                        
+                        <div class="w-72 space-y-4">
+                            <div id="step-1" class="step-row"><span class="step-icon"><i class="fas fa-brain"></i></span> 1. Interpretando NLP...</div>
+                            <div id="step-2" class="step-row"><span class="step-icon"><i class="fas fa-database"></i></span> 2. Estruturando DB...</div>
+                            <div id="step-3" class="step-row"><span class="step-icon"><i class="fas fa-shield-alt"></i></span> 3. Configurando Auth...</div>
+                            <div id="step-4" class="step-row"><span class="step-icon"><i class="fas fa-robot"></i></span> 4. Conectando Agentes...</div>
+                            <div id="step-5" class="step-row"><span class="step-icon"><i class="fas fa-code"></i></span> 5. Compilando...</div>
+                        </div>
+                    </div>
+
+                    <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center opacity-30 pointer-events-none">
+                        <div class="logo-core w-16 h-16 mb-6 opacity-30 grayscale"></div>
+                        <span class="text-[10px] font-mono uppercase tracking-[0.5em] text-gray-500">System Idle</span>
+                    </div>
+                    <iframe id="siteFrame" class="w-full h-full border-0 hidden bg-white"></iframe>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[200]"></div>
+
+    <script>
+        // DADOS
+        const pricingData = { monthly: { standard: "29,90", pro: "49,90" }, annual: { standard: "19,90", pro: "39,90" } };
+        const aiTips = ["DB: Tabela 'Users' e 'Logs' criadas.", "Backend: API Endpoints simulados.", "Security: Auth Middleware ativado."];
+
+        let currentCode = ""; 
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        let userName = localStorage.getItem('userName') || "Operador";
+        let projects = JSON.parse(localStorage.getItem('projects')) || [];
+        let isSignup = false;
+
+        window.onload = () => { updateNav(); };
+
+        function navigateTo(viewId) {
+            document.querySelectorAll('section[id^="view-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById('view-' + viewId).classList.remove('hidden');
+            if(viewId === 'auth') updateAuthUI();
+            if(viewId === 'profile') { 
+                renderProjects(); 
+                switchTab('projects'); 
+                document.getElementById('settings-name').value = userName; 
+            }
+            // SE FOR O EDITOR, TRAVA O SCROLL DA PÁGINA PRINCIPAL
+            if(viewId === 'editor') {
+                document.getElementById('main-scroll-container').classList.add('overflow-hidden');
+            } else {
+                document.getElementById('main-scroll-container').classList.remove('overflow-hidden');
+            }
+            updateNav();
+        }
+
+        function updateNav() {
+            const gD = document.getElementById('desktop-guest');
+            const uD = document.getElementById('desktop-user');
+            
+            if(isLoggedIn) {
+                gD.classList.add('hidden'); uD.classList.remove('hidden'); uD.classList.add('flex');
+                document.getElementById('nav-avatar').innerText = userName.charAt(0).toUpperCase();
+                document.getElementById('nav-username-display').innerText = userName;
+                document.getElementById('profile-name-display').innerText = userName;
+            } else {
+                gD.classList.remove('hidden'); uD.classList.add('hidden');
+            }
+        }
+
+        function switchTab(id) {
+            ['projects', 'subscription', 'settings'].forEach(t => {
+                document.getElementById('tab-' + t).classList.add('hidden');
+                document.getElementById('tab-btn-' + t).classList.remove('active-tab');
+                document.getElementById('tab-btn-' + t).classList.add('inactive-tab');
+            });
+            document.getElementById('tab-' + id).classList.remove('hidden');
+            document.getElementById('tab-btn-' + id).classList.remove('inactive-tab');
+            document.getElementById('tab-btn-' + id).classList.add('active-tab');
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            const empty = document.getElementById('empty-projects-state');
+            grid.innerHTML = "";
+            
+            if (projects.length === 0) { empty.classList.remove('hidden'); return; }
+            empty.classList.add('hidden');
+            
+            projects.forEach((p, i) => {
+                const c = document.createElement('div');
+                c.className = "glass p-5 rounded-xl flex flex-col justify-between hover:border-brand-primary transition cursor-pointer group";
+                c.onclick = () => loadProject(i);
+                c.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="logo-core w-8 h-8 flex items-center justify-center text-[10px] font-bold text-brand-dark">V${i+1}</div>
+                        <span class="text-[10px] text-gray-500 font-mono">${p.date}</span>
+                    </div>
+                    <h4 class="font-bold text-white mb-1 truncate text-sm group-hover:text-brand-accent transition">${p.name}</h4>
+                    <div class="text-[10px] text-gray-500 uppercase tracking-widest mt-2">Compiled</div>
+                `;
+                grid.appendChild(c);
+            });
+        }
+
+        function saveProject(code, prompt) {
+            const n = prompt.substring(0, 25) + (prompt.length > 25 ? "..." : "");
+            projects.unshift({ name: n, code, date: new Date().toLocaleDateString('pt-BR') });
+            localStorage.setItem('projects', JSON.stringify(projects.slice(0, 10)));
+        }
+
+        function loadProject(i) {
+            currentCode = projects[i].code;
+            navigateTo('editor');
+            const f = document.getElementById('siteFrame');
+            f.contentWindow.document.open(); f.contentWindow.document.write(currentCode); f.contentWindow.document.close();
+            document.getElementById('emptyState').classList.add('hidden');
+            f.classList.remove('hidden');
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const inputN = document.getElementById('input-name')?.value;
+            userName = isSignup ? inputN : (userName || "Operador");
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userName', userName);
+            navigateTo('profile');
+        }
+        function toggleAuthMode() { isSignup = !isSignup; updateAuthUI(); }
+        function updateAuthUI() {
+            document.getElementById('auth-title').innerText = isSignup ? "Registro de Operador" : "Identificação";
+            document.getElementById('field-name').classList.toggle('hidden', !isSignup);
+            document.getElementById('auth-toggle-btn').innerText = isSignup ? "Já tenho acesso" : "Solicitar Novo Registro";
+        }
+        function saveSettingsName() {
+            const n = document.getElementById('settings-name').value.trim();
+            if(n.length < 3) { showToast("⚠️ Inválido"); return; }
+            userName = n;
+            localStorage.setItem('userName', userName);
+            updateNav();
+            showToast("✨ Identidade Atualizada");
+        }
+        function logout() { localStorage.clear(); location.reload(); }
+
+        function togglePricing() {
+            const isA = document.getElementById('billing-toggle').checked;
+            const type = isA ? 'annual' : 'monthly';
+            document.getElementById('price-standard').innerText = pricingData[type].standard;
+            document.getElementById('price-pro').innerText = pricingData[type].pro;
+        }
+
+        function startCreation() {
+            const prompt = document.getElementById('landingInput').value;
+            if(!prompt) return;
+            navigateTo('editor');
+            setTimeout(() => {
+                document.getElementById('editorInput').value = prompt;
+                generateSite();
+            }, 600);
+        }
+
+        async function generateSite() {
+            const input = document.getElementById('editorInput');
+            const history = document.getElementById('chat-history');
+            const prompt = input.value.trim();
+            if(!prompt) return;
+            if(!isLoggedIn) { showToast("🔒 Acesso Negado. Faça Login."); navigateTo('auth'); return; }
+
+            const uDiv = document.createElement('div');
+            uDiv.className = "flex justify-end fade-in-up";
+            uDiv.innerHTML = `<div class="chat-user">${prompt}</div>`;
+            history.appendChild(uDiv);
+            input.value = ""; history.scrollTop = history.scrollHeight;
+
+            const loading = document.getElementById('loadingState');
+            loading.classList.remove('hidden');
+            
+            updateStep('step-1', 'active'); await wait(1500); updateStep('step-1', 'done');
+            updateStep('step-2', 'active'); await wait(1200); updateStep('step-2', 'done');
+            updateStep('step-3', 'active'); await wait(1000); updateStep('step-3', 'done');
+            updateStep('step-4', 'active'); await wait(1000); updateStep('step-4', 'done');
+            updateStep('step-5', 'active');
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt, existingCode: currentCode })
+                });
+                const data = await response.json();
+                
+                if (data.html) {
+                    currentCode = data.html;
+                    const f = document.getElementById('siteFrame');
+                    f.contentWindow.document.open(); f.contentWindow.document.write(currentCode); f.contentWindow.document.close();
+                    document.getElementById('emptyState').classList.add('hidden');
+                    f.classList.remove('hidden');
+
+                    const tip = aiTips[Math.floor(Math.random() * aiTips.length)];
+                    const aiDiv = document.createElement('div');
+                    aiDiv.className = "flex gap-4 fade-in-up";
+                    aiDiv.innerHTML = `<div class="logo-core w-8 h-8 flex items-center justify-center shrink-0"></div><div class="chat-ai glass"><strong>Compilação Finalizada.</strong><br><br><span class="text-brand-accent text-xs uppercase tracking-widest">System Log:</span><br><span class="font-mono text-xs text-green-400">✔ ${tip}</span></div>`;
+                    history.appendChild(aiDiv);
+                    history.scrollTop = history.scrollHeight;
+                    
+                    saveProject(currentCode, prompt);
+                }
+            } catch (e) {
+                showToast("❌ Erro de Conexão");
+            } finally {
+                loading.classList.add('hidden');
+                resetSteps();
+            }
+        }
+
+        function showToast(m) {
+            const t = document.createElement('div');
+            t.className = "bg-white text-black px-4 py-2 rounded-full shadow-2xl mb-2 text-[10px] font-bold fade-in-up uppercase tracking-widest fixed bottom-6 right-6 z-[200]";
+            t.innerText = m;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+        function updateStep(id, status) {
+            const el = document.getElementById(id);
+            const icon = el.querySelector('.step-icon');
+            if(status === 'active') { el.classList.add('active'); icon.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>'; }
+            if(status === 'done') { el.classList.remove('active'); el.classList.add('done'); icon.innerHTML = '<i class="fas fa-check text-green-400"></i>'; }
+        }
+        function resetSteps() {
+            document.querySelectorAll('.step-row').forEach(el => {
+                el.className = 'step-row';
+                el.querySelector('.step-icon').innerHTML = '<i class="fas fa-circle text-[8px]"></i>';
+            });
+        }
+        function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+    </script>
 </body>
 </html>
