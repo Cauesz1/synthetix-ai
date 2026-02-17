@@ -13,22 +13,18 @@
             theme: {
                 extend: {
                     colors: {
-                        // A IA foi treinada para usar estas chaves exatas
                         brand: {
-                            dark: '#050505',      // Token: Ultra Dark Background
-                            surface: '#0a0a0a',   // Token: Card Surface
-                            primary: '#7c3aed',   // Token: Primary Action (Roxo)
-                            hover: '#6d28d9',     // Token: Hover State
-                            accent: '#d8b4fe',    // Token: Highlights
-                            border: 'rgba(255,255,255,0.08)' // Token: Subtle Borders
+                            dark: '#050505', 
+                            primary: '#7c3aed',
+                            hover: '#6d28d9',
+                            accent: '#d8b4fe',
+                            surface: '#0a0a0a',
+                            border: 'rgba(255,255,255,0.08)'
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],           // Token: Body Text
-                        display: ['Space Grotesk', 'sans-serif'], // Token: Headings
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
                     }
                 }
             }
@@ -37,16 +33,14 @@
 
     <style>
         body { background-color: #050505; color: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-        
-        /* UTILITÁRIOS BASE44 */
-        .glass { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .logo-hexagon { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); background: linear-gradient(135deg, #7c3aed, #4c1d95); }
 
-        /* CHAT BUBBLES */
+        /* CHAT BASE44 */
         .chat-bubble-user { background: #7c3aed; color: white; border-radius: 12px 12px 2px 12px; font-size: 13px; line-height: 1.5; }
         .chat-bubble-ai { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px 12px 12px 2px; font-size: 13px; line-height: 1.5; color: #d1d5db; }
         
-        /* TOGGLE E ANIMAÇÕES */
+        /* UTILITÁRIOS */
         .switch-checkbox { display: none; }
         .switch-label { display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 52px; height: 28px; background: #1f2937; border-radius: 100px; position: relative; transition: background-color 0.3s ease; border: 1px solid rgba(255,255,255,0.1); }
         .switch-button { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15); background: #fff; }
@@ -55,7 +49,7 @@
         .fade-in-up { animation: fadeInUp 0.4s ease-out; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TABS & MOBILE MENU */
+        /* TABS */
         .active-tab { background: rgba(124, 58, 237, 0.1); color: #d8b4fe; border-color: rgba(124, 58, 237, 0.3); }
         .inactive-tab { color: #9ca3af; border-color: transparent; }
         #mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); background: #050505; z-index: 100; }
@@ -101,7 +95,7 @@
         </div>
         <div class="mt-auto mb-12">
             <div id="mobile-guest" class="w-full">
-                <button onclick="navigateTo('auth'); toggleMobileMenu()" class="w-full py-4 border border-white/10 rounded-xl font-bold mb-4 text-white">Login</button>
+                <button onclick="navigateTo('auth'); toggleMobileMenu()" class="w-full py-4 border border-white/10 rounded-xl font-bold mb-4 text-white">Entrar</button>
                 <button onclick="navigateTo('app'); toggleMobileMenu()" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-white">Criar Conta</button>
             </div>
             <div id="mobile-user" class="hidden w-full">
@@ -110,8 +104,6 @@
             </div>
         </div>
     </div>
-
-    <div id="toast-container" class="fixed bottom-6 right-6 z-[200]"></div>
 
     <main id="main-content" class="flex-1 pt-16 md:pt-20 overflow-y-auto bg-brand-dark relative scroll-smooth">
         
@@ -138,9 +130,7 @@
                     <div class="glass p-10 rounded-3xl flex flex-col text-left border-white/5 relative">
                         <h3 class="text-2xl font-bold mb-2">Initiate</h3>
                         <div class="flex items-baseline mb-8">
-                            <span class="text-2xl font-bold mr-1">R$</span>
-                            <span class="text-6xl font-bold tracking-tighter" id="price-standard">29,90</span>
-                            <span class="text-gray-500 text-sm ml-2">/mês</span>
+                            <span class="text-2xl font-bold mr-1">R$</span><span class="text-6xl font-bold tracking-tighter" id="price-standard">29,90</span><span class="text-gray-500 text-sm ml-2">/mês</span>
                         </div>
                         <ul class="space-y-4 mb-10 flex-1 text-gray-300 text-sm">
                             <li class="flex items-center gap-3"><i class="fas fa-check text-brand-primary"></i> 5 Projetos Ativos</li>
@@ -148,17 +138,15 @@
                         </ul>
                         <a href="https://mpago.la/1V3fYRm" id="link-standard" target="_blank" class="w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-center hover:bg-white/10 transition">Assinar</a>
                     </div>
-                    <div class="glass p-10 rounded-3xl border-brand-primary border-2 flex flex-col text-left bg-[#0a0518] relative shadow-2xl">
+                    <div class="glass p-10 rounded-3xl border-brand-primary border-2 flex flex-col text-left bg-[#0a0a0a] relative shadow-2xl">
                         <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-primary text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase">Recomendado</div>
                         <h3 class="text-2xl font-bold mb-2">Architect <span class="text-brand-primary">PRO</span></h3>
                         <div class="flex items-baseline mb-8">
-                            <span class="text-2xl font-bold text-brand-primary mr-1">R$</span>
-                            <span class="text-6xl font-bold tracking-tighter text-brand-primary" id="price-pro">49,90</span>
-                            <span class="text-gray-500 text-sm ml-2">/mês</span>
+                            <span class="text-2xl font-bold text-brand-primary mr-1">R$</span><span class="text-6xl font-bold tracking-tighter text-brand-primary" id="price-pro">49,90</span><span class="text-gray-500 text-sm ml-2">/mês</span>
                         </div>
                         <ul class="space-y-4 mb-10 flex-1 text-white text-sm font-bold">
                             <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> Projetos Ilimitados</li>
-                            <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> <strong>GPT-4o Master Engine</strong></li>
+                            <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> <strong>Base44 Design Engine</strong></li>
                             <li class="flex items-center gap-3"><i class="fas fa-bolt text-brand-accent"></i> Publicação Instantânea</li>
                         </ul>
                         <a href="https://mpago.la/1m8A4zt" id="link-pro" target="_blank" class="w-full py-4 bg-brand-primary rounded-xl font-bold text-center hover:bg-brand-hover transition shadow-xl shadow-brand-primary/20">Assinar</a>
@@ -172,20 +160,18 @@
                 <div class="p-4 border-b border-brand-border flex justify-between items-center bg-[#0a0a0a]">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Zenith Context</span>
+                        <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">NLP Context: Active</span>
                     </div>
                     <button onclick="clearEditor()" class="text-[10px] font-bold text-gray-500 hover:text-red-400 uppercase transition tracking-widest">Reset</button>
                 </div>
-
                 <div id="chat-history" class="flex-1 overflow-y-auto p-4 space-y-6 pb-28">
                     <div class="flex gap-3 fade-in-up">
                         <div class="w-6 h-6 rounded bg-brand-primary/10 flex items-center justify-center text-[10px] text-brand-primary font-bold">AI</div>
                         <div class="chat-bubble-ai p-3 max-w-[90%]">
-                            Estação Zenith pronta. Descreva a interface que você deseja criar (ex: "Landing page com fundo dark e cards em grid").
+                            Estação Zenith online. Qual a intenção do projeto? (Ex: "Site de luxo para venda de relógios").
                         </div>
                     </div>
                 </div>
-
                 <div class="absolute bottom-0 w-full p-4 bg-[#0a0a0a] border-t border-brand-border">
                     <div class="relative group">
                         <textarea id="userPrompt" class="w-full h-16 bg-[#151515] border border-brand-border rounded-xl py-3 px-4 pr-12 text-sm text-white focus:border-brand-primary outline-none resize-none transition-all placeholder-gray-600" placeholder="Digite sua instrução..."></textarea>
@@ -206,9 +192,9 @@
                     <button onclick="postSite()" class="text-[10px] font-bold bg-white text-black px-4 py-1.5 rounded-full hover:bg-brand-accent hover:text-white transition uppercase tracking-widest shadow-lg">Deploy Site</button>
                 </div>
                 <div class="flex-1 relative overflow-hidden bg-[#111]">
-                    <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0a0a]/90 backdrop-blur-sm">
-                        <div class="w-10 h-10 border-2 border-brand-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-                        <div class="text-brand-primary font-mono text-[10px] animate-pulse tracking-widest uppercase">Compilando Arquitetura...</div>
+                    <div id="loadingState" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0a0a]/95 backdrop-blur-sm">
+                        <div class="w-12 h-12 border-2 border-brand-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+                        <div id="loadingText" class="text-brand-primary font-mono text-[10px] animate-pulse tracking-widest uppercase">Iniciando Engine...</div>
                     </div>
                     <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center opacity-20 pointer-events-none">
                         <i class="fas fa-code text-5xl mb-4 text-gray-500"></i>
@@ -228,35 +214,23 @@
                         <h4 class="font-bold text-white mb-2 text-lg">Nexus Dashboard</h4>
                         <p class="text-xs text-gray-500">SaaS de alta performance compilado em 14 segundos.</p>
                     </div>
-                    <div class="glass p-6 rounded-2xl group border-white/5 transition duration-500 hover:-translate-y-2 hover:border-brand-primary/50">
-                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-gem text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
-                        <h4 class="font-bold text-white mb-2 text-lg">Luxury Showroom</h4>
-                        <p class="text-xs text-gray-500">Vitrine minimalista para marcas nível Zenith.</p>
                     </div>
-                    <div class="glass p-6 rounded-2xl group border-white/5 transition duration-500 hover:-translate-y-2 hover:border-brand-primary/50">
-                        <div class="h-40 bg-gray-900 rounded-xl mb-6 flex items-center justify-center"><i class="fas fa-car-side text-3xl text-brand-primary/20 group-hover:text-brand-primary transition"></i></div>
-                        <h4 class="font-bold text-white mb-2 text-lg">Hypercar Config</h4>
-                        <p class="text-xs text-gray-500">Configurador interativo para engenharia automotiva.</p>
-                    </div>
-                </div>
             </div>
         </section>
 
-        <section id="view-profile" class="hidden min-h-full py-20 px-6 fade-in-up bg-[#050014]">
+        <section id="view-profile" class="hidden min-h-full py-20 px-6 fade-in-up bg-[#050505]">
             <div class="max-w-7xl mx-auto w-full">
                 <div class="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12 border-b border-white/5 pb-10">
                     <div class="w-24 h-24 rounded-full bg-gradient-to-br from-brand-primary to-blue-600 flex items-center justify-center text-3xl font-bold shadow-2xl border-4 border-white/5" id="profile-avatar-big">US</div>
                     <div class="text-center md:text-left">
                         <h2 class="text-3xl font-display font-bold text-white" id="profile-name-display">Usuário</h2>
-                        <p class="text-gray-500 font-mono text-[10px] mt-1 mb-4 uppercase tracking-[0.3em]">Status: Conexão Estável</p>
                         <span class="px-4 py-1.5 bg-brand-primary/10 border border-brand-primary/40 text-brand-accent rounded-full text-[10px] font-bold uppercase tracking-widest">Pro Architect</span>
                     </div>
                     <div class="md:ml-auto flex gap-4 w-full md:w-auto">
                         <button onclick="logout()" class="flex-1 md:flex-none px-6 py-2.5 border border-white/10 rounded-xl text-sm font-medium hover:bg-red-500/10 hover:text-red-400 transition">Sair</button>
-                        <button onclick="navigateTo('app')" class="flex-1 md:flex-none bg-brand-primary px-8 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-hover transition shadow-lg shadow-brand-primary/20">Abrir Editor</button>
+                        <button onclick="navigateTo('app')" class="flex-1 md:flex-none bg-brand-primary px-8 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-hover transition shadow-xl shadow-brand-primary/20">Abrir Editor</button>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                     <div class="col-span-1 space-y-3">
                         <button onclick="switchTab('projects')" id="tab-btn-projects" class="active-tab w-full text-left px-5 py-4 border rounded-xl font-medium transition flex items-center gap-3"><i class="fas fa-layer-group"></i> Projetos</button>
@@ -267,25 +241,20 @@
                         <div id="tab-projects" class="fade-in-up">
                             <h3 class="text-xl font-bold mb-8 text-white">Projetos Ativos</h3>
                             <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-                            <div id="empty-projects-state" class="hidden py-20 text-center border-2 border-dashed border-white/5 rounded-2xl text-gray-600">Nenhuma arquitetura salva na rede.</div>
+                            <div id="empty-projects-state" class="hidden py-20 text-center border-2 border-dashed border-white/5 rounded-2xl text-gray-600">Nenhuma arquitetura salva.</div>
                         </div>
                         <div id="tab-subscription" class="hidden fade-in-up">
-                            <h3 class="text-xl font-bold mb-8 text-white">Status de Assinatura</h3>
                             <div class="glass p-8 rounded-2xl border-brand-primary/20">
-                                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2 font-bold">Plano Ativo</p>
-                                <h4 class="text-2xl font-bold text-brand-accent mb-6">ARCHITECT PRO <span class="text-xs text-white opacity-40 ml-2">(ANUAL)</span></h4>
-                                <button onclick="navigateTo('pricing')" class="text-[10px] font-bold text-brand-primary hover:underline uppercase tracking-widest">Gerenciar na Station</button>
+                                <h4 class="text-2xl font-bold text-brand-accent mb-6">ARCHITECT PRO</h4>
+                                <button onclick="navigateTo('pricing')" class="text-[10px] font-bold text-brand-primary hover:underline uppercase tracking-widest">Gerenciar</button>
                             </div>
                         </div>
                         <div id="tab-settings" class="hidden fade-in-up">
-                            <h3 class="text-xl font-bold mb-8 text-white">Ajustes da Estação</h3>
-                            <div class="space-y-6">
-                                <div class="glass p-6 rounded-2xl border-white/5">
-                                    <label class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-4">Nome de Identificação</label>
-                                    <div class="flex gap-4">
-                                        <input type="text" id="settings-name" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-brand-primary outline-none" placeholder="Seu nome">
-                                        <button onclick="saveSettingsName()" class="bg-brand-primary px-6 py-3 rounded-xl text-xs font-bold hover:bg-brand-hover transition">SALVAR</button>
-                                    </div>
+                            <div class="glass p-6 rounded-2xl border-white/5">
+                                <label class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-4">Nome de Identificação</label>
+                                <div class="flex gap-4">
+                                    <input type="text" id="settings-name" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-brand-primary outline-none" placeholder="Seu nome">
+                                    <button onclick="saveSettingsName()" class="bg-brand-primary px-6 py-3 rounded-xl text-xs font-bold hover:bg-brand-hover transition">SALVAR</button>
                                 </div>
                             </div>
                         </div>
@@ -309,21 +278,12 @@
 
     </main>
 
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[200]"></div>
+
     <script>
-        // CONFIGURAÇÕES MESTRAS
-        const pricingData = {
-            monthly: { standard: "29,90", pro: "49,90", linkS: "https://mpago.la/1V3fYRm", linkP: "https://mpago.la/1m8A4zt" },
-            annual: { standard: "19,90", pro: "39,90", linkS: "https://mpago.la/2tEyxN5", linkP: "https://mpago.la/2PqbRfB" }
-        };
+        const pricingData = { monthly: { standard: "29,90", pro: "49,90", linkS: "https://mpago.la/1V3fYRm", linkP: "https://mpago.la/1m8A4zt" }, annual: { standard: "19,90", pro: "39,90", linkS: "https://mpago.la/2tEyxN5", linkP: "https://mpago.la/2PqbRfB" } };
+        const aiTips = ["Dica: O Design Token 'bg-glass' cria profundidade moderna.", "SEO: O layout semântico melhora o ranqueamento.", "UX: Botões grandes aumentam a taxa de conversão."];
 
-        const aiTips = [
-            "Dica: Um fundo Dark com botões Neon traz autoridade imediata.",
-            "Sugestão: Use fontes sem serifa para um visual mais técnico.",
-            "Interatividade: Adicionei animações suaves de entrada.",
-            "Mobile: O layout está otimizado para celulares."
-        ];
-
-        // ESTADO GLOBAL
         let currentCode = ""; 
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         let userName = localStorage.getItem('userName') || "Usuário";
@@ -332,13 +292,11 @@
 
         window.onload = () => { updateNav(); };
 
-        // NAVEGAÇÃO
-        function navigateTo(viewId, mode) {
+        function navigateTo(viewId) {
             document.querySelectorAll('section[id^="view-"]').forEach(el => el.classList.add('hidden'));
             document.getElementById('view-' + viewId).classList.remove('hidden');
-            if(viewId === 'auth') { isSignup = (mode === 'signup'); updateAuthUI(); }
+            if(viewId === 'auth') updateAuthUI();
             if(viewId === 'profile') { renderProjects(); switchTab('projects'); document.getElementById('settings-name').value = userName; }
-            if(viewId === 'app') document.getElementById('main-content').scrollTop = 0;
             updateNav();
         }
 
@@ -349,7 +307,6 @@
             icon.classList.toggle('fa-bars'); icon.classList.toggle('fa-times');
         }
 
-        // PREÇOS
         function togglePricing() {
             const isA = document.getElementById('billing-toggle').checked;
             const type = isA ? 'annual' : 'monthly';
@@ -357,20 +314,14 @@
             document.getElementById('price-pro').innerText = pricingData[type].pro;
             document.getElementById('link-standard').href = pricingData[type].linkS;
             document.getElementById('link-pro').href = pricingData[type].linkP;
-            
-            document.getElementById('lbl-monthly').classList.toggle('text-white', !isA);
-            document.getElementById('lbl-monthly').classList.toggle('text-gray-400', isA);
-            document.getElementById('lbl-annual').classList.toggle('text-white', isA);
-            document.getElementById('lbl-annual').classList.toggle('text-gray-400', !isA);
         }
 
-        // EDITOR & IA (INCREMENTAL + LIMPEZA + DICAS)
         function clearEditor() {
             currentCode = "";
             document.getElementById('siteFrame').classList.add('hidden');
             document.getElementById('emptyState').classList.remove('hidden');
-            document.getElementById('chat-history').innerHTML = `<div class="flex gap-3 fade-in-up"><div class="w-6 h-6 rounded bg-brand-primary/10 flex items-center justify-center text-[10px] text-brand-primary font-bold">AI</div><div class="chat-bubble-ai p-3 max-w-[90%]">Memória resetada. Pronto para nova instrução.</div></div>`;
-            showToast("Estação Resetada");
+            document.getElementById('chat-history').innerHTML = `<div class="flex gap-3 fade-in-up"><div class="w-6 h-6 rounded bg-brand-primary/10 flex items-center justify-center text-[10px] text-brand-primary font-bold">AI</div><div class="chat-bubble-ai p-3 max-w-[90%]">Memória resetada.</div></div>`;
+            showToast("Editor Resetado");
         }
 
         async function generateSite() {
@@ -380,7 +331,6 @@
             if(!prompt) return;
             if(!isLoggedIn) { showToast("🔒 Login Necessário"); navigateTo('auth'); return; }
 
-            // 1. User Message (Estilo Base44)
             const uDiv = document.createElement('div');
             uDiv.className = "flex justify-end fade-in-up";
             uDiv.innerHTML = `<div class="chat-bubble-user p-3 max-w-[90%] shadow-lg">${prompt}</div>`;
@@ -388,8 +338,13 @@
             input.value = ""; history.scrollTop = history.scrollHeight;
 
             const loading = document.getElementById('loadingState');
-            const frame = document.getElementById('siteFrame');
+            const loadingText = document.getElementById('loadingText');
             loading.classList.remove('hidden');
+
+            // Simulação de Etapas (A Mágica Visual)
+            loadingText.innerText = "🔍 Analisando Intenção (NLP)...";
+            setTimeout(() => loadingText.innerText = "🧱 Selecionando Componentes...", 1500);
+            setTimeout(() => loadingText.innerText = "🎨 Aplicando Design Tokens...", 3000);
 
             try {
                 const response = await fetch('/api/generate', {
@@ -401,15 +356,16 @@
                 
                 if (data.html && data.html.includes('<html')) {
                     currentCode = data.html;
-                    const doc = frame.contentWindow.document;
-                    doc.open(); doc.write(currentCode); doc.close();
+                    const f = document.getElementById('siteFrame');
+                    f.contentWindow.document.open();
+                    f.contentWindow.document.write(currentCode);
+                    f.contentWindow.document.close();
                     document.getElementById('emptyState').classList.add('hidden');
-                    frame.classList.remove('hidden');
+                    f.classList.remove('hidden');
 
-                    // 2. AI Response
                     const aiDiv = document.createElement('div');
                     aiDiv.className = "flex gap-3 fade-in-up";
-                    aiDiv.innerHTML = `<div class="w-6 h-6 rounded bg-brand-primary/10 flex items-center justify-center text-[10px] text-brand-primary font-bold">AI</div><div class="chat-bubble-ai p-3 max-w-[90%]">Código atualizado. <span class="text-brand-accent">Dica:</span> ${aiTips[Math.floor(Math.random() * aiTips.length)]}</div>`;
+                    aiDiv.innerHTML = `<div class="w-6 h-6 rounded bg-brand-primary/10 flex items-center justify-center text-[10px] text-brand-primary font-bold">AI</div><div class="chat-bubble-ai p-3 max-w-[90%]">Interface compilada. <span class="text-brand-accent">Dica:</span> ${aiTips[Math.floor(Math.random() * aiTips.length)]}</div>`;
                     history.appendChild(aiDiv);
                     history.scrollTop = history.scrollHeight;
 
@@ -423,29 +379,28 @@
             showToast("🚀 Publicando...");
             const loading = document.getElementById('loadingState');
             loading.classList.remove('hidden');
+            document.getElementById('loadingText').innerText = "📡 Deploying to Edge Network...";
 
             setTimeout(() => {
                 loading.classList.add('hidden');
                 const siteUrl = "https://synthetix.ai/live/" + Math.random().toString(36).substring(7);
-                showToast("✨ Postado!");
-                
+                showToast("✨ Publicado!");
                 const history = document.getElementById('chat-history');
                 const postDiv = document.createElement('div');
                 postDiv.className = "bg-green-500/10 border border-green-500/20 p-3 rounded-xl mb-4 fade-in-up";
-                postDiv.innerHTML = `<p class="text-[10px] text-green-400 font-bold mb-1">STATUS: ONLINE</p><a href="#" class="text-[10px] text-brand-accent underline break-all">${siteUrl}</a>`;
+                postDiv.innerHTML = `<p class="text-[10px] text-green-400 font-bold mb-1">DEPLOY SUCCESS</p><a href="#" class="text-[10px] text-brand-accent underline break-all">${siteUrl}</a>`;
                 history.appendChild(postDiv);
                 history.scrollTop = history.scrollHeight;
             }, 2500);
         }
 
-        // PERFIL & CONFIGS
         function saveSettingsName() {
             const n = document.getElementById('settings-name').value.trim();
-            if(n.length < 3) { showToast("⚠️ Nome Inválido"); return; }
+            if(n.length < 3) { showToast("⚠️ Inválido"); return; }
             userName = n;
             localStorage.setItem('userName', userName);
             updateNav();
-            showToast("✨ Perfil Sincronizado");
+            showToast("✨ Salvo");
         }
 
         function switchTab(id) {
@@ -466,8 +421,6 @@
                 gD.classList.add('hidden'); uD.classList.remove('hidden'); uD.classList.add('flex');
                 gM.classList.add('hidden'); uM.classList.remove('hidden');
                 document.getElementById('nav-avatar').innerText = userName.charAt(0).toUpperCase();
-                document.getElementById('profile-avatar-big').innerText = userName.charAt(0).toUpperCase();
-                document.getElementById('profile-name-display').innerText = userName;
             } else {
                 gD.classList.remove('hidden'); uD.classList.add('hidden');
                 gM.classList.remove('hidden'); uM.classList.add('hidden');
@@ -506,7 +459,7 @@
         }
 
         function saveProject(code, prompt) {
-            const n = prompt.length > 20 ? prompt.substring(0, 20) + "..." : prompt;
+            const n = prompt.substring(0, 20);
             projects.unshift({ name: n, code, date: new Date().toLocaleDateString('pt-BR') });
             localStorage.setItem('projects', JSON.stringify(projects.slice(0, 10)));
         }
@@ -515,17 +468,16 @@
             currentCode = projects[i].code;
             navigateTo('app');
             const f = document.getElementById('siteFrame');
-            const doc = f.contentWindow.document;
-            doc.open(); doc.write(currentCode); doc.close();
+            f.contentWindow.document.open(); f.contentWindow.document.write(currentCode); f.contentWindow.document.close();
             document.getElementById('emptyState').classList.add('hidden');
             f.classList.remove('hidden');
         }
 
         function showToast(m) {
             const t = document.createElement('div');
-            t.className = "bg-white text-black px-4 py-2 rounded-full shadow-2xl mb-2 text-[10px] font-bold fade-in-up uppercase tracking-widest fixed bottom-6 right-6 z-[200]";
+            t.className = "bg-white text-black px-4 py-2 rounded-full shadow-2xl mb-2 text-[10px] font-bold fade-in-up uppercase tracking-widest";
             t.innerText = m;
-            document.body.appendChild(t);
+            document.getElementById('toast-container').appendChild(t);
             setTimeout(() => t.remove(), 3000);
         }
 
